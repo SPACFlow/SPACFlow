@@ -22,7 +22,7 @@
 ## 📌 Sumário Navegável
 * [1. Visão Geral & Impacto Institucional](#1-visão-geral--impacto-institucional)
 * [2. Diagnóstico Operacional: Antes vs. SpacFlow](#2-diagnóstico-operacional-antes-vs-spacflow)
-* [3. Engenharia de UX & Evidências de Pesquisa](#3-engenharia-de-ux--evidências-de-pesquisa)
+* [3. Prototipação do produto](#3-prototipação-do-produto)
 * [4. Mapeamento de Usuário (Persona & Jornada)](#4-mapeamento-de-usuário-persona--jornada)
 * [5. Priorização do Escopo (Matriz MoSCoW)](#5-priorização-do-escopo-matriz-moscow)
 * [6. Cronograma & Roadmap por Semanas](#6-cronograma--roadmap-por-semanas)
@@ -51,40 +51,39 @@ A unidade opera sob constante demanda por pareceres técnicos e inspeções de c
 
 ---
 
-## 3. Engenharia de UX & Evidências de Pesquisa
+## 3. Prototipação do produto
 
-A concepção do produto não partiu de premissas abstratas, mas de uma fase de imersão metodológica rigorosa. Clique abaixo para consultar os artefatos de pesquisa expandidos:
+Para manter a transparência do processo de design e evitar a poluição visual na rolagem da página, as evidências de prototipação estão disponíveis nos painéis expansíveis abaixo:
 
 <details>
-  <summary><b>🧠 Clique para expandir os Detalhes da Matriz CSD (Certezas, Suposições e Dúvidas)</b></summary>
+  <summary><b>🎥 Clique para expandir o Screencast</b></summary>
   <br />
-  <ul>
-    <li><b>Certezas:</b> A VISAT recebe demandas de múltiplos órgãos (MPT, TRT, Sindicatos); não há processo unificado; existem prazos legais rígidos; o volume de demandas é significativo.</li>
-    <li><b>Suposições:</b> A equipe técnica está disposta a adotar o novo sistema; a principal causa dos atrasos é a falta de centralização e visibilidade (e não falta de pessoal).</li>
-    <li><b>Dúvidas:</b> Qual o tempo médio exato entre a recepção e a resposta? Quais órgãos teriam acesso direto à visualização do status?</li>
-  </ul>
+  <p><i>Gravação em vídeo demonstrando a navegação pelo protótipo.</i></p>
+  <div align="center">
+    <p><i>(link ou embed do screencast)</i></p>
+  </div>
 </details>
 
 <br />
 
 <details>
-  <summary><b>📋 Clique para expandir a Estrutura da Entrevista Semiestruturada</b></summary>
+  <summary><b>✏️ Clique para expandir os Sketches/Storyboard</b></summary>
   <br />
-  <ul>
-    <li><b>Bloco 1 (Abertura):</b> Mapeamento da rotina diária na VISAT e tempo de atuação do servidor.</li>
-    <li><b>Bloco 2 (Entrada da Demanda):</b> Processo atual de recepção de ofícios do MPT/TRT e critérios de triagem.</li>
-    <li><b>Bloco 3 (Prazos e SLA):</b> Mecanismos de acompanhamento de vencimento e ocorrências de atrasos passados.</li>
-    <li><b>Bloco 4 (Rastreabilidade):</b> Tempo necessário para resgatar o histórico de um processo antigo cobrado externamente.</li>
-    <li><b>Bloco 5 & 6 (Ferramentas e Cenários Reais):</b> Limitações das planilhas informais e relatos de casos críticos.</li>
-  </ul>
+  <p><i>Esboços e storyboards feitos a mão para cada história de usuário mapeada.</i></p>
+  <div align="center">
+    <p><i>(link ou imagem dos sketches/storyboards)</i></p>
+  </div>
 </details>
 
 <br />
 
 <details>
-  <summary><b>💡 Clique para expandir a Dinâmica de Brainwriting & Ideação</b></summary>
+  <summary><b>🔗 Clique para expandir os Diagramas de Atividade</b></summary>
   <br />
-  <p>Sessão de ideação assíncrona da equipe focada em levantamento de alternativas sem viés individual. Foram priorizados: painel visual por status, gestão de alertas de SLA, histórico imutável por demanda e geração automática de respostas padronizadas.</p>
+  <p><i>Diagramas de atividade correspondentes a cada história de usuário.</i></p>
+  <div align="center">
+    <p><i>(link ou imagem dos diagramas de atividade)</i></p>
+  </div>
 </details>
 
 ---
@@ -185,3 +184,4 @@ graph LR
     E --> F{"Aprovação da Gestão"}
     F -->|"Aprovado"| G["Retorno ao Órgão Solicitante"]
     F -->|"Ajuste"| D
+```
