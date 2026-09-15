@@ -70,9 +70,18 @@ Para manter a transparência do processo de design e evitar a poluição visual 
   <summary><b>✏️ Clique para expandir os Sketches/Storyboard</b></summary>
   <br />
   <p><i>Esboços e storyboards feitos a mão para cada história de usuário mapeada.</i></p>
+
+  <p><b>📌 Storyboard — Jornada Visual dos Épicos</b><br/>
+  Representa, em quadros ilustrados, a jornada completa do usuário em cada um dos 4 épicos do SpacFlow: cadastro e registro da demanda, acompanhamento e fluxo da demanda, monitoramento e alertas, e dashboards/administração — mostrando passo a passo as ações do agente, do fiscal e do gestor dentro do sistema.</p>
   <div align="center">
     <img src="./assets/storyboard_epicos.png" alt="Storyboard dos Épicos — SpacFlow" width="95%" />
-    <br /><br />
+  </div>
+
+  <br />
+
+  <p><b>✏️ Sketch — Wireframes de Baixa Fidelidade</b><br/>
+  Esboços a mão das telas principais do sistema, organizados pelos mesmos 4 épicos: registro de demanda, execução/monitoramento, dashboards gerenciais e gestão administrativa — usados como base inicial de layout antes da prototipação no Figma.</p>
+  <div align="center">
     <img src="./assets/sketch_wireframes.png" alt="Sketch dos Wireframes por Épico — SpacFlow" width="95%" />
   </div>
 </details>
