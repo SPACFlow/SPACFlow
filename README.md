@@ -71,7 +71,7 @@ Para manter a transparência do processo de design e evitar a poluição visual 
   <br />
   <p><i>Esboços e storyboards feitos a mão para cada história de usuário mapeada.</i></p>
   <div align="center">
-    <p><i>(link ou imagem dos sketches/storyboards)</i></p>
+    <img src="./assets/storyboard_epicos.png" alt="Storyboard dos Épicos — SpacFlow" width="95%" />
   </div>
 </details>
 
