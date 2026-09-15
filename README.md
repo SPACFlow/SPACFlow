@@ -58,9 +58,40 @@ Para manter a transparência do processo de design e evitar a poluição visual 
 <details>
   <summary><b>🎥 Clique para expandir o Screencast</b></summary>
   <br />
-  <p><i>Gravação em vídeo demonstrando a navegação pelo protótipo.</i></p>
+  <p><b>🎬 Screencast — Demonstração do Protótipo</b><br/>
+  Gravação em vídeo navegando pelas telas do protótipo do SpacFlow, demonstrando o fluxo de uso do sistema pelos épicos mapeados.</p>
   <div align="center">
-    <p><i>(link ou embed do screencast)</i></p>
+
+  **1º Épico** — `0:00 – 2:03`
+  <br />
+  <video src="./assets/screencast.mp4" controls width="95%">
+    Seu visualizador não suporta vídeo embutido — <a href="./assets/screencast.mp4">clique aqui para assistir</a>.
+  </video>
+
+  <br /><br />
+
+  **2º Épico** — `2:04 – 2:52`
+  <br />
+  <video src="./assets/screencast1.mp4" controls width="95%">
+    Seu visualizador não suporta vídeo embutido — <a href="./assets/screencast1.mp4">clique aqui para assistir</a>.
+  </video>
+
+  <br /><br />
+
+  **3º Épico** — `2:53 – 4:42`
+  <br />
+  <video src="./assets/screencast2.mp4" controls width="95%">
+    Seu visualizador não suporta vídeo embutido — <a href="./assets/screencast2.mp4">clique aqui para assistir</a>.
+  </video>
+
+  <br /><br />
+
+  **4º Épico** — `4:43 – 6:16`
+  <br />
+  <video src="./assets/screencast3.mp4" controls width="95%">
+    Seu visualizador não suporta vídeo embutido — <a href="./assets/screencast3.mp4">clique aqui para assistir</a>.
+  </video>
+
   </div>
 </details>
 
@@ -135,7 +166,7 @@ O projeto é executado através de uma abordagem incremental dividida em 7 seman
 | **Semana 01**<br>*(Imersão)* | Entendimento do problema, pesquisa inicial e organização do grupo | Entregáveis para apresentação inicial | `Concluído` |
 | **Semana 02**<br>*(Validação)* | Contato com a VISAT, validação de hipóteses e entendimento do processo | Hipóteses validadas e dúvidas respondidas | `Concluído` |
 | **Semana 03**<br>*(Requisitos)* | Levantamento de requisitos, histórias de usuário, fluxos e priorização | Backlog priorizado e especificação inicial | `Concluído` |
-| **Semana 04**<br>*(UX / UI)* | Construção de wireframes, protótipos e fluxo de navegação | Protótipo validado | `Em andamento` |
+| **Semana 04**<br>*(UX / UI)* | Construção de wireframes, protótipos e fluxo de navegação | Protótipo validado | `Pendente` |
 | **Semana 05**<br>*(Desenvolvimento)* | Banco de dados (PostgreSQL), backend, frontend e integração | Incrementos funcionais do sistema | `Pendente` |
 | **Semana 06**<br>*(Testes)* | Testes de software, correções de bugs e validações | Versão estável do sistema | `Pendente` |
 | **Semana 07**<br>*(Entrega Final)* | Consolidação do sistema, documentação e apresentação de resultados | Entrega final do projeto | `Pendente` |
