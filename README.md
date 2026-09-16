@@ -64,32 +64,32 @@ Para manter a transparência do processo de design e evitar a poluição visual 
 
   **1º Épico** — `0:00 – 2:03`
   <br />
-  <video src="./assets/screencast.mp4" controls width="95%">
-    Seu visualizador não suporta vídeo embutido — <a href="./assets/screencast.mp4">clique aqui para assistir</a>.
+  <video src="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast.mp4" controls width="95%">
+    Seu visualizador não suporta vídeo embutido — <a href="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast.mp4">clique aqui para assistir</a>.
   </video>
 
   <br /><br />
 
   **2º Épico** — `2:04 – 2:52`
   <br />
-  <video src="./assets/screencast1.mp4" controls width="95%">
-    Seu visualizador não suporta vídeo embutido — <a href="./assets/screencast1.mp4">clique aqui para assistir</a>.
+  <video src="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast1.mp4" controls width="95%">
+    Seu visualizador não suporta vídeo embutido — <a href="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast1.mp4">clique aqui para assistir</a>.
   </video>
 
   <br /><br />
 
   **3º Épico** — `2:53 – 4:42`
   <br />
-  <video src="./assets/screencast2.mp4" controls width="95%">
-    Seu visualizador não suporta vídeo embutido — <a href="./assets/screencast2.mp4">clique aqui para assistir</a>.
+  <video src="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast2.mp4" controls width="95%">
+    Seu visualizador não suporta vídeo embutido — <a href="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast2.mp4">clique aqui para assistir</a>.
   </video>
 
   <br /><br />
 
   **4º Épico** — `4:43 – 6:16`
   <br />
-  <video src="./assets/screencast3.mp4" controls width="95%">
-    Seu visualizador não suporta vídeo embutido — <a href="./assets/screencast3.mp4">clique aqui para assistir</a>.
+  <video src="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast3.mp4" controls width="95%">
+    Seu visualizador não suporta vídeo embutido — <a href="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast3.mp4">clique aqui para assistir</a>.
   </video>
 
   </div>
