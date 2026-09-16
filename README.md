@@ -119,7 +119,7 @@ Para manter a transparência do processo de design e evitar a poluição visual 
   <br />
   <p><i>Diagramas de atividade correspondentes a cada história de usuário.</i></p>
   <div align="center">
-    <p><i>(link ou imagem dos diagramas de atividade)</i></p>
+    <p><i>https://miro.com/app/board/uXjVHm8iHBM=/</i></p>
   </div>
 </details>
 
