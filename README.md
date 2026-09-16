@@ -62,35 +62,30 @@ Para manter a transparência do processo de design e evitar a poluição visual 
   Gravação em vídeo navegando pelas telas do protótipo do SpacFlow, demonstrando o fluxo de uso do sistema pelos épicos mapeados.</p>
   <div align="center">
 
-  **1º Épico** — `0:00 – 2:03`
-  <br />
-  <video src="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast.mp4" controls width="95%">
-    Seu visualizador não suporta vídeo embutido — <a href="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast.mp4">clique aqui para assistir</a>.
-  </video>
+ **1º Épico** — `0:00 – 2:03`
+<br />
+[![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/h8NPBUbrX28)
 
-  <br /><br />
+<br /><br />
 
   **2º Épico** — `2:04 – 2:52`
   <br />
-  <video src="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast1.mp4" controls width="95%">
-    Seu visualizador não suporta vídeo embutido — <a href="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast1.mp4">clique aqui para assistir</a>.
-  </video>
+  [![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/RKnUEkc4V6A)
 
   <br /><br />
 
   **3º Épico** — `2:53 – 4:42`
   <br />
-  <video src="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast2.mp4" controls width="95%">
-    Seu visualizador não suporta vídeo embutido — <a href="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast2.mp4">clique aqui para assistir</a>.
-  </video>
+  [![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/PrPL9l8G43M)
 
   <br /><br />
 
   **4º Épico** — `4:43 – 6:16`
   <br />
-  <video src="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast3.mp4" controls width="95%">
-    Seu visualizador não suporta vídeo embutido — <a href="https://raw.githubusercontent.com/SPACFlow/SPACFlow/develop/assets/screencast3.mp4">clique aqui para assistir</a>.
-  </video>
+  [![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/7_4vYGKVQOs)
+  
+
+
 
   </div>
 </details>
