@@ -59,14 +59,14 @@ Para manter a transparência do processo de design e evitar a poluição visual 
   <summary><b>🎥 Clique para expandir o Screencast</b></summary>
   <br />
   <p><b>🎬 Screencast — Demonstração do Protótipo</b><br/>
-  Gravação em vídeo navegando pelas telas do protótipo do SpacFlow, demonstrando o fluxo de uso do sistema pelos épicos mapeados.</p>
+  Assista às gravações demonstrando o fluxo de uso do sistema pelos épicos mapeados.</p>
   <div align="center">
 
- **1º Épico** — `0:00 – 2:03`
-<br />
-[![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/h8NPBUbrX28)
+  **1º Épico** — `0:00 – 2:03`
+  <br />
+  [![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/h8NPBUbrX28)
 
-<br /><br />
+  <br /><br />
 
   **2º Épico** — `2:04 – 2:52`
   <br />
@@ -83,9 +83,6 @@ Para manter a transparência do processo de design e evitar a poluição visual 
   **4º Épico** — `4:43 – 6:16`
   <br />
   [![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/7_4vYGKVQOs)
-  
-
-
 
   </div>
 </details>
@@ -117,9 +114,28 @@ Para manter a transparência do processo de design e evitar a poluição visual 
 <details>
   <summary><b>🔗 Clique para expandir os Diagramas de Atividade</b></summary>
   <br />
-  <p><i>Diagramas de atividade correspondentes a cada história de usuário.</i></p>
+  <p><i>Diagramas de atividade modelando o comportamento operacional e as decisões dos fluxos mapeados.</i></p>
+
+  <p><b>1. Cadastrar Demanda</b><br/>
+  Fluxo de entrada da solicitação, ramificando em paralelo a classificação da demanda, definição de prioridade e anexação de documentos e evidências.</p>
   <div align="center">
-    <p><i>https://miro.com/app/board/uXjVHm8iHBM=/</i></p>
+    <img src="./assets/diagrama.jpeg" alt="Diagrama de Atividade — Cadastrar Demanda" width="90%" />
+  </div>
+
+  <br />
+
+  <p><b>2. Acompanhamento e Fluxo de Demanda</b><br/>
+  Sequência do ciclo de vida da solicitação: início do acompanhamento, atribuição de responsáveis, registro de impedimentos ou pendências e conclusão da demanda.</p>
+  <div align="center">
+    <img src="./assets/diagrama2.jpeg" alt="Diagrama de Atividade — Acompanhamento e Fluxo de Demanda" width="90%" />
+  </div>
+
+  <br />
+
+  <p><b>3. Monitoramento e Alertas</b><br/>
+  Processo de controle e rastreabilidade: filtragem de demandas, consulta ao processo SEI, notificação de nova atribuição e emissão de alertas para demandas atrasadas.</p>
+  <div align="center">
+    <img src="./assets/diagrama3.jpeg" alt="Diagrama de Atividade — Monitoramento e Alertas" width="90%" />
   </div>
 </details>
 
@@ -221,4 +237,3 @@ graph LR
     E --> F{"Aprovação da Gestão"}
     F -->|"Aprovado"| G["Retorno ao Órgão Solicitante"]
     F -->|"Ajuste"| D
-```
