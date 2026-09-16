@@ -137,6 +137,14 @@ Para manter a transparência do processo de design e evitar a poluição visual 
   <div align="center">
     <img src="./assets/diagrama3.jpeg" alt="Diagrama de Atividade — Monitoramento e Alertas" width="90%" />
   </div>
+
+  <br />
+
+  <p><b>4. Dashboards e Administração</b><br/>
+  Fluxo de gestão operacional dividido entre a visualização de métricas (gerenciamento por status, origem/categoria ou responsável técnico) e a governança de acessos através do cadastro de perfis (função, identificação e credenciais).</p>
+  <div align="center">
+    <img src="./assets/diagrama4.jpeg" alt="Diagrama de Atividade — Dashboards e Administração" width="90%" />
+  </div>
 </details>
 
 ---
