@@ -59,30 +59,30 @@ Para manter a transparência do processo de design e evitar a poluição visual 
   <summary><b>🎥 Clique para expandir o Screencast</b></summary>
   <br />
   <p><b>🎬 Screencast — Demonstração do Protótipo</b><br/>
-  Assista às gravações demonstrando o fluxo de uso do sistema pelos épicos mapeados.</p>
+  Assista à gravação demonstrando o fluxo de uso do sistema, dividida pelos épicos mapeados.</p>
   <div align="center">
 
   **1º Épico** — `0:00 – 2:03`
   <br />
-  [![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/h8NPBUbrX28)
+  [![Assistir o 1º Épico no YouTube](https://img.shields.io/badge/Assistir_1º_Épico-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/s-iLAhLnd8c)
 
   <br /><br />
 
-  **2º Épico** — `2:04 – 2:52`
+  **2º Épico** — `2:04 – 2:51`
   <br />
-  [![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/RKnUEkc4V6A)
+  [![Assistir o 2º Épico no YouTube](https://img.shields.io/badge/Assistir_2º_Épico-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/s-iLAhLnd8c?t=124)
 
   <br /><br />
 
-  **3º Épico** — `2:53 – 4:42`
+  **3º Épico** — `2:52 – 4:42`
   <br />
-  [![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/PrPL9l8G43M)
+  [![Assistir o 3º Épico no YouTube](https://img.shields.io/badge/Assistir_3º_Épico-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/s-iLAhLnd8c?t=172)
 
   <br /><br />
 
   **4º Épico** — `4:43 – 6:16`
   <br />
-  [![Assistir no YouTube](https://img.shields.io/badge/Assistir_Demonstração-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/7_4vYGKVQOs)
+  [![Assistir o 4º Épico no YouTube](https://img.shields.io/badge/Assistir_4º_Épico-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/s-iLAhLnd8c?t=283)
 
   </div>
 </details>
