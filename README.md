@@ -90,9 +90,9 @@ Para manter a transparência do processo de design e evitar a poluição visual 
 <br />
 
 <details>
-  <summary><b>✏️ Clique para expandir os Sketches/Storyboard</b></summary>
+  <summary><b>🎨 Clique para expandir o Storyboard e os Wireframes</b></summary>
   <br />
-  <p><i>Esboços e storyboards feitos a mão para cada história de usuário mapeada.</i></p>
+  <p><i>Da jornada desenhada a mão às telas finais do sistema, com cada artefato rastreado até as histórias de usuário que atende.</i></p>
 
   <p><b>📌 Storyboard — Jornada Visual dos Épicos</b><br/>
   Representa, em quadros ilustrados, a jornada completa do usuário em cada um dos 4 épicos do SpacFlow: cadastro e registro da demanda, acompanhamento e fluxo da demanda, monitoramento e alertas, e dashboards/administração — mostrando passo a passo as ações do agente, do fiscal e do gestor dentro do sistema.</p>
@@ -102,10 +102,10 @@ Para manter a transparência do processo de design e evitar a poluição visual 
 
   <br />
 
-  <p><b>✏️ Sketch — Wireframes de Baixa Fidelidade</b><br/>
-  Esboços a mão das telas principais do sistema, organizados pelos mesmos 4 épicos: registro de demanda, execução/monitoramento, dashboards gerenciais e gestão administrativa — usados como base inicial de layout antes da prototipação no Figma.</p>
+  <p><b>🖥️ Wireframes — Telas de Alta Fidelidade</b><br/>
+  Telas principais do sistema, organizadas pelos mesmos 4 épicos do storyboard. As setas indicam qual história de usuário cada elemento atende: registro de demanda e anexos (US01, US07); execução e monitoramento, com atribuição, status, histórico, alerta de atraso e conclusão (US05, US06, US11, US20); dashboards gerenciais por status, origem e responsável (US14, US15, US16); e gestão administrativa de perfis e usuários (US19).</p>
   <div align="center">
-    <img src="./assets/sketch_wireframes.png" alt="Sketch dos Wireframes por Épico — SpacFlow" width="95%" />
+    <img src="./assets/wireframes_epicos.png" alt="Wireframes de Alta Fidelidade por Épico com mapeamento das Histórias de Usuário — SpacFlow" width="95%" />
   </div>
 </details>
 
@@ -185,7 +185,7 @@ O projeto é executado através de uma abordagem incremental dividida em 7 seman
 | **Semana 01**<br>*(Imersão)* | Entendimento do problema, pesquisa inicial e organização do grupo | Entregáveis para apresentação inicial | `Concluído` |
 | **Semana 02**<br>*(Validação)* | Contato com a VISAT, validação de hipóteses e entendimento do processo | Hipóteses validadas e dúvidas respondidas | `Concluído` |
 | **Semana 03**<br>*(Requisitos)* | Levantamento de requisitos, histórias de usuário, fluxos e priorização | Backlog priorizado e especificação inicial | `Concluído` |
-| **Semana 04**<br>*(UX / UI)* | Construção de wireframes, protótipos e fluxo de navegação | Protótipo validado | `Pendente` |
+| **Semana 04**<br>*(UX / UI)* | Construção de wireframes, protótipos e fluxo de navegação | Protótipo validado | `Em andamento` |
 | **Semana 05**<br>*(Desenvolvimento)* | Banco de dados (PostgreSQL), backend, frontend e integração | Incrementos funcionais do sistema | `Pendente` |
 | **Semana 06**<br>*(Testes)* | Testes de software, correções de bugs e validações | Versão estável do sistema | `Pendente` |
 | **Semana 07**<br>*(Entrega Final)* | Consolidação do sistema, documentação e apresentação de resultados | Entrega final do projeto | `Pendente` |
