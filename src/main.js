@@ -19,22 +19,23 @@ const opcoes = {
 
 async function main() {
   while (true) {
-    console.log('\n=== SpaceFlow ===');
+    console.log('\n=== SpacFlow ===');
     for (const [n, [nome]] of Object.entries(opcoes)) console.log(`${n}. ${nome}`);
     console.log('0. Sair');
 
-    const escolha = await rl.question('> ');
+    const escolha = (await rl.question('> ')).trim();
     if (escolha === '0') break;
 
     const opcao = opcoes[escolha];
-    if (!opcao) { console.log('Opção inválida.'); continue; }
+    if (!opcao) { console.log(`Opção inválida. Digite um número de 0 a ${Object.keys(opcoes).length}.`); continue; }
 
     try {
       await opcao[1](rl);
     } catch (erro) {
-      console.log(`✖ ${erro.message}`);
+      console.log(`Erro: ${erro?.message ?? erro}`);
     }
   }
+  console.log('Até logo!');
   rl.close();
 }
 
