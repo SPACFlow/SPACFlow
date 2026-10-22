@@ -245,3 +245,25 @@ graph LR
     E --> F{"Aprovação da Gestão"}
     F -->|"Aprovado"| G["Retorno ao Órgão Solicitante"]
     F -->|"Ajuste"| D
+
+
+# 10. Quadro Kanban de Execução (Board)
+
+<details>
+<summary>🎯 Clique para expandir o Quadro Kanban de Execução (Board)</summary>
+
+<br>
+<p align="center">
+  <img src="<img width="1600" height="923" alt="WhatsApp Image 2026-10-21 at 20 00 20" src="https://github.com/user-attachments/assets/434e906d-486b-47fd-a07f-77fd76103bec" />
+.png" alt="Board da Sprint" width="100%">
+</p>
+
+</details>
+
+
+# 11. Demonstração e Testes do Código
+
+<p align="center">
+  <video src="LINK_OU_CAMINHO_DO_VIDEO_1.mp4" width="49%" controls></video>
+  <video src="LINK_OU_CAMINHO_DO_VIDEO_2.mp4" width="49%" controls></video>
+</p>
