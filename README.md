@@ -239,7 +239,7 @@ Para manter a transparência das etapas e evitar a poluição visual na rolagem 
 ```mermaid
 graph LR
     A["Órgão Demandante (MPT / TRT)"] -->|"Ofício / Demanda"| B["SpacFlow: Entrada"]
-    B --> C{"Triagem & SLA"}
+    B --> C{"Triagem e SLA"}
     C -->|"Atribuição"| D["Inspetor Técnico"]
     D -->|"Inspeção & Laudo"| E["Emissão de Parecer"]
     E --> F{"Aprovação da Gestão"}
