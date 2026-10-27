@@ -147,6 +147,12 @@ describe('História 3 — Atualizar status', () => {
     assert.throws(() => atualizarStatus({ id: '9999', novoStatus: 'Em andamento', responsavel: 'Ana' }), /não encontrada/);
   });
 
+  it('pode cancelar uma demanda pendente', () => {
+    const d = comResponsavel();
+    atualizarStatus({ id: d.id, novoStatus: 'Cancelada', responsavel: 'Ana Beatriz' });
+    assert.equal(demandaRepository.buscarPorId(d.id).status, 'Cancelada');
+  });
+
   it('menu: o responsável atualiza pelo terminal', async (t) => {
     const saida = capturarSaida(t);
     const d = comResponsavel('Mariana Santos');
@@ -206,6 +212,13 @@ describe('História 4 — Definir prioridade', () => {
     encerrar(d.id, 'Cancelada');
     assert.ok(!listarPorPrioridade().some((x) => x.id === d.id));
   });
+
+  it('a fila inclui as encerradas quando pedido', () => {
+      const d = novaDemanda();
+      encerrar(d.id);
+      assert.ok(listarPorPrioridade({ incluirEncerradas: true }).some((x) => x.id === d.id));
+    });
+
 
   it('menu: o gestor define a prioridade pelo terminal', async (t) => {
     capturarSaida(t);
