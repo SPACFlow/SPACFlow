@@ -23,7 +23,7 @@
 
 | Artefato | Onde acompanhar |
 | :--- | :--- |
-| **Board da Sprint (Kanban)** | [Abrir o Board](COLE_AQUI_LINK_DO_BOARD) |
+| **Board da Sprint (Kanban)** | [Abrir o Board](https://immense-session-fee.notion.site/SpacFlow-Gest-o-do-Projeto-Acad-mico-064d783fc7fc457a9169604b16bad351) |
 | **Issues (tarefas e bugs)** | [github.com/SPACFlow/SPACFlow/issues](https://github.com/SPACFlow/SPACFlow/issues) |
 | **Pull Requests** | [github.com/SPACFlow/SPACFlow/pulls](https://github.com/SPACFlow/SPACFlow/pulls?q=is%3Apr) |
 | **Histórico de commits** | [github.com/SPACFlow/SPACFlow/commits](https://github.com/SPACFlow/SPACFlow/commits/main) |
@@ -366,5 +366,5 @@ O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade).
 
 | Evidência | O que mostra | Link |
 | :--- | :--- | :---: |
-| **Vídeo das novas histórias** | O menu funcionando de ponta a ponta: cadastrar, consultar, definir prioridade, atribuir responsável e atualizar status | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](COLE_AQUI_LINK_VIDEO_HISTORIAS) |
-| **Screencast dos testes automatizados** | O comando `npm test` rodando os testes das 5 histórias e da integração | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](COLE_AQUI_LINK_VIDEO_TESTES) |
+| **Vídeo das novas histórias** | O menu funcionando de ponta a ponta: cadastrar, consultar, definir prioridade, atribuir responsável e atualizar status | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/jL-Aw6yKGbg) |
+| **Screencast dos testes automatizados** | O comando `npm test` rodando os testes das 5 histórias e da integração | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/ypTrZsFt55o) |
