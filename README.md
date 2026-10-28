@@ -203,8 +203,8 @@ O projeto é executado através de uma abordagem incremental dividida em 7 seman
 | **Semana 02**<br>*(Validação)* | Contato com a VISAT, validação de hipóteses e entendimento do processo | Hipóteses validadas e dúvidas respondidas | `Concluído` |
 | **Semana 03**<br>*(Requisitos)* | Levantamento de requisitos, histórias de usuário, fluxos e priorização | Backlog priorizado e especificação inicial | `Concluído` |
 | **Semana 04**<br>*(UX / UI)* | Construção de wireframes, protótipos e fluxo de navegação | Protótipo validado | `Concluído` |
-| **Semana 05**<br>*(Desenvolvimento)* | Banco de dados (PostgreSQL), backend, frontend e integração | Incrementos funcionais do sistema | `Em andamento` |
-| **Semana 06**<br>*(Testes)* | Testes de software, correções de bugs e validações | Versão estável do sistema | `Pendente` |
+| **Semana 05**<br>*(Desenvolvimento)* | Sprint 01: as 5 histórias de usuário em Node.js (terminal), com dados em memória, e integração no `main.js` | Incrementos funcionais do sistema | `Concluído` |
+| **Semana 06**<br>*(Testes)* | Testes de software, correções de bugs e validações | Versão estável do sistema | `Em andamento` |
 | **Semana 07**<br>*(Entrega Final)* | Consolidação do sistema, documentação e apresentação de resultados | Entrega final do projeto | `Pendente` |
 
 > *Nota: O cronograma é flexível e pode sofrer ajustes conforme orientações do orientador e alinhamentos das entregas semanais.*
