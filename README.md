@@ -367,4 +367,4 @@ O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade).
 | Evidência | O que mostra | Link |
 | :--- | :--- | :---: |
 | **Vídeo das novas histórias** | O menu funcionando de ponta a ponta: cadastrar, consultar, definir prioridade, atribuir responsável e atualizar status | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](COLE_AQUI_LINK_VIDEO_HISTORIAS) |
-| **Screencast dos testes automatizados** | O comando `npm test` rodando os testes das 5 histórias e da integração | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](COLE_AQUI_LINK_VIDEO_TESTES) |
+| **Screencast dos testes automatizados** | O comando `npm test` rodando os testes das 5 histórias e da integração | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/ypTrZsFt55o) |
