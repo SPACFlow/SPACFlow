@@ -27,8 +27,8 @@
 | **Issues (tarefas e bugs)** | [github.com/SPACFlow/SPACFlow/issues](https://github.com/SPACFlow/SPACFlow/issues) |
 | **Pull Requests** | [github.com/SPACFlow/SPACFlow/pulls](https://github.com/SPACFlow/SPACFlow/pulls?q=is%3Apr) |
 | **Histórico de commits** | [github.com/SPACFlow/SPACFlow/commits](https://github.com/SPACFlow/SPACFlow/commits/main) |
-| **Histórias da Sprint 01** | [Seção 10](#10-histórias-de-usuário-da-sprint-01) |
-| **Vídeos e testes** | [Seção 14](#14-evidências-e-screencasts) |
+| **Histórias da Sprint 01** | [Seção 9](#9-histórias-de-usuário-da-sprint-01) |
+| **Vídeos e testes** | [Seção 13](#13-evidências-e-screencasts) |
 
 ---
 
@@ -41,12 +41,11 @@
 * [6. Cronograma & Roadmap por Semanas](#6-cronograma--roadmap-por-semanas)
 * [7. Gestão Ágil & Governança Operacional](#7-gestão-ágil--governança-operacional)
 * [8. Corpo Técnico & Equipe do Projeto](#8-corpo-técnico--equipe-do-projeto)
-* [9. Arquitetura do Fluxo (Mermaid.js)](#9-arquitetura-do-fluxo-mermaidjs)
-* [10. Histórias de Usuário da Sprint 01](#10-histórias-de-usuário-da-sprint-01)
-* [11. Como Executar e Testar](#11-como-executar-e-testar)
-* [12. Relato de Pares (Pair Programming)](#12-relato-de-pares-pair-programming)
-* [13. Quadro Kanban de Execução (Board)](#13-quadro-kanban-de-execução-board)
-* [14. Evidências e Screencasts](#14-evidências-e-screencasts)
+* [9. Histórias de Usuário da Sprint 01](#9-histórias-de-usuário-da-sprint-01)
+* [10. Como Executar e Testar](#10-como-executar-e-testar)
+* [11. Relato de Pares (Pair Programming)](#11-relato-de-pares-pair-programming)
+* [12. Quadro Kanban de Execução (Board)](#12-quadro-kanban-de-execução-board)
+* [13. Evidências e Screencasts](#13-evidências-e-screencasts)
 
 ---
 
@@ -252,20 +251,7 @@ Para manter a transparência das etapas e evitar a poluição visual na rolagem 
 
 ---
 
-```mermaid
-graph LR
-    A["Órgão Demandante (MPT / TRT)"] -->|"Ofício / Demanda"| B["SpacFlow: Entrada"]
-    B --> C{"Triagem e SLA"}
-    C -->|"Atribuição"| D["Inspetor Técnico"]
-    D -->|"Inspeção & Laudo"| E["Emissão de Parecer"]
-    E --> F{"Aprovação da Gestão"}
-    F -->|"Aprovado"| G["Retorno ao Órgão Solicitante"]
-    F -->|"Ajuste"| D
-```
-
----
-
-## 10. Histórias de Usuário da Sprint 01
+## 9. Histórias de Usuário da Sprint 01
 
 Cada história tem um arquivo próprio em `src/funcionalidades/`, e o menu em `src/main.js` chama todas elas.
 
@@ -292,7 +278,7 @@ Cada história tem um arquivo próprio em `src/funcionalidades/`, e o menu em `s
 
 ---
 
-## 11. Como Executar e Testar
+## 10. Como Executar e Testar
 
 Requisito: [Node.js](https://nodejs.org/) 20 ou mais recente. O projeto não tem dependências externas, então não é preciso rodar `npm install`.
 
@@ -305,7 +291,7 @@ Os testes usam apenas os módulos nativos `node:test` e `node:assert`. Eles cobr
 
 ---
 
-## 12. Relato de Pares (Pair Programming)
+## 11. Relato de Pares (Pair Programming)
 
 ### Como o trabalho foi dividido
 
@@ -360,7 +346,7 @@ A partir desta entrega, toda mudança na `main` entra por Pull Request ligado a 
 
 ---
 
-## 13. Quadro Kanban de Execução (Board)
+## 12. Quadro Kanban de Execução (Board)
 
 O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade). A imagem abaixo registra o estado do quadro durante a sprint.
 
@@ -376,7 +362,7 @@ O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade).
 
 ---
 
-## 14. Evidências e Screencasts
+## 13. Evidências e Screencasts
 
 | Evidência | O que mostra | Link |
 | :--- | :--- | :---: |
