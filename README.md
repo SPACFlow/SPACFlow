@@ -233,20 +233,9 @@ Para manter a transparência das etapas e evitar a poluição visual na rolagem 
 | <img src="https://ui-avatars.com/api/?name=Vitor+Emmanuel&background=e83e8c&color=fff" width="42"> | **Vitor Emmanuel Fernandes** | Execução e Testes | `velfg@cesar.school` | [![GitHub](https://img.shields.io/badge/-GitHub-181717?style=flat&logo=github)](https://github.com/Vitor-Emmanuel) |
 
 ---
-## 9. Arquitetura do Fluxo (Mermaid.js)
 
-```mermaid
-graph LR
-    A["Órgão Demandante (MPT / TRT)"] -->|"Ofício / Demanda"| B["SpacFlow: Entrada"]
-    B --> C{"Triagem e SLA"}
-    C -->|"Atribuição"| D["Inspetor Técnico"]
-    D -->|"Inspeção & Laudo"| E["Emissão de Parecer"]
-    E --> F{"Aprovação da Gestão"}
-    F -->|"Aprovado"| G["Retorno ao Órgão Solicitante"]
-    F -->|"Ajuste"| D
-    ```
 
-  # 10. Quadro Kanban de Execução (Board)
+  # 9. Quadro Kanban de Execução (Board)
 
 <details>
 <summary>🎯 Clique para expandir o Quadro Kanban de Execução (Board)</summary>
@@ -259,7 +248,7 @@ graph LR
 </details>
 
 
-# 11. Demonstração e Testes do Código
+# 10. Demonstração e Testes do Código
 
 <p align="center">
   <video src="LINK_OU_CAMINHO_DO_VIDEO_1.mp4" width="49%" controls></video>
