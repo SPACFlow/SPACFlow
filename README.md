@@ -251,7 +251,6 @@ Para manter a transparência das etapas e evitar a poluição visual na rolagem 
 | <img src="https://ui-avatars.com/api/?name=Vitor+Emmanuel&background=e83e8c&color=fff" width="42"> | **Vitor Emmanuel Fernandes** | Execução e Testes | `velfg@cesar.school` | [![GitHub](https://img.shields.io/badge/-GitHub-181717?style=flat&logo=github)](https://github.com/Vitor-Emmanuel) |
 
 ---
-## 9. Arquitetura do Fluxo (Mermaid.js)
 
 ```mermaid
 graph LR
