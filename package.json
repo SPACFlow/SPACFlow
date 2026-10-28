@@ -2,5 +2,8 @@
   "name": "spaceflow",
   "version": "1.0.0",
   "type": "module",
-  "scripts": { "start": "node src/main.js" }
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node --test testes.js"
+  }
 }
