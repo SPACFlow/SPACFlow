@@ -11,6 +11,8 @@ export function criarDemanda({ id, titulo, descricao, solicitante }) {
     status: 'Pendente',
     prioridade: null,
     responsavel: null,
+        prazo: null,
+    numeroSei: null,
     criadaEm: new Date().toISOString(),
   };
 }
