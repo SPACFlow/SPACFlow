@@ -11,7 +11,9 @@ import {
 } from './src/funcionalidades/definirPrioridade.js';
 import { atribuirResponsavel, executarAtribuirResponsavel } from './src/funcionalidades/atribuirResponsavel.js';
 import { definirPrazo, executarDefinirPrazo } from './src/funcionalidades/definirPrazo.js';
+import { pesquisarDemandas, executarPesquisar } from './src/funcionalidades/pesquisarDemandas.js';
 import { filtrarPorStatus, executarFiltrarStatus } from './src/funcionalidades/filtrarPorStatus.js';
+import { calcularIndicadores, executarIndicadores } from './src/funcionalidades/visualizarIndicadores.js';
 import { registrarSei, executarRegistrarSei } from './src/funcionalidades/registrarSei.js';
 import { formatarDataBR, hojeISO } from './src/utils/formatacao.js';
 
@@ -394,6 +396,44 @@ describe('História 6 — Definir prazo', () => {
   });
 });
 
+describe('História 7 — Pesquisar demandas', () => {
+  const lista = [
+    { id: 1, titulo: 'Análise de ruído', descricao: 'Fábrica no Recife', solicitante: 'MPT', responsavel: 'Mariana Lúcia', numeroSei: '8918.461/2026-70' },
+    { id: 2, titulo: 'Vistoria', descricao: 'Galpão', solicitante: 'TRT', responsavel: null, numeroSei: null },
+  ];
+  const comLista = (t) => t.mock.method(demandaRepository, 'listar', () => lista);
+  const ids = (demandas) => demandas.map((d) => d.id);
+
+  it('acha pelo título sem diferenciar acento e maiúscula', (t) => {
+    comLista(t);
+    assert.deepEqual(ids(pesquisarDemandas('ANALISE')), [1]);
+  });
+
+  it('acha pela descrição, pelo solicitante, pelo responsável e pelo SEI', (t) => {
+    comLista(t);
+    assert.deepEqual(ids(pesquisarDemandas('recife')), [1]);
+    assert.deepEqual(ids(pesquisarDemandas('trt')), [2]);
+    assert.deepEqual(ids(pesquisarDemandas('lucia')), [1]);
+    assert.deepEqual(ids(pesquisarDemandas('8918.461')), [1]);
+  });
+
+  it('ignora espaços em volta e recusa pesquisa vazia', (t) => {
+    comLista(t);
+    assert.deepEqual(ids(pesquisarDemandas('  vistoria  ')), [2]);
+    assert.throws(() => pesquisarDemandas('   '), /Digite um termo para pesquisar/);
+    assert.throws(() => pesquisarDemandas(undefined), /Digite um termo para pesquisar/);
+  });
+
+  it('menu: mostra o resultado e avisa quando não acha nada', async (t) => {
+    const saida = capturarSaida(t);
+    comLista(t);
+    await executarPesquisar(terminalFalso('galpão'));
+    assert.deepEqual(saida, []);
+    await executarPesquisar(terminalFalso('xyz'));
+    assert.deepEqual(saida, ['Nenhuma demanda encontrada.']);
+  });
+});
+
 describe('História 8 — Filtrar por status', () => {
   it('mostra só as demandas do status escolhido', () => {
     const d = novaDemanda('Demanda para filtrar');
@@ -426,6 +466,55 @@ describe('História 8 — Filtrar por status', () => {
     t.mock.method(demandaRepository, 'listar', () => []);
     await executarFiltrarStatus(terminalFalso('Cancelada'));
     assert.deepEqual(saida, ['Nenhuma demanda com o status Cancelada.']);
+  });
+});
+
+describe('História 9 — Visualizar indicadores', () => {
+  const lista = [
+    { id: 1, status: 'Pendente', prioridade: 'Alta', responsavel: 'Ana', numeroSei: '1111.222/2024-33', prazo: '2020-01-01' },
+    { id: 2, status: 'Em andamento', prioridade: null, responsavel: null, numeroSei: null, prazo: '2999-12-31' },
+    { id: 3, status: 'Concluída', prioridade: 'Alta', responsavel: 'Carlos', numeroSei: null, prazo: '2020-01-01' },
+    { id: 4, status: 'Cancelada', prioridade: 'Urgente', responsavel: null, numeroSei: '1111.223/2024-33', prazo: null },
+  ];
+  const comLista = (t, demandas = lista) => t.mock.method(demandaRepository, 'listar', () => demandas);
+
+  it('conta o total, as demandas sem responsável e as com processo SEI', (t) => {
+    comLista(t);
+    const i = calcularIndicadores();
+    assert.equal(i.total, 4);
+    assert.equal(i.semResponsavel, 2);
+    assert.equal(i.comSei, 2);
+  });
+
+  it('conta por status e por prioridade, incluindo as sem prioridade', (t) => {
+    comLista(t);
+    const i = calcularIndicadores();
+    assert.deepEqual(i.porStatus, { Pendente: 1, 'Em andamento': 1, 'Concluída': 1, Cancelada: 1 });
+    assert.deepEqual(i.porPrioridade, { Baixa: 0, 'Média': 0, Alta: 2, Urgente: 1, 'Sem prioridade': 1 });
+  });
+
+  it('prazo vencido não conta prazo futuro nem demanda concluída ou cancelada', (t) => {
+    comLista(t);
+    assert.equal(calcularIndicadores().prazosVencidos, 1);
+  });
+
+  it('mostra zero em tudo quando não há demandas', (t) => {
+    comLista(t, []);
+    const i = calcularIndicadores();
+    assert.equal(i.total, 0);
+    assert.equal(i.prazosVencidos, 0);
+    assert.ok(Object.values(i.porStatus).every((n) => n === 0));
+  });
+
+  it('menu: mostra os indicadores', (t) => {
+    const saida = capturarSaida(t);
+    comLista(t);
+    executarIndicadores();
+    const texto = saida.join('\n');
+    assert.match(texto, /Total de demandas: 4/);
+    assert.match(texto, /Prazos vencidos: 1/);
+    assert.match(texto, /Sem responsável: 2/);
+    assert.match(texto, /Com processo SEI: 2/);
   });
 });
 
