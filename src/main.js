@@ -6,6 +6,11 @@ import { executarConsultar } from './funcionalidades/consultarDemandas.js';
 import { executarAtualizarStatus } from './funcionalidades/atualizarStatus.js';
 import { executarDefinirPrioridade } from './funcionalidades/definirPrioridade.js';
 import { executarAtribuirResponsavel } from './funcionalidades/atribuirResponsavel.js';
+import { executarDefinirPrazo } from './funcionalidades/definirPrazo.js';
+import { executarPesquisar } from './funcionalidades/pesquisarDemandas.js';
+import { executarFiltrarStatus } from './funcionalidades/filtrarPorStatus.js';
+import { executarIndicadores } from './funcionalidades/visualizarIndicadores.js';
+import { executarRegistrarSei } from './funcionalidades/registrarSei.js';
 
 const rl = readline.createInterface({ input, output });
 
