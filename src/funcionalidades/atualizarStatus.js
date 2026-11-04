@@ -38,7 +38,19 @@ export function atualizarStatus({ id, novoStatus, responsavel }) {
   const anterior = demanda.status;
   demanda.status = escolhido;
   demanda.atualizadaEm = new Date().toISOString();
+  demanda.historicoStatus ??= [];
+  demanda.historicoStatus.push({ de: anterior, para: escolhido, por: demanda.responsavel, em: demanda.atualizadaEm });
   return { demanda, anterior };
+}
+
+const formatarDataHora = (iso) =>
+  new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+
+export function imprimirHistorico(demanda) {
+  console.log(`Histórico de status da demanda #${demanda.id}:`);
+  for (const { de, para, por, em } of demanda.historicoStatus ?? []) {
+    console.log(`  ${formatarDataHora(em)} · ${de} → ${para} (${por})`);
+  }
 }
 
 export async function executarAtualizarStatus(rl) {
@@ -57,4 +69,5 @@ export async function executarAtualizarStatus(rl) {
   const { demanda, anterior } = atualizarStatus({ id, novoStatus, responsavel });
 
   console.log(`Status da demanda #${demanda.id} alterado de ${anterior} para ${demanda.status}.`);
+  imprimirHistorico(demanda);
 }

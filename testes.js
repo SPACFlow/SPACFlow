@@ -10,9 +10,20 @@ import {
   definirPrioridade, ordenarPorPrioridade, listarPorPrioridade, executarDefinirPrioridade,
 } from './src/funcionalidades/definirPrioridade.js';
 import { atribuirResponsavel, executarAtribuirResponsavel } from './src/funcionalidades/atribuirResponsavel.js';
+import { filtrarPorStatus, executarFiltrarStatus } from './src/funcionalidades/filtrarPorStatus.js';
+
+const ORIGEM = 'Ministério Público';
+const CATEGORIA = 'Inspeção de ambiente de trabalho';
 
 const novaDemanda = (titulo = 'Inspeção em fábrica') =>
-  cadastrarDemanda({ titulo, descricao: 'Denúncia de condições de trabalho', solicitante: 'MPT' });
+  cadastrarDemanda({
+    titulo, descricao: 'Denúncia de condições de trabalho', solicitante: 'MPT', origem: ORIGEM, categoria: CATEGORIA,
+  });
+
+const daquiAUmAno = () => {
+  const d = new Date();
+  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear() + 1}`;
+};
 
 const terminalFalso = (...respostas) => ({ question: async () => respostas.shift() ?? '' });
 
@@ -35,9 +46,40 @@ describe('História 1 — Cadastrar demanda', () => {
   });
 
   it('remove espaços extras do título e do solicitante', () => {
-    const d = cadastrarDemanda({ titulo: '  Parecer técnico  ', solicitante: '  TRT ' });
+    const d = cadastrarDemanda({ titulo: '  Parecer técnico  ', solicitante: '  TRT ', origem: ORIGEM, categoria: CATEGORIA });
     assert.equal(d.titulo, 'Parecer técnico');
     assert.equal(d.solicitante, 'TRT');
+  });
+
+  it('guarda a origem, a categoria e o prazo, que é opcional', () => {
+    const semPrazo = novaDemanda();
+    assert.equal(semPrazo.origem, ORIGEM);
+    assert.equal(semPrazo.categoria, CATEGORIA);
+    assert.equal(semPrazo.prazo, null);
+
+    const prazo = daquiAUmAno();
+    const comPrazo = cadastrarDemanda({ titulo: 'Com prazo', solicitante: 'MPT', origem: 'Ouvidoria', categoria: 'Outros', prazo });
+    assert.equal(comPrazo.prazo, prazo.split('/').reverse().join('-'));
+  });
+
+  it('recusa título com mais de 150 caracteres', () => {
+    const base = { solicitante: 'MPT', origem: ORIGEM, categoria: CATEGORIA };
+    assert.doesNotThrow(() => cadastrarDemanda({ ...base, titulo: 'a'.repeat(150) }));
+    assert.throws(() => cadastrarDemanda({ ...base, titulo: 'a'.repeat(151) }), /no máximo 150 caracteres/);
+  });
+
+  it('recusa origem ou categoria fora da lista', () => {
+    const base = { titulo: 'Inspeção', solicitante: 'MPT' };
+    assert.throws(() => cadastrarDemanda({ ...base, categoria: CATEGORIA }), /Escolha uma origem da lista/);
+    assert.throws(() => cadastrarDemanda({ ...base, origem: 'Jornal', categoria: CATEGORIA }), /Escolha uma origem da lista/);
+    assert.throws(() => cadastrarDemanda({ ...base, origem: ORIGEM, categoria: 'Alimentos' }), /Escolha uma categoria da lista/);
+  });
+
+  it('recusa prazo em formato errado, data que não existe e prazo no passado', () => {
+    const base = { titulo: 'Inspeção', solicitante: 'MPT', origem: ORIGEM, categoria: CATEGORIA };
+    assert.throws(() => cadastrarDemanda({ ...base, prazo: '2027-02-10' }), /DD\/MM\/AAAA/);
+    assert.throws(() => cadastrarDemanda({ ...base, prazo: '30/02/2027' }), /não existe no calendário/);
+    assert.throws(() => cadastrarDemanda({ ...base, prazo: '01/01/2020' }), /já passou/);
   });
 
   it('gera IDs diferentes para cada demanda', () => {
@@ -57,9 +99,17 @@ describe('História 1 — Cadastrar demanda', () => {
   it('menu: cadastra com o que o servidor digita', async (t) => {
     const saida = capturarSaida(t);
     const antes = consultarDemandas().length;
-    await executarCadastrar(terminalFalso('Vistoria em obra', 'Sem EPI', 'Sindicato'));
+    await executarCadastrar(terminalFalso('Vistoria em obra', 'Sem EPI', 'Sindicato', '1', '3', ''));
     assert.equal(consultarDemandas().length, antes + 1);
-    assert.match(saida.join('\n'), /cadastrada/);
+    assert.match(saida.join('\n'), /cadastrada \(Ministério Público · Inspeção de ambiente de trabalho\)\./);
+  });
+
+  it('menu: cadastra com prazo e recusa número fora da lista', async (t) => {
+    const saida = capturarSaida(t);
+    await executarCadastrar(terminalFalso('Vistoria em obra', '', 'Sindicato', '3', '1', daquiAUmAno()));
+    assert.match(saida.join('\n'), new RegExp(`Prazo: ${daquiAUmAno()}\\.`));
+    await assert.rejects(executarCadastrar(terminalFalso('Vistoria', '', 'Sindicato', '9')), /origem pelo número, de 1 a 5/);
+    await assert.rejects(executarCadastrar(terminalFalso('Vistoria', '', 'Sindicato', '1', 'abc')), /categoria pelo número, de 1 a 5/);
   });
 });
 
@@ -154,6 +204,35 @@ describe('História 3 — Atualizar status', () => {
     await executarAtualizarStatus(terminalFalso(String(d.id), 'Mariana Santos', 'Em andamento'));
     assert.equal(demandaRepository.buscarPorId(d.id).status, 'Em andamento');
     assert.match(saida.join('\n'), /alterado de Pendente para Em andamento/);
+  });
+
+  it('guarda cada mudança no histórico: de qual status, para qual, quem mudou e quando', () => {
+    const d = comResponsavel('Ana Beatriz');
+    atualizarStatus({ id: d.id, novoStatus: 'em andamento', responsavel: 'ana beatriz' });
+    atualizarStatus({ id: d.id, novoStatus: 'Concluída', responsavel: 'Ana Beatriz' });
+    const historico = demandaRepository.buscarPorId(d.id).historicoStatus;
+    assert.deepEqual(historico.map(({ de, para, por }) => [de, para, por]), [
+      ['Pendente', 'Em andamento', 'Ana Beatriz'],
+      ['Em andamento', 'Concluída', 'Ana Beatriz'],
+    ]);
+    assert.ok(historico.every(({ em }) => !Number.isNaN(Date.parse(em))));
+  });
+
+  it('tentativa recusada não entra no histórico', () => {
+    const d = comResponsavel('Ana Beatriz');
+    assert.throws(() => atualizarStatus({ id: d.id, novoStatus: 'Em andamento', responsavel: 'Carlos' }));
+    assert.equal(demandaRepository.buscarPorId(d.id).historicoStatus.length, 0);
+  });
+
+  it('menu: mostra o histórico depois de atualizar', async (t) => {
+    const saida = capturarSaida(t);
+    const d = comResponsavel('Mariana Santos');
+    await executarAtualizarStatus(terminalFalso(String(d.id), 'Mariana Santos', 'Em andamento'));
+    await executarAtualizarStatus(terminalFalso(String(d.id), 'Mariana Santos', 'Concluída'));
+    const texto = saida.join('\n');
+    assert.match(texto, new RegExp(`Histórico de status da demanda #${d.id}:`));
+    assert.match(texto, /Pendente → Em andamento \(Mariana Santos\)/);
+    assert.match(texto, /Em andamento → Concluída \(Mariana Santos\)/);
   });
 });
 
@@ -264,6 +343,41 @@ describe('História 5 — Atribuir responsável', () => {
     await executarAtribuirResponsavel(terminalFalso(String(d.id), 'João'));
     assert.equal(demandaRepository.buscarPorId(d.id).responsavel, 'João');
     assert.match(saida.join('\n'), /atribuído\(a\) à demanda/);
+  });
+});
+
+describe('História 8 — Filtrar por status', () => {
+  it('mostra só as demandas do status escolhido', () => {
+    const d = novaDemanda('Demanda para filtrar');
+    encerrar(d.id, 'Cancelada');
+    const { status, demandas } = filtrarPorStatus('Cancelada');
+    assert.equal(status, 'Cancelada');
+    assert.ok(demandas.some((x) => x.id === d.id));
+    assert.ok(demandas.every((x) => x.status === 'Cancelada'));
+  });
+
+  it('aceita o status sem acento, com espaços e com qualquer maiúscula', () => {
+    assert.equal(filtrarPorStatus('  concluida ').status, 'Concluída');
+    assert.equal(filtrarPorStatus('EM ANDAMENTO').status, 'Em andamento');
+  });
+
+  it('recusa status vazio ou que não existe, mostrando os status válidos', () => {
+    assert.throws(() => filtrarPorStatus('   '), /Informe um status: Pendente, Em andamento, Concluída, Cancelada/);
+    assert.throws(() => filtrarPorStatus('Arquivada'), /"Arquivada" não existe\. Use um destes: Pendente, Em andamento/);
+  });
+
+  it('menu: mostra quantas demandas achou', async (t) => {
+    const saida = capturarSaida(t);
+    novaDemanda('Demanda pendente para o menu');
+    await executarFiltrarStatus(terminalFalso('pendente'));
+    assert.match(saida.join('\n'), /\d+ demanda\(s\) com o status Pendente:/);
+  });
+
+  it('menu: avisa quando nenhuma demanda tem o status', async (t) => {
+    const saida = capturarSaida(t);
+    t.mock.method(demandaRepository, 'listar', () => []);
+    await executarFiltrarStatus(terminalFalso('Cancelada'));
+    assert.deepEqual(saida, ['Nenhuma demanda com o status Cancelada.']);
   });
 });
 
