@@ -6,6 +6,11 @@ import { executarConsultar } from './funcionalidades/consultarDemandas.js';
 import { executarAtualizarStatus } from './funcionalidades/atualizarStatus.js';
 import { executarDefinirPrioridade } from './funcionalidades/definirPrioridade.js';
 import { executarAtribuirResponsavel } from './funcionalidades/atribuirResponsavel.js';
+import { executarDefinirPrazo } from './funcionalidades/definirPrazo.js';
+import { executarPesquisar } from './funcionalidades/pesquisarDemandas.js';
+import { executarFiltrarStatus } from './funcionalidades/filtrarPorStatus.js';
+import { executarIndicadores } from './funcionalidades/visualizarIndicadores.js';
+import { executarRegistrarSei } from './funcionalidades/registrarSei.js';
 
 const rl = readline.createInterface({ input, output });
 
@@ -15,6 +20,11 @@ const opcoes = {
   '3': ['Atualizar status', executarAtualizarStatus],
   '4': ['Definir prioridade', executarDefinirPrioridade],
   '5': ['Atribuir responsável', executarAtribuirResponsavel],
+  '6': ['Definir prazo', executarDefinirPrazo],
+  '7': ['Pesquisar demandas', executarPesquisar],
+  '8': ['Filtrar por status', executarFiltrarStatus],
+  '9': ['Visualizar indicadores', executarIndicadores],
+  '10': ['Registrar processo SEI', executarRegistrarSei],
 };
 
 async function main() {
