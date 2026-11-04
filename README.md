@@ -270,9 +270,9 @@ Cada história tem um arquivo próprio em `src/funcionalidades/`, e o menu em `s
 
 | # | História | Opção no menu | Dupla | Regras principais |
 | :---: | :--- | :---: | :--- | :--- |
-| 1 | Cadastrar demanda | 1 | Dupla 1 | Título e solicitante obrigatórios; toda demanda nasce como *Pendente* |
+| 1 | Cadastrar demanda | 1 | Dupla 1 | Título (até 150 caracteres), solicitante, origem e categoria obrigatórios; prazo opcional; toda demanda nasce como *Pendente* |
 | 2 | Consultar demandas | 2 | Dupla 1 | Mostra todas as demandas, com filtro por status |
-| 3 | Atualizar status | 3 | Dupla 2 | Só o responsável pela demanda atualiza; demanda concluída ou cancelada não muda mais |
+| 3 | Atualizar status | 3 | Dupla 2 | Só o responsável pela demanda atualiza; demanda concluída ou cancelada não muda mais; cada mudança fica no histórico |
 | 4 | Definir prioridade | 4 | Dupla 2 | Baixa, Média, Alta ou Urgente; mostra a fila da mais urgente para a menos urgente |
 | 5 | Atribuir responsável | 5 | Dupla 3 | Nome obrigatório (até 100 caracteres); mostra quem saiu ao trocar o responsável |
 
