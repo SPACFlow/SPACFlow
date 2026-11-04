@@ -12,8 +12,18 @@ import {
 import { atribuirResponsavel, executarAtribuirResponsavel } from './src/funcionalidades/atribuirResponsavel.js';
 import { filtrarPorStatus, executarFiltrarStatus } from './src/funcionalidades/filtrarPorStatus.js';
 
+const ORIGEM = 'Ministério Público';
+const CATEGORIA = 'Inspeção de ambiente de trabalho';
+
 const novaDemanda = (titulo = 'Inspeção em fábrica') =>
-  cadastrarDemanda({ titulo, descricao: 'Denúncia de condições de trabalho', solicitante: 'MPT' });
+  cadastrarDemanda({
+    titulo, descricao: 'Denúncia de condições de trabalho', solicitante: 'MPT', origem: ORIGEM, categoria: CATEGORIA,
+  });
+
+const daquiAUmAno = () => {
+  const d = new Date();
+  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear() + 1}`;
+};
 
 const terminalFalso = (...respostas) => ({ question: async () => respostas.shift() ?? '' });
 
@@ -36,9 +46,40 @@ describe('História 1 — Cadastrar demanda', () => {
   });
 
   it('remove espaços extras do título e do solicitante', () => {
-    const d = cadastrarDemanda({ titulo: '  Parecer técnico  ', solicitante: '  TRT ' });
+    const d = cadastrarDemanda({ titulo: '  Parecer técnico  ', solicitante: '  TRT ', origem: ORIGEM, categoria: CATEGORIA });
     assert.equal(d.titulo, 'Parecer técnico');
     assert.equal(d.solicitante, 'TRT');
+  });
+
+  it('guarda a origem, a categoria e o prazo, que é opcional', () => {
+    const semPrazo = novaDemanda();
+    assert.equal(semPrazo.origem, ORIGEM);
+    assert.equal(semPrazo.categoria, CATEGORIA);
+    assert.equal(semPrazo.prazo, null);
+
+    const prazo = daquiAUmAno();
+    const comPrazo = cadastrarDemanda({ titulo: 'Com prazo', solicitante: 'MPT', origem: 'Ouvidoria', categoria: 'Outros', prazo });
+    assert.equal(comPrazo.prazo, prazo.split('/').reverse().join('-'));
+  });
+
+  it('recusa título com mais de 150 caracteres', () => {
+    const base = { solicitante: 'MPT', origem: ORIGEM, categoria: CATEGORIA };
+    assert.doesNotThrow(() => cadastrarDemanda({ ...base, titulo: 'a'.repeat(150) }));
+    assert.throws(() => cadastrarDemanda({ ...base, titulo: 'a'.repeat(151) }), /no máximo 150 caracteres/);
+  });
+
+  it('recusa origem ou categoria fora da lista', () => {
+    const base = { titulo: 'Inspeção', solicitante: 'MPT' };
+    assert.throws(() => cadastrarDemanda({ ...base, categoria: CATEGORIA }), /Escolha uma origem da lista/);
+    assert.throws(() => cadastrarDemanda({ ...base, origem: 'Jornal', categoria: CATEGORIA }), /Escolha uma origem da lista/);
+    assert.throws(() => cadastrarDemanda({ ...base, origem: ORIGEM, categoria: 'Alimentos' }), /Escolha uma categoria da lista/);
+  });
+
+  it('recusa prazo em formato errado, data que não existe e prazo no passado', () => {
+    const base = { titulo: 'Inspeção', solicitante: 'MPT', origem: ORIGEM, categoria: CATEGORIA };
+    assert.throws(() => cadastrarDemanda({ ...base, prazo: '2027-02-10' }), /DD\/MM\/AAAA/);
+    assert.throws(() => cadastrarDemanda({ ...base, prazo: '30/02/2027' }), /não existe no calendário/);
+    assert.throws(() => cadastrarDemanda({ ...base, prazo: '01/01/2020' }), /já passou/);
   });
 
   it('gera IDs diferentes para cada demanda', () => {
@@ -58,9 +99,17 @@ describe('História 1 — Cadastrar demanda', () => {
   it('menu: cadastra com o que o servidor digita', async (t) => {
     const saida = capturarSaida(t);
     const antes = consultarDemandas().length;
-    await executarCadastrar(terminalFalso('Vistoria em obra', 'Sem EPI', 'Sindicato'));
+    await executarCadastrar(terminalFalso('Vistoria em obra', 'Sem EPI', 'Sindicato', '1', '3', ''));
     assert.equal(consultarDemandas().length, antes + 1);
-    assert.match(saida.join('\n'), /cadastrada/);
+    assert.match(saida.join('\n'), /cadastrada \(Ministério Público · Inspeção de ambiente de trabalho\)\./);
+  });
+
+  it('menu: cadastra com prazo e recusa número fora da lista', async (t) => {
+    const saida = capturarSaida(t);
+    await executarCadastrar(terminalFalso('Vistoria em obra', '', 'Sindicato', '3', '1', daquiAUmAno()));
+    assert.match(saida.join('\n'), new RegExp(`Prazo: ${daquiAUmAno()}\\.`));
+    await assert.rejects(executarCadastrar(terminalFalso('Vistoria', '', 'Sindicato', '9')), /origem pelo número, de 1 a 5/);
+    await assert.rejects(executarCadastrar(terminalFalso('Vistoria', '', 'Sindicato', '1', 'abc')), /categoria pelo número, de 1 a 5/);
   });
 });
 
