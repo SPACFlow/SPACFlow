@@ -432,7 +432,7 @@ O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade).
 | :--- | :--- | :---: |
 | **Vídeo da Sprint 01 (histórias 1 a 5)** | O menu funcionando de ponta a ponta: cadastrar, consultar, definir prioridade, atribuir responsável e atualizar status | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/jL-Aw6yKGbg) |
 | **Screencast dos testes automatizados (Sprint 01)** | O comando `npm test` rodando os testes das 5 histórias e da integração | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/ypTrZsFt55o) |
-| **Vídeo da Sprint 02 (histórias 6 a 10)** | As novas opções do menu: definir prazo, registrar processo SEI, pesquisar, filtrar por status e ver os indicadores | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](COLE_AQUI_O_LINK_DO_VIDEO_DA_SPRINT_02) |
+| **Vídeo da Sprint 02 (histórias 6 a 10)** | As novas opções do menu: definir prazo, registrar processo SEI, pesquisar, filtrar por status e ver os indicadores | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/_C27xyH__2E) |
 
 ### Onde cada história aparece nos vídeos
 
@@ -456,13 +456,13 @@ Clique no tempo para abrir o vídeo direto naquele ponto.
 <details>
   <summary><b>Vídeo da Sprint 02 (histórias 6 a 10)</b></summary>
 
-- COLE_AQUI_TEMPO Abertura
-- COLE_AQUI_TEMPO Preparação das demandas
-- COLE_AQUI_TEMPO História 6 — Definir prazo
-- COLE_AQUI_TEMPO História 10 — Registrar processo SEI
-- COLE_AQUI_TEMPO História 7 — Pesquisar demandas
-- COLE_AQUI_TEMPO História 8 — Filtrar por status
-- COLE_AQUI_TEMPO História 9 — Visualizar indicadores
-- COLE_AQUI_TEMPO Encerramento
+- [0:00](https://youtu.be/_C27xyH__2E?t=0) Abertura
+- [0:13](https://youtu.be/_C27xyH__2E?t=13) Preparação das demandas
+- [0:55](https://youtu.be/_C27xyH__2E?t=55) História 6 — Definir prazo
+- [07:08](https://youtu.be/_C27xyH__2E?t=428) História 10 — Registrar processo SEI
+- [09:08](https://youtu.be/_C27xyH__2E?t=548) História 7 — Pesquisar demandas
+- [12:14](https://youtu.be/_C27xyH__2E?t=734) História 8 — Filtrar por status
+- [13:07](https://youtu.be/_C27xyH__2E?t=787) História 9 — Visualizar indicadores
+- [13:39](https://youtu.be/_C27xyH__2E?t=819) Encerramento
 
 </details>
