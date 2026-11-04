@@ -5,7 +5,6 @@ import { converterDataBR, formatarDataBR, hojeISO, imprimirDemandas } from '../u
 
 const estaEmAberto = (demanda) => !STATUS_FINAIS.includes(demanda.status);
 
-// Confere o ID antes de pedir a data, para o erro aparecer logo.
 function buscarDemandaEmAberto(id) {
   if (!String(id ?? '').trim()) throw new Error('Informe o ID da demanda.');
 

@@ -6,7 +6,6 @@ import { imprimirDemandas } from '../utils/formatacao.js';
 const FORMATO_SEI = /^\d{4,5}\.\d{3,6}\/(\d{4})-\d{2}$/;
 const EXEMPLO_SEI = '8918.461/2026-70';
 
-// Demandas concluídas também podem receber o SEI, para o registro do processo ficar completo.
 function buscarDemanda(id) {
   if (!String(id ?? '').trim()) throw new Error('Informe o ID da demanda.');
 
@@ -18,7 +17,6 @@ function buscarDemanda(id) {
 export function registrarSei(id, numero) {
   const demanda = buscarDemanda(id);
 
-  // Aceita também "SEI 8918.461/2026-70" e "SEI nº 8918.461/2026-70".
   const limpo = String(numero ?? '').trim().replace(/^SEI\s*(n[º°.]\s*)?/i, '');
   if (!limpo) throw new Error('Informe o número do processo SEI.');
 
