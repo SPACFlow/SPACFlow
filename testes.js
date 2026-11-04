@@ -10,7 +10,10 @@ import {
   definirPrioridade, ordenarPorPrioridade, listarPorPrioridade, executarDefinirPrioridade,
 } from './src/funcionalidades/definirPrioridade.js';
 import { atribuirResponsavel, executarAtribuirResponsavel } from './src/funcionalidades/atribuirResponsavel.js';
+import { definirPrazo, executarDefinirPrazo } from './src/funcionalidades/definirPrazo.js';
 import { filtrarPorStatus, executarFiltrarStatus } from './src/funcionalidades/filtrarPorStatus.js';
+import { registrarSei, executarRegistrarSei } from './src/funcionalidades/registrarSei.js';
+import { formatarDataBR, hojeISO } from './src/utils/formatacao.js';
 
 const ORIGEM = 'Ministério Público';
 const CATEGORIA = 'Inspeção de ambiente de trabalho';
@@ -346,6 +349,51 @@ describe('História 5 — Atribuir responsável', () => {
   });
 });
 
+describe('História 6 — Definir prazo', () => {
+  const ano = new Date().getFullYear() + 1;
+
+  it('define e troca o prazo, aceitando a data de hoje', () => {
+    const d = novaDemanda();
+    assert.equal(definirPrazo(d.id, `20/12/${ano}`).prazo, `${ano}-12-20`);
+    assert.equal(definirPrazo(String(d.id), formatarDataBR(hojeISO())).prazo, hojeISO());
+  });
+
+  it('confere o ID e a demanda antes de olhar a data', () => {
+    assert.throws(() => definirPrazo('', 'xx'), /Informe o ID/);
+    assert.throws(() => definirPrazo(9999, 'xx'), /#9999 não encontrada/);
+    const d = novaDemanda();
+    encerrar(d.id);
+    assert.throws(() => definirPrazo(d.id, 'xx'), /concluída e não pode receber prazo/);
+  });
+
+  it('recusa data em formato errado, que não existe, que já passou ou igual à atual', () => {
+    const d = novaDemanda();
+    assert.throws(() => definirPrazo(d.id, `${ano}-12-20`), /DD\/MM\/AAAA/);
+    assert.throws(() => definirPrazo(d.id, `31/02/${ano}`), /não existe no calendário/);
+    assert.throws(() => definirPrazo(d.id, '01/01/2020'), /já passou/);
+    definirPrazo(d.id, `10/01/${ano}`);
+    assert.throws(() => definirPrazo(d.id, `10/01/${ano}`), /já está com prazo em 10\/01/);
+  });
+
+  it('menu: define o prazo e depois mostra a troca', async (t) => {
+    const saida = capturarSaida(t);
+    const d = novaDemanda();
+    await executarDefinirPrazo(terminalFalso(String(d.id), `05/03/${ano}`));
+    await executarDefinirPrazo(terminalFalso(String(d.id), `06/03/${ano}`));
+    assert.ok(saida.includes(`✔ Demanda #${d.id} com prazo em 05/03/${ano}.`));
+    assert.ok(saida.includes(`✔ Prazo da demanda #${d.id} alterado de 05/03/${ano} para 06/03/${ano}.`));
+  });
+
+  it('menu: ID errado dá erro sem pedir a data', async (t) => {
+    capturarSaida(t);
+    novaDemanda();
+    const perguntas = [];
+    const terminal = { question: async (pergunta) => { perguntas.push(pergunta); return '9999'; } };
+    await assert.rejects(executarDefinirPrazo(terminal), /não encontrada/);
+    assert.equal(perguntas.length, 1);
+  });
+});
+
 describe('História 8 — Filtrar por status', () => {
   it('mostra só as demandas do status escolhido', () => {
     const d = novaDemanda('Demanda para filtrar');
@@ -378,6 +426,49 @@ describe('História 8 — Filtrar por status', () => {
     t.mock.method(demandaRepository, 'listar', () => []);
     await executarFiltrarStatus(terminalFalso('Cancelada'));
     assert.deepEqual(saida, ['Nenhuma demanda com o status Cancelada.']);
+  });
+});
+
+describe('História 10 — Registrar processo SEI', () => {
+  const anoQueVem = new Date().getFullYear() + 1;
+
+  it('registra o SEI, aceita "SEI" e "SEI nº" na frente e vale para demanda concluída', () => {
+    assert.equal(registrarSei(novaDemanda().id, '8918.461/2026-70').numeroSei, '8918.461/2026-70');
+    assert.equal(registrarSei(novaDemanda().id, ' SEI 12345.123456/2025-01 ').numeroSei, '12345.123456/2025-01');
+    assert.equal(registrarSei(novaDemanda().id, 'sei nº 1111.222/2024-33').numeroSei, '1111.222/2024-33');
+    const concluida = novaDemanda();
+    encerrar(concluida.id);
+    assert.equal(registrarSei(concluida.id, '1111.223/2024-33').numeroSei, '1111.223/2024-33');
+  });
+
+  it('confere o ID antes de olhar o número', () => {
+    assert.throws(() => registrarSei('', 'abc'), /Informe o ID/);
+    assert.throws(() => registrarSei(9999, 'abc'), /#9999 não encontrada/);
+  });
+
+  it('recusa número vazio, fora do formato e com ano futuro', () => {
+    const d = novaDemanda();
+    assert.throws(() => registrarSei(d.id, '   '), /Informe o número/);
+    assert.throws(() => registrarSei(d.id, null), /Informe o número/);
+    assert.throws(() => registrarSei(d.id, '123.45/2026-7'), /Número do SEI inválido/);
+    assert.throws(() => registrarSei(d.id, `8918.461/${anoQueVem}-70`), /ano do processo SEI/);
+  });
+
+  it('recusa o mesmo SEI na mesma demanda e em outra demanda', () => {
+    const a = novaDemanda();
+    const b = novaDemanda();
+    registrarSei(a.id, '2222.333/2026-44');
+    assert.throws(() => registrarSei(a.id, '2222.333/2026-44'), new RegExp(`#${a.id} já está vinculada`));
+    assert.throws(() => registrarSei(b.id, 'SEI 2222.333/2026-44'), new RegExp(`registrado na demanda #${a.id}`));
+  });
+
+  it('menu: registra o SEI e depois mostra a troca', async (t) => {
+    const saida = capturarSaida(t);
+    const d = novaDemanda();
+    await executarRegistrarSei(terminalFalso(String(d.id), '3333.444/2026-55'));
+    await executarRegistrarSei(terminalFalso(String(d.id), '3333.445/2026-55'));
+    assert.ok(saida.includes(`✔ Demanda #${d.id} vinculada ao SEI 3333.444/2026-55.`));
+    assert.ok(saida.includes(`✔ SEI da demanda #${d.id} alterado de 3333.444/2026-55 para 3333.445/2026-55.`));
   });
 });
 
