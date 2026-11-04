@@ -384,11 +384,12 @@ O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade).
 <p align="center">
   <img src="https://github.com/user-attachments/assets/434e906d-486b-47fd-a07f-77fd76103bec" alt="Board da Sprint" width="100%">
   <img width="688" height="777" alt="print" src="https://github.com/user-attachments/assets/00252a10-849f-4890-82a3-f214e0cd72a0" AA
+    
 </p>
-A<img width="688" height="777" alt="print" src="https://github.com/user-attachments/assets/6037bde2-b965-4c0f-9afc-7d65cb4724fd" />
-
-
+</details>
 ---
+
+
 
 ## 13. Evidências e Screencasts
 
