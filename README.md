@@ -204,7 +204,7 @@ O projeto é executado através de uma abordagem incremental dividida em 7 seman
 | **Semana 03**<br>*(Requisitos)* | Levantamento de requisitos, histórias de usuário, fluxos e priorização | Backlog priorizado e especificação inicial | `Concluído` |
 | **Semana 04**<br>*(UX / UI)* | Construção de wireframes, protótipos e fluxo de navegação | Protótipo validado | `Concluído` |
 | **Semana 05**<br>*(Desenvolvimento)* | Desenvolvimento incremental em sprints. Sprint 01 concluída: histórias 1 a 5 (prioridade alta e média). Sprint 02 concluída: histórias 6 a 10, mais o histórico de status e as validações do cadastro. As 10 histórias estão integradas no `main.js` | Incrementos funcionais do sistema; as demais histórias do backlog entram nas próximas sprints | `Em andamento` |
-| **Semana 06**<br>*(Testes)* | Testes automatizados a cada sprint (`npm test`, hoje com 50 testes), correções de bugs registradas como Issues e validações | Versão estável do sistema | `Em andamento` |
+| **Semana 06**<br>*(Testes)* | Testes automatizados a cada sprint (`npm test`, hoje com 60 testes), correções de bugs registradas como Issues e validações | Versão estável do sistema | `Em andamento` |
 | **Semana 07**<br>*(Entrega Final)* | Consolidação do sistema, documentação e apresentação de resultados | Entrega final do projeto | `Pendente` |
 
 > *Nota: O cronograma é flexível e pode sofrer ajustes conforme orientações do orientador e alinhamentos das entregas semanais.*
@@ -304,9 +304,9 @@ npm start   # abre o menu do SpacFlow no terminal
 npm test    # roda os testes automatizados (testes.js)
 ```
 
-Os testes usam apenas os módulos nativos `node:test` e `node:assert`. Hoje são 50 testes, todos passando. Eles cobrem as histórias 1 a 5 e 8, com casos de sucesso e de erro e os menus de cada opção com entradas simuladas, e a integração do `main.js`, que confere se as 10 funcionalidades existem com o nome certo.
+Os testes usam apenas os módulos nativos `node:test` e `node:assert`. Hoje são 60 testes, todos passando. Eles cobrem as histórias 1 a 6, 8 e 10, com casos de sucesso e de erro e os menus de cada opção com entradas simuladas, e a integração do `main.js`, que confere se as 10 funcionalidades existem com o nome certo.
 
-As histórias 6, 7, 9 e 10 ainda não têm testes no `testes.js`. Os testes das histórias 7 e 9 estão nas Issues [#18](https://github.com/SPACFlow/SPACFlow/issues/18) e [#20](https://github.com/SPACFlow/SPACFlow/issues/20).
+As histórias 7 e 9 ainda não têm testes no `testes.js`. Eles estão nas Issues [#18](https://github.com/SPACFlow/SPACFlow/issues/18) e [#20](https://github.com/SPACFlow/SPACFlow/issues/20).
 
 ---
 
@@ -387,7 +387,7 @@ As duplas foram reorganizadas. A base da sprint (funções de apoio, campos novo
 - `filtrarPorStatus.js`: a história 8 ficou com João, que a entregou no PR #27 (`49a4979`, `dfc1b51`), com 5 testes.
 
 **Dupla C — João e Vitinho (histórias 6 e 10)**
-- `definirPrazo.js` e `registrarSei.js` (João, `c3a3516`, `b77d8bb` e `babd4cf`, PR #14): a partir do código-base combinado no grupo, com validações a mais (ID conferido antes da data, prazo no passado ou repetido, demanda encerrada, SEI com ano futuro ou repetido em outra demanda) e aviso quando o prazo ou o SEI é trocado.
+- `definirPrazo.js` e `registrarSei.js` (João, `c3a3516`, `b77d8bb` e `babd4cf`, PR #14): a partir do código-base combinado no grupo, com validações a mais (ID conferido antes da data, prazo no passado ou repetido, demanda encerrada, SEI com ano futuro ou repetido em outra demanda) e aviso quando o prazo ou o SEI é trocado. Os 10 testes das duas histórias entraram no `testes.js` pelo PR #29.
 
 **Correções e melhorias (João)**
 - PR #22 (`2f9c50e`, `fcbc30b`): nomes dos arquivos de pesquisa e de filtro, que impediam o sistema de abrir (#15), e teste de integração com as 10 funcionalidades (#16).
@@ -405,6 +405,7 @@ As duplas foram reorganizadas. A base da sprint (funções de apoio, campos novo
 | [PR #25](https://github.com/SPACFlow/SPACFlow/pull/25) | `remove-comentarios` → `main` | Remoção dos comentários do código; João aceitou em 04/11 |
 | [PR #27](https://github.com/SPACFlow/SPACFlow/pull/27) | `historia-8-filtrar-status` → `main` | História 8; João aceitou em 04/11 |
 | [PR #28](https://github.com/SPACFlow/SPACFlow/pull/28) | `sprint01-issues` → `main` | Issues #9 e #13 da Sprint 01; João aceitou em 04/11 |
+| [PR #29](https://github.com/SPACFlow/SPACFlow/pull/29) | `testes-historias-6-10` → `main` | Testes das histórias 6 e 10 no `testes.js` |
 
 Cada história e cada bug da Sprint 02 tem uma Issue (#15 a #24), e os Pull Requests fecham as Issues com `Closes #`.
 
