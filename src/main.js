@@ -20,6 +20,11 @@ const opcoes = {
   '3': ['Atualizar status', executarAtualizarStatus],
   '4': ['Definir prioridade', executarDefinirPrioridade],
   '5': ['Atribuir responsável', executarAtribuirResponsavel],
+  '6': ['Definir prazo', executarDefinirPrazo],
+  '7': ['Pesquisar demandas', executarPesquisar],
+  '8': ['Filtrar por status', executarFiltrarStatus],
+  '9': ['Visualizar indicadores', executarIndicadores],
+  '10': ['Registrar processo SEI', executarRegistrarSei],
 };
 
 async function main() {
