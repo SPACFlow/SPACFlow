@@ -1,4 +1,3 @@
-// HISTÓRIA 9 — Visualizar indicadores
 import { STATUS, STATUS_FINAIS, PRIORIDADES } from '../models/demanda.js';
 import { demandaRepository } from '../repositories/demandaRepository.js';
 import { hojeISO } from '../utils/formatacao.js';

@@ -1,8 +1,6 @@
-// HISTÓRIA 10 — Registrar referência do processo SEI
 import { demandaRepository } from '../repositories/demandaRepository.js';
 import { imprimirDemandas } from '../utils/formatacao.js';
 
-// Exemplo: 8918.461/2026-70 (4 ou 5 dígitos . 3 a 6 dígitos / ano - 2 dígitos)
 const FORMATO_SEI = /^\d{4,5}\.\d{3,6}\/(\d{4})-\d{2}$/;
 const EXEMPLO_SEI = '8918.461/2026-70';
 

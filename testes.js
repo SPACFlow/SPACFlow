@@ -1,5 +1,3 @@
-// Testes automatizados do SpacFlow (Sprint 01).
-// Rodar com: npm test
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
@@ -13,14 +11,11 @@ import {
 } from './src/funcionalidades/definirPrioridade.js';
 import { atribuirResponsavel, executarAtribuirResponsavel } from './src/funcionalidades/atribuirResponsavel.js';
 
-// Cria uma demanda nova para cada teste não depender dos outros.
 const novaDemanda = (titulo = 'Inspeção em fábrica') =>
   cadastrarDemanda({ titulo, descricao: 'Denúncia de condições de trabalho', solicitante: 'MPT' });
 
-// Simula o terminal: devolve as respostas na ordem em que as perguntas são feitas.
 const terminalFalso = (...respostas) => ({ question: async () => respostas.shift() ?? '' });
 
-// Silencia a saída dos menus e guarda as mensagens para conferir.
 function capturarSaida(t) {
   const mensagens = [];
   t.mock.method(console, 'log', (...partes) => mensagens.push(partes.join(' ')));
@@ -218,7 +213,6 @@ describe('História 4 — Definir prioridade', () => {
       encerrar(d.id);
       assert.ok(listarPorPrioridade({ incluirEncerradas: true }).some((x) => x.id === d.id));
     });
-
 
   it('menu: o gestor define a prioridade pelo terminal', async (t) => {
     capturarSaida(t);

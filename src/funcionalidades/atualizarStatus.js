@@ -7,7 +7,6 @@ const STATUS_ENCERRADOS = ['Concluída', 'Cancelada'];
 
 const estaEmAberto = (demanda) => !STATUS_ENCERRADOS.includes(demanda.status);
 
-// Remove acentos e maiúsculas para aceitar "em andamento", "CONCLUIDA" etc.
 const normalizar = (texto) =>
   String(texto ?? '')
     .normalize('NFD')
@@ -15,7 +14,6 @@ const normalizar = (texto) =>
     .trim()
     .toLowerCase();
 
-// Atualiza o status de uma demanda. Só o responsável pela demanda pode fazer isso (história 3).
 export function atualizarStatus({ id, novoStatus, responsavel }) {
   if (!String(id ?? '').trim()) throw new Error('Informe o ID da demanda.');
 

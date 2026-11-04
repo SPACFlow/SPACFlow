@@ -1,4 +1,3 @@
-// HISTÓRIA 6 — Definir prazo
 import { STATUS_FINAIS } from '../models/demanda.js';
 import { demandaRepository } from '../repositories/demandaRepository.js';
 import { converterDataBR, formatarDataBR, hojeISO, imprimirDemandas } from '../utils/formatacao.js';

@@ -1,5 +1,3 @@
-// BASE (Dupla A): funções de apoio usadas por várias histórias.
-
 export function hojeISO() {
   const d = new Date();
   const mes = String(d.getMonth() + 1).padStart(2, '0');
@@ -7,7 +5,6 @@ export function hojeISO() {
   return `${d.getFullYear()}-${mes}-${dia}`;
 }
 
-// 'DD/MM/AAAA' -> 'AAAA-MM-DD' (formato guardado na demanda)
 export function converterDataBR(texto) {
   const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(texto?.trim() ?? '');
   if (!m) throw new Error('Data inválida. Use o formato DD/MM/AAAA.');

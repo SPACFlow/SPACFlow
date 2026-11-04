@@ -5,7 +5,6 @@ const STATUS_ENCERRADOS = ['Concluída', 'Cancelada'];
 
 const estaEmAberto = (demanda) => !STATUS_ENCERRADOS.includes(demanda.status);
 
-// Remove acentos e maiúsculas para aceitar "media", "MÉDIA", "urgente" etc.
 const normalizar = (texto) =>
   String(texto ?? '')
     .normalize('NFD')
@@ -13,13 +12,8 @@ const normalizar = (texto) =>
     .trim()
     .toLowerCase();
 
-// Peso da prioridade: Urgente = 4 ... Baixa = 1. Sem prioridade (ou inválida) = 0.
 const pesoPrioridade = (prioridade) => PRIORIDADES.indexOf(prioridade) + 1;
 
-// Ordena (sem alterar a lista original) por:
-//   1) prioridade, da mais alta para a mais baixa
-//   2) data de cadastro, da mais antiga para a mais recente
-//   3) id, como desempate final
 export function ordenarPorPrioridade(demandas) {
   return [...demandas].sort((a, b) => {
     const diferencaPeso = pesoPrioridade(b.prioridade) - pesoPrioridade(a.prioridade);
@@ -33,15 +27,12 @@ export function ordenarPorPrioridade(demandas) {
   });
 }
 
-// Analisa as demandas e devolve a fila ordenada por prioridade.
-// Por padrão considera só as demandas em aberto.
 export function listarPorPrioridade({ incluirEncerradas = false } = {}) {
   const todas = demandaRepository.listar();
   const consideradas = incluirEncerradas ? todas : todas.filter(estaEmAberto);
   return ordenarPorPrioridade(consideradas);
 }
 
-// Define (ou altera) a prioridade de uma demanda
 export function definirPrioridade({ id, prioridade }) {
   if (!String(id ?? '').trim()) throw new Error('Informe o ID da demanda.');
 
