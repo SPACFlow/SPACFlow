@@ -366,5 +366,39 @@ O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade).
 
 | Evidência | O que mostra | Link |
 | :--- | :--- | :---: |
-| **Vídeo das novas histórias** | O menu funcionando de ponta a ponta: cadastrar, consultar, definir prioridade, atribuir responsável e atualizar status | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/jL-Aw6yKGbg) |
+| **Vídeo da Sprint 01 (histórias 1 a 5)** | O menu funcionando de ponta a ponta: cadastrar, consultar, definir prioridade, atribuir responsável e atualizar status | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/jL-Aw6yKGbg) |
 | **Screencast dos testes automatizados** | O comando `npm test` rodando os testes das 5 histórias e da integração | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/ypTrZsFt55o) |
+| **Vídeo da Sprint 02 (histórias 6 a 10)** | As novas opções do menu: definir prazo, registrar processo SEI, pesquisar, filtrar por status e ver os indicadores | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](COLE_AQUI_O_LINK_DO_VIDEO_DA_SPRINT_02) |
+
+### Onde cada história aparece nos vídeos
+
+Clique no tempo para abrir o vídeo direto naquele ponto.
+
+<details>
+  <summary><b>Vídeo da Sprint 01 (histórias 1 a 5)</b></summary>
+
+- [0:00](https://youtu.be/jL-Aw6yKGbg?t=0) Abertura
+- [0:14](https://youtu.be/jL-Aw6yKGbg?t=14) História 1 — Cadastrar demanda
+- [1:26](https://youtu.be/jL-Aw6yKGbg?t=86) História 2 — Consultar demandas
+- [1:36](https://youtu.be/jL-Aw6yKGbg?t=96) História 4 — Definir prioridade
+- [2:20](https://youtu.be/jL-Aw6yKGbg?t=140) História 5 — Atribuir responsável
+- [2:47](https://youtu.be/jL-Aw6yKGbg?t=167) História 3 — Atualizar status: tentativa de quem não é o responsável
+- [3:09](https://youtu.be/jL-Aw6yKGbg?t=189) História 3 — Validação: só o responsável atualiza
+- [3:44](https://youtu.be/jL-Aw6yKGbg?t=224) História 3 — O responsável atualiza o status
+- [4:07](https://youtu.be/jL-Aw6yKGbg?t=247) Consulta final
+
+</details>
+
+<details>
+  <summary><b>Vídeo da Sprint 02 (histórias 6 a 10)</b></summary>
+
+- COLE_AQUI_TEMPO Abertura
+- COLE_AQUI_TEMPO Preparação das demandas
+- COLE_AQUI_TEMPO História 6 — Definir prazo
+- COLE_AQUI_TEMPO História 10 — Registrar processo SEI
+- COLE_AQUI_TEMPO História 7 — Pesquisar demandas
+- COLE_AQUI_TEMPO História 8 — Filtrar por status
+- COLE_AQUI_TEMPO História 9 — Visualizar indicadores
+- COLE_AQUI_TEMPO Encerramento
+
+</details>
