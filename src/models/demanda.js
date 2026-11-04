@@ -13,6 +13,7 @@ export function criarDemanda({ id, titulo, descricao, solicitante }) {
     responsavel: null,
         prazo: null,
     numeroSei: null,
+    historicoStatus: [],
     criadaEm: new Date().toISOString(),
   };
 }

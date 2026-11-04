@@ -156,6 +156,35 @@ describe('História 3 — Atualizar status', () => {
     assert.equal(demandaRepository.buscarPorId(d.id).status, 'Em andamento');
     assert.match(saida.join('\n'), /alterado de Pendente para Em andamento/);
   });
+
+  it('guarda cada mudança no histórico: de qual status, para qual, quem mudou e quando', () => {
+    const d = comResponsavel('Ana Beatriz');
+    atualizarStatus({ id: d.id, novoStatus: 'em andamento', responsavel: 'ana beatriz' });
+    atualizarStatus({ id: d.id, novoStatus: 'Concluída', responsavel: 'Ana Beatriz' });
+    const historico = demandaRepository.buscarPorId(d.id).historicoStatus;
+    assert.deepEqual(historico.map(({ de, para, por }) => [de, para, por]), [
+      ['Pendente', 'Em andamento', 'Ana Beatriz'],
+      ['Em andamento', 'Concluída', 'Ana Beatriz'],
+    ]);
+    assert.ok(historico.every(({ em }) => !Number.isNaN(Date.parse(em))));
+  });
+
+  it('tentativa recusada não entra no histórico', () => {
+    const d = comResponsavel('Ana Beatriz');
+    assert.throws(() => atualizarStatus({ id: d.id, novoStatus: 'Em andamento', responsavel: 'Carlos' }));
+    assert.equal(demandaRepository.buscarPorId(d.id).historicoStatus.length, 0);
+  });
+
+  it('menu: mostra o histórico depois de atualizar', async (t) => {
+    const saida = capturarSaida(t);
+    const d = comResponsavel('Mariana Santos');
+    await executarAtualizarStatus(terminalFalso(String(d.id), 'Mariana Santos', 'Em andamento'));
+    await executarAtualizarStatus(terminalFalso(String(d.id), 'Mariana Santos', 'Concluída'));
+    const texto = saida.join('\n');
+    assert.match(texto, new RegExp(`Histórico de status da demanda #${d.id}:`));
+    assert.match(texto, /Pendente → Em andamento \(Mariana Santos\)/);
+    assert.match(texto, /Em andamento → Concluída \(Mariana Santos\)/);
+  });
 });
 
 describe('História 4 — Definir prioridade', () => {
