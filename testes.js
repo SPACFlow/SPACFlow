@@ -10,6 +10,7 @@ import {
   definirPrioridade, ordenarPorPrioridade, listarPorPrioridade, executarDefinirPrioridade,
 } from './src/funcionalidades/definirPrioridade.js';
 import { atribuirResponsavel, executarAtribuirResponsavel } from './src/funcionalidades/atribuirResponsavel.js';
+import { filtrarPorStatus, executarFiltrarStatus } from './src/funcionalidades/filtrarPorStatus.js';
 
 const novaDemanda = (titulo = 'Inspeção em fábrica') =>
   cadastrarDemanda({ titulo, descricao: 'Denúncia de condições de trabalho', solicitante: 'MPT' });
@@ -264,6 +265,41 @@ describe('História 5 — Atribuir responsável', () => {
     await executarAtribuirResponsavel(terminalFalso(String(d.id), 'João'));
     assert.equal(demandaRepository.buscarPorId(d.id).responsavel, 'João');
     assert.match(saida.join('\n'), /atribuído\(a\) à demanda/);
+  });
+});
+
+describe('História 8 — Filtrar por status', () => {
+  it('mostra só as demandas do status escolhido', () => {
+    const d = novaDemanda('Demanda para filtrar');
+    encerrar(d.id, 'Cancelada');
+    const { status, demandas } = filtrarPorStatus('Cancelada');
+    assert.equal(status, 'Cancelada');
+    assert.ok(demandas.some((x) => x.id === d.id));
+    assert.ok(demandas.every((x) => x.status === 'Cancelada'));
+  });
+
+  it('aceita o status sem acento, com espaços e com qualquer maiúscula', () => {
+    assert.equal(filtrarPorStatus('  concluida ').status, 'Concluída');
+    assert.equal(filtrarPorStatus('EM ANDAMENTO').status, 'Em andamento');
+  });
+
+  it('recusa status vazio ou que não existe, mostrando os status válidos', () => {
+    assert.throws(() => filtrarPorStatus('   '), /Informe um status: Pendente, Em andamento, Concluída, Cancelada/);
+    assert.throws(() => filtrarPorStatus('Arquivada'), /"Arquivada" não existe\. Use um destes: Pendente, Em andamento/);
+  });
+
+  it('menu: mostra quantas demandas achou', async (t) => {
+    const saida = capturarSaida(t);
+    novaDemanda('Demanda pendente para o menu');
+    await executarFiltrarStatus(terminalFalso('pendente'));
+    assert.match(saida.join('\n'), /\d+ demanda\(s\) com o status Pendente:/);
+  });
+
+  it('menu: avisa quando nenhuma demanda tem o status', async (t) => {
+    const saida = capturarSaida(t);
+    t.mock.method(demandaRepository, 'listar', () => []);
+    await executarFiltrarStatus(terminalFalso('Cancelada'));
+    assert.deepEqual(saida, ['Nenhuma demanda com o status Cancelada.']);
   });
 });
 
