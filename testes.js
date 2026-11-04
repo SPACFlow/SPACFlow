@@ -2,7 +2,7 @@
 // Rodar com: npm test
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 
 import { demandaRepository } from './src/repositories/demandaRepository.js';
 import { cadastrarDemanda, executarCadastrar } from './src/funcionalidades/cadastrarDemanda.js';
@@ -278,9 +278,13 @@ describe('Integração — main.js', () => {
     const urlMain = new URL('./src/main.js', import.meta.url);
     const codigo = await readFile(urlMain, 'utf8');
     const imports = [...codigo.matchAll(/import\s*\{([^}]+)\}\s*from\s*'(\.\/funcionalidades\/[^']+)'/g)];
-    assert.equal(imports.length, 5, 'o main.js deve importar as 5 funcionalidades');
+    assert.equal(imports.length, 10, 'o main.js deve importar as 10 funcionalidades');
 
+    const arquivos = await readdir(new URL('./src/funcionalidades/', import.meta.url));
     for (const [, nomes, caminho] of imports) {
+      const arquivo = caminho.split('/').pop();
+      assert.ok(arquivos.includes(arquivo), `${arquivo} não existe em src/funcionalidades (confira maiúsculas e minúsculas)`);
+
       const modulo = await import(new URL(caminho, urlMain));
       for (const nome of nomes.split(',').map((n) => n.trim())) {
         assert.equal(typeof modulo[nome], 'function', `${caminho} precisa exportar a função ${nome}`);
