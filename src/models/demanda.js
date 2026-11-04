@@ -1,5 +1,6 @@
 export const STATUS = ['Pendente', 'Em andamento', 'Concluída', 'Cancelada'];
 export const PRIORIDADES = ['Baixa', 'Média', 'Alta', 'Urgente'];
+export const STATUS_FINAIS = ['Concluída', 'Cancelada'];
 
 export function criarDemanda({ id, titulo, descricao, solicitante }) {
   return {
