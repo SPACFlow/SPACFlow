@@ -65,7 +65,11 @@ export async function executarAtualizarStatus(rl) {
 
   const id = await rl.question('ID da demanda: ');
   const responsavel = await rl.question('Seu nome (responsável pela demanda): ');
-  const novoStatus = await rl.question(`Novo status (${STATUS_VALIDOS.join(', ')}): `);
+  const opcoes = STATUS_VALIDOS.filter((s) => s !== 'Concluída');
+  const novoStatus = await rl.question(`Novo status (${opcoes.join(', ')}): `);
+  if (normalizar(novoStatus) === normalizar('Concluída')) {
+    throw new Error('Para concluir a demanda, use a opção 12, que registra o resultado.');
+  }
   const { demanda, anterior } = atualizarStatus({ id, novoStatus, responsavel });
 
   console.log(`Status da demanda #${demanda.id} alterado de ${anterior} para ${demanda.status}.`);
