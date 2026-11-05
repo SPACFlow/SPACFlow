@@ -294,33 +294,6 @@ Na Sprint 02 também entraram duas melhorias em histórias da Sprint 01: o hist�
 | 10 | Registrar processo SEI | 10 | Dupla C | Formato 8918.461/2026-70; não aceita ano futuro nem o mesmo SEI em outra demanda |
 
 ---
-## 10. Histórias de Usuário da Sprint 02
-
-Cada história tem um arquivo próprio em `src/funcionalidades/`, e o menu em `src/main.js` chama todas elas.
-
-### Prioridade alta — funcionalidades de acompanhamento
-
-6. **Definir prazo (`definirPrazo.js`)**: Como gestor, quero registrar o prazo de uma demanda, para acompanhar as datas previstas.
-
-7. **Pesquisar demandas (`pesquisarDemandas.js`)**: Como usuário, quero pesquisar demandas, para encontrar registros com mais facilidade.
-
-8. **Filtrar por status (`filtrarPorStatus.js`)**: Como usuário, quero filtrar as demandas por situação, para visualizar apenas aquelas que preciso acompanhar.
-
-### Prioridade média — funcionalidades de monitoramento
-
-9. **Visualizar indicadores (`visualizarIndicadores.js`)**: Como gestor, quero visualizar um resumo das demandas, para entender melhor o volume e a situação das solicitações.
-
-10. **Registrar referência do processo SEI (`registrarReferenciaSEI.js`)**: Como servidor, quero registrar a referência do processo SEI relacionado à demanda, para facilitar sua localização no sistema oficial.
-
-### Resumo por história
-
-| # | História | Opção no menu | Dupla | Regras principais |
-|---|---|---|---|---|
-| 6 | Definir prazo | 6 | Dupla 3 | Prazo deve ser uma data válida; permite registrar e acompanhar a data prevista da demanda |
-| 7 | Pesquisar demandas | 7 | Dupla 4 | Permite pesquisar demandas por termo, facilitando a localização de registros cadastrados |
-| 8 | Filtrar por status | 8 | Dupla 4 | Permite visualizar demandas de acordo com o status: Pendente, Em andamento, Concluída ou Cancelada |
-| 9 | Visualizar indicadores | 9 | Dupla 5 | Exibe um resumo das demandas cadastradas e a quantidade existente em cada situação |
-| 10 | Registrar referência do processo SEI | 10 | Dupla 5 | Registra uma referência do processo SEI vinculada à demanda, facilitando sua localização no sistema oficial |
 
 ## 10. Como Executar e Testar
 
