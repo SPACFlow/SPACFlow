@@ -11,6 +11,11 @@ import { executarPesquisar } from './funcionalidades/pesquisarDemandas.js';
 import { executarFiltrarStatus } from './funcionalidades/filtrarPorStatus.js';
 import { executarIndicadores } from './funcionalidades/visualizarIndicadores.js';
 import { executarRegistrarSei } from './funcionalidades/registrarSei.js';
+import { executarAlertasDePrazo } from './funcionalidades/alertasDePrazo.js';
+import { executarConcluirDemanda } from './funcionalidades/concluirDemanda.js';
+import { executarRegistrarPendencia } from './funcionalidades/registrarPendencia.js';
+import { executarIndicadoresOrigemCategoria } from './funcionalidades/indicadoresOrigemCategoria.js';
+import { executarCargaPorResponsavel } from './funcionalidades/cargaPorResponsavel.js';
 
 const rl = readline.createInterface({ input, output });
 
@@ -25,6 +30,11 @@ const opcoes = {
   '8': ['Filtrar por status', executarFiltrarStatus],
   '9': ['Visualizar indicadores', executarIndicadores],
   '10': ['Registrar processo SEI', executarRegistrarSei],
+  '11': ['Alertas de prazo', executarAlertasDePrazo],
+  '12': ['Concluir demanda', executarConcluirDemanda],
+  '13': ['Registrar pendência', executarRegistrarPendencia],
+  '14': ['Indicadores por origem e categoria', executarIndicadoresOrigemCategoria],
+  '15': ['Carga de trabalho por responsável', executarCargaPorResponsavel],
 };
 
 async function main() {

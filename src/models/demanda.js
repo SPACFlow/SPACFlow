@@ -26,6 +26,9 @@ export function criarDemanda({ id, titulo, descricao, solicitante, origem = null
     prazo,
     numeroSei: null,
     historicoStatus: [],
+    pendencias: [],
+    resultado: null,
+    concluidaEm: null,
     criadaEm: new Date().toISOString(),
   };
 }
