@@ -439,21 +439,23 @@ Cada história e cada bug da Sprint 02 tem uma Issue (#15 a #24), e os Pull Requ
 
 ## 12. Quadro Kanban de Execução (Board)
 
-O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade). A imagem abaixo registra o estado do quadro durante a Sprint 01.
+O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade). As imagens abaixo registram o quadro nas Sprints 01 e 02.
 
 <details>
-<summary>🎯 Clique para expandir o Quadro Kanban de Execução (Board)</summary>
-
-<br>
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/434e906d-486b-47fd-a07f-77fd76103bec" alt="Board da Sprint" width="100%">
-  <img width="688" height="777" alt="print" src="https://github.com/user-attachments/assets/00252a10-849f-4890-82a3-f214e0cd72a0" AA
-    
-</p>
+  <summary><b>🎯 Clique para expandir os prints do board</b></summary>
+  <br />
+  <p><b>Sprint 01:</b> o quadro Kanban no Notion e o card da sprint, concluído, com as histórias 1 a 5.</p>
+  <div align="center">
+    <img src="https://github.com/user-attachments/assets/434e906d-486b-47fd-a07f-77fd76103bec" alt="Board e card da Sprint 01 no Notion" width="100%" />
+  </div>
+  <br />
+  <p><b>Sprint 02:</b> o card da sprint, concluído, com o objetivo e as histórias 6 a 10.</p>
+  <div align="center">
+    <img src="https://github.com/user-attachments/assets/00252a10-849f-4890-82a3-f214e0cd72a0" alt="Card da Sprint 02 no Notion" width="688" />
+  </div>
 </details>
+
 ---
-
-
 
 ## 13. Evidências e Screencasts
 
