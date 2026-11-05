@@ -23,7 +23,7 @@
 
 | Artefato | Onde acompanhar |
 | :--- | :--- |
-| **Board da Sprint (Kanban)** | [Abrir o Board](https://immense-session-fee.notion.site/SpacFlow-Gest-o-do-Projeto-Acad-mico-064d783fc7fc457a9169604b16bad351) |
+| **Board da Sprint (Kanban)** | [Abrir o Board](https://app.notion.com/p/SpacFlow-Gest-o-do-Projeto-Acad-mico-064d783fc7fc457a9169604b16bad351) (com login no Notion, para a equipe e o professor convidado) |
 | **Issues (tarefas e bugs)** | [github.com/SPACFlow/SPACFlow/issues](https://github.com/SPACFlow/SPACFlow/issues) |
 | **Pull Requests** | [github.com/SPACFlow/SPACFlow/pulls](https://github.com/SPACFlow/SPACFlow/pulls?q=is%3Apr) |
 | **Histórico de commits** | [github.com/SPACFlow/SPACFlow/commits](https://github.com/SPACFlow/SPACFlow/commits/main) |
