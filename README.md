@@ -218,9 +218,9 @@ Para manter a transparência das etapas e evitar a poluição visual na rolagem 
 <details>
   <summary><b>📊 Clique para expandir a Central de Backlog Refinado</b></summary>
   <br />
-  <p><i>Mapeamento de Épicos, Histórias de Usuário, níveis de prioridade e rastreamento de entregas por integrante.</i></p>
+  <p><i>Mapeamento de Épicos, Histórias de Usuário, níveis de prioridade e rastreamento de entregas por integrante. Estado do backlog em 05/11/2026, no começo da Sprint 03: as histórias já implementadas estão em Concluído, e a Sprint 03 está em andamento.</i></p>
   <div align="center">
-    <img src="./assets/backlog.png" alt="Visão Geral do Backlog de Requisitos" width="95%" />
+    <img src="./assets/backlog.png" alt="Backlog do SpacFlow no Notion em 05/11/2026, com as colunas Backlog, Em andamento, Em revisão e Concluído" width="95%" />
   </div>
 </details>
 
