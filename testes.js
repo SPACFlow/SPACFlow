@@ -1,6 +1,8 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 import { demandaRepository } from './src/repositories/demandaRepository.js';
 import { cadastrarDemanda, executarCadastrar } from './src/funcionalidades/cadastrarDemanda.js';
@@ -15,6 +17,13 @@ import { pesquisarDemandas, executarPesquisar } from './src/funcionalidades/pesq
 import { filtrarPorStatus, executarFiltrarStatus } from './src/funcionalidades/filtrarPorStatus.js';
 import { calcularIndicadores, executarIndicadores } from './src/funcionalidades/visualizarIndicadores.js';
 import { registrarSei, executarRegistrarSei } from './src/funcionalidades/registrarSei.js';
+import { alertasDePrazo, executarAlertasDePrazo } from './src/funcionalidades/alertasDePrazo.js';
+import { concluirDemanda, executarConcluirDemanda } from './src/funcionalidades/concluirDemanda.js';
+import { registrarPendencia, resolverPendencia, executarRegistrarPendencia } from './src/funcionalidades/registrarPendencia.js';
+import {
+  calcularIndicadoresOrigemCategoria, executarIndicadoresOrigemCategoria,
+} from './src/funcionalidades/indicadoresOrigemCategoria.js';
+import { calcularCargaPorResponsavel, executarCargaPorResponsavel } from './src/funcionalidades/cargaPorResponsavel.js';
 import { formatarDataBR, hojeISO } from './src/utils/formatacao.js';
 
 const ORIGEM = 'Ministério Público';
@@ -233,11 +242,11 @@ describe('História 3 — Atualizar status', () => {
     const saida = capturarSaida(t);
     const d = comResponsavel('Mariana Santos');
     await executarAtualizarStatus(terminalFalso(String(d.id), 'Mariana Santos', 'Em andamento'));
-    await executarAtualizarStatus(terminalFalso(String(d.id), 'Mariana Santos', 'Concluída'));
+    await executarAtualizarStatus(terminalFalso(String(d.id), 'Mariana Santos', 'Cancelada'));
     const texto = saida.join('\n');
     assert.match(texto, new RegExp(`Histórico de status da demanda #${d.id}:`));
     assert.match(texto, /Pendente → Em andamento \(Mariana Santos\)/);
-    assert.match(texto, /Em andamento → Concluída \(Mariana Santos\)/);
+    assert.match(texto, /Em andamento → Cancelada \(Mariana Santos\)/);
   });
 });
 
@@ -561,12 +570,32 @@ describe('História 10 — Registrar processo SEI', () => {
   });
 });
 
+describe('História 11 — Alertas de prazo', () => {
+  it.todo('testes da história 11');
+});
+
+describe('História 12 — Concluir demanda com o resultado', () => {
+  it.todo('testes da história 12');
+});
+
+describe('História 13 — Registrar pendência', () => {
+  it.todo('testes da história 13');
+});
+
+describe('História 14 — Indicadores por origem e categoria', () => {
+  it.todo('testes da história 14');
+});
+
+describe('História 15 — Carga de trabalho por responsável', () => {
+  it.todo('testes da história 15');
+});
+
 describe('Integração — main.js', () => {
   it('toda função que o main.js importa existe no arquivo de cada dupla', async () => {
     const urlMain = new URL('./src/main.js', import.meta.url);
     const codigo = await readFile(urlMain, 'utf8');
     const imports = [...codigo.matchAll(/import\s*\{([^}]+)\}\s*from\s*'(\.\/funcionalidades\/[^']+)'/g)];
-    assert.equal(imports.length, 10, 'o main.js deve importar as 10 funcionalidades');
+    assert.equal(imports.length, 15, 'o main.js deve importar as 15 funcionalidades');
 
     const arquivos = await readdir(new URL('./src/funcionalidades/', import.meta.url));
     for (const [, nomes, caminho] of imports) {
@@ -578,6 +607,24 @@ describe('Integração — main.js', () => {
         assert.equal(typeof modulo[nome], 'function', `${caminho} precisa exportar a função ${nome}`);
       }
     }
+  });
+
+  it('o main.js abre o menu com as 15 opções e sai com 0', async () => {
+    const main = fileURLToPath(new URL('./src/main.js', import.meta.url));
+    const saida = await new Promise((resolve, reject) => {
+      const filho = execFile(process.execPath, [main], { timeout: 5000 }, (erro, stdout) => (erro ? reject(erro) : resolve(stdout)));
+      filho.stdin.end('0\n');
+    });
+    for (let n = 1; n <= 15; n++) assert.match(saida, new RegExp(`^${n}\\. `, 'm'), `falta a opção ${n} no menu`);
+    assert.match(saida, /15\. Carga de trabalho por responsável/);
+    assert.match(saida, /Até logo!/);
+  });
+
+  it('a demanda nasce sem pendências, sem resultado e sem data de conclusão', () => {
+    const d = novaDemanda();
+    assert.deepEqual(d.pendencias, []);
+    assert.equal(d.resultado, null);
+    assert.equal(d.concluidaEm, null);
   });
 
   it('fluxo completo: cadastrar, priorizar, atribuir, atualizar e consultar', () => {
