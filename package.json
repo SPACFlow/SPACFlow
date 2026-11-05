@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "web": "node src/web.js",
     "start": "node src/main.js",
     "test": "node --test testes.js"
   }

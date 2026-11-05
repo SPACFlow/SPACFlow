@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpaceFlow · Painel de Demandas</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="marca">
+      <div class="logo">SPAC</div>
+      <div><strong>epacflow</strong><small>VISAT</small></div>
+    </div>
+    <nav>
+      <a class="ativo" href="#">Painel de Demandas</a>
+      <a class="desativado" title="Em breve">Integração SEI</a>
+      <a class="desativado" title="Em breve">Relatórios</a>
+      <a class="desativado" title="Em breve">Configurações</a>
+    </nav>
+    <a class="desativado sair">Sair</a>
+  </aside>
+
+  <main>
+    <header class="topo">
+      <div>
+        <h1>Painel de Demandas</h1>
+        <p>Olá, MATHEUS — acompanhamento centralizado das demandas da VISAT.</p>
+      </div>
+      <button class="btn primario" id="btnNova">+ Nova demanda</button>
+    </header>
+
+    <!-- Cada módulo de js/funcionalidades preenche o seu espaço -->
+    <section class="indicadores" id="indicadores"></section>
+    <section class="filtros" id="filtros"></section>
+    <section class="quadro" id="quadro"></section>
+  </main>
+
+  <div class="aviso" id="aviso" role="status"></div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
