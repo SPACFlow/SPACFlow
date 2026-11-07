@@ -575,7 +575,68 @@ describe('História 11 — Alertas de prazo', () => {
 });
 
 describe('História 12 — Concluir demanda com o resultado', () => {
-  it.todo('testes da história 12');
+  const comResponsavel = (nome = 'Mariana Santos') => {
+    const d = novaDemanda('Inspeção para concluir');
+    atribuirResponsavel({ id: d.id, responsavel: nome });
+    return d;
+  };
+
+  it('o responsável conclui e o resultado fica salvo com a data', () => {
+    const d = comResponsavel();
+    const { anterior } = concluirDemanda({ id: d.id, responsavel: 'mariana santos', resultado: '  Parecer enviado ao MPT  ' });
+    const salva = demandaRepository.buscarPorId(d.id);
+    assert.equal(anterior, 'Pendente');
+    assert.equal(salva.status, 'Concluída');
+    assert.equal(salva.resultado, 'Parecer enviado ao MPT');
+    assert.ok(salva.concluidaEm);
+    assert.deepEqual(salva.historicoStatus.at(-1).para, 'Concluída');
+  });
+
+  it('só o responsável conclui, e a demanda precisa ter responsável', () => {
+    const d = comResponsavel();
+    assert.throws(() => concluirDemanda({ id: d.id, responsavel: 'Carlos', resultado: 'Ok' }), /Só Mariana Santos/);
+    const sem = novaDemanda('Sem responsável');
+    assert.throws(() => concluirDemanda({ id: sem.id, responsavel: 'Carlos', resultado: 'Ok' }), /ainda não tem responsável/);
+    assert.equal(demandaRepository.buscarPorId(d.id).status, 'Pendente');
+  });
+
+  it('o resultado é obrigatório e tem no máximo 500 caracteres', () => {
+    const d = comResponsavel();
+    const base = { id: d.id, responsavel: 'Mariana Santos' };
+    assert.throws(() => concluirDemanda({ ...base, resultado: '   ' }), /Descreva o resultado/);
+    assert.throws(() => concluirDemanda({ ...base, resultado: 'a'.repeat(501) }), /no máximo 500 caracteres/);
+    assert.doesNotThrow(() => concluirDemanda({ ...base, resultado: 'a'.repeat(500) }));
+  });
+
+  it('não conclui de novo nem conclui demanda cancelada ou que não existe', () => {
+    const d = comResponsavel();
+    concluirDemanda({ id: d.id, responsavel: 'Mariana Santos', resultado: 'Parecer enviado' });
+    assert.throws(() => concluirDemanda({ id: d.id, responsavel: 'Mariana Santos', resultado: 'De novo' }), /já está concluída/);
+
+    const cancelada = comResponsavel();
+    encerrar(cancelada.id, 'Cancelada');
+    assert.throws(() => concluirDemanda({ id: cancelada.id, responsavel: 'Mariana Santos', resultado: 'Ok' }), /já está cancelada/);
+    assert.throws(() => concluirDemanda({ id: 99999, responsavel: 'Mariana Santos', resultado: 'Ok' }), /não encontrada/);
+  });
+
+  it('menu: conclui e mostra o resultado e o histórico', async (t) => {
+    const saida = capturarSaida(t);
+    const d = comResponsavel();
+    await executarConcluirDemanda(terminalFalso(String(d.id), 'Mariana Santos', 'Resposta enviada à Ouvidoria'));
+    const texto = saida.join('\n');
+    assert.match(texto, new RegExp(`✔ Demanda #${d.id} concluída em`));
+    assert.match(texto, /Resultado: Resposta enviada à Ouvidoria/);
+    assert.match(texto, /Pendente → Concluída \(Mariana Santos\)/);
+  });
+
+  it('menu da opção 3: Concluída indica a opção 12', async () => {
+    const d = comResponsavel();
+    await assert.rejects(
+      executarAtualizarStatus(terminalFalso(String(d.id), 'Mariana Santos', 'concluida')),
+      /use a opção 12/
+    );
+    assert.equal(demandaRepository.buscarPorId(d.id).status, 'Pendente');
+  });
 });
 
 describe('História 13 — Registrar pendência', () => {
