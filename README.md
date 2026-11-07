@@ -23,7 +23,7 @@
 
 | Artefato | Onde acompanhar |
 | :--- | :--- |
-| **Board da Sprint (Kanban)** | [Abrir o Board](https://immense-session-fee.notion.site/SpacFlow-Gest-o-do-Projeto-Acad-mico-064d783fc7fc457a9169604b16bad351) |
+| **Board da Sprint (Kanban)** | [Abrir o Board](https://app.notion.com/p/SpacFlow-Gest-o-do-Projeto-Acad-mico-064d783fc7fc457a9169604b16bad351) (com login no Notion, para a equipe e o professor convidado) |
 | **Issues (tarefas e bugs)** | [github.com/SPACFlow/SPACFlow/issues](https://github.com/SPACFlow/SPACFlow/issues) |
 | **Pull Requests** | [github.com/SPACFlow/SPACFlow/pulls](https://github.com/SPACFlow/SPACFlow/pulls?q=is%3Apr) |
 | **Histórico de commits** | [github.com/SPACFlow/SPACFlow/commits](https://github.com/SPACFlow/SPACFlow/commits/main) |
@@ -218,9 +218,9 @@ Para manter a transparência das etapas e evitar a poluição visual na rolagem 
 <details>
   <summary><b>📊 Clique para expandir a Central de Backlog Refinado</b></summary>
   <br />
-  <p><i>Mapeamento de Épicos, Histórias de Usuário, níveis de prioridade e rastreamento de entregas por integrante.</i></p>
+  <p><i>Mapeamento de Épicos, Histórias de Usuário, níveis de prioridade e rastreamento de entregas por integrante. Estado do backlog em 05/11/2026, no começo da Sprint 03: as histórias já implementadas estão em Concluído, e a Sprint 03 está em andamento.</i></p>
   <div align="center">
-    <img src="./assets/backlog.png" alt="Visão Geral do Backlog de Requisitos" width="95%" />
+    <img src="./assets/backlog.png" alt="Backlog do SpacFlow no Notion em 05/11/2026, com as colunas Backlog, Em andamento, Em revisão e Concluído" width="95%" />
   </div>
 </details>
 
@@ -294,33 +294,6 @@ Na Sprint 02 também entraram duas melhorias em histórias da Sprint 01: o hist�
 | 10 | Registrar processo SEI | 10 | Dupla C | Formato 8918.461/2026-70; não aceita ano futuro nem o mesmo SEI em outra demanda |
 
 ---
-## 10. Histórias de Usuário da Sprint 02
-
-Cada história tem um arquivo próprio em `src/funcionalidades/`, e o menu em `src/main.js` chama todas elas.
-
-### Prioridade alta — funcionalidades de acompanhamento
-
-6. **Definir prazo (`definirPrazo.js`)**: Como gestor, quero registrar o prazo de uma demanda, para acompanhar as datas previstas.
-
-7. **Pesquisar demandas (`pesquisarDemandas.js`)**: Como usuário, quero pesquisar demandas, para encontrar registros com mais facilidade.
-
-8. **Filtrar por status (`filtrarPorStatus.js`)**: Como usuário, quero filtrar as demandas por situação, para visualizar apenas aquelas que preciso acompanhar.
-
-### Prioridade média — funcionalidades de monitoramento
-
-9. **Visualizar indicadores (`visualizarIndicadores.js`)**: Como gestor, quero visualizar um resumo das demandas, para entender melhor o volume e a situação das solicitações.
-
-10. **Registrar referência do processo SEI (`registrarReferenciaSEI.js`)**: Como servidor, quero registrar a referência do processo SEI relacionado à demanda, para facilitar sua localização no sistema oficial.
-
-### Resumo por história
-
-| # | História | Opção no menu | Dupla | Regras principais |
-|---|---|---|---|---|
-| 6 | Definir prazo | 6 | Dupla 3 | Prazo deve ser uma data válida; permite registrar e acompanhar a data prevista da demanda |
-| 7 | Pesquisar demandas | 7 | Dupla 4 | Permite pesquisar demandas por termo, facilitando a localização de registros cadastrados |
-| 8 | Filtrar por status | 8 | Dupla 4 | Permite visualizar demandas de acordo com o status: Pendente, Em andamento, Concluída ou Cancelada |
-| 9 | Visualizar indicadores | 9 | Dupla 5 | Exibe um resumo das demandas cadastradas e a quantidade existente em cada situação |
-| 10 | Registrar referência do processo SEI | 10 | Dupla 5 | Registra uma referência do processo SEI vinculada à demanda, facilitando sua localização no sistema oficial |
 
 ## 10. Como Executar e Testar
 
@@ -439,21 +412,23 @@ Cada história e cada bug da Sprint 02 tem uma Issue (#15 a #24), e os Pull Requ
 
 ## 12. Quadro Kanban de Execução (Board)
 
-O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade). A imagem abaixo registra o estado do quadro durante a Sprint 01.
+O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade). As imagens abaixo registram o quadro nas Sprints 01 e 02.
 
 <details>
-<summary>🎯 Clique para expandir o Quadro Kanban de Execução (Board)</summary>
-
-<br>
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/434e906d-486b-47fd-a07f-77fd76103bec" alt="Board da Sprint" width="100%">
-  <img width="688" height="777" alt="print" src="https://github.com/user-attachments/assets/00252a10-849f-4890-82a3-f214e0cd72a0" AA
-    
-</p>
+  <summary><b>🎯 Clique para expandir os prints do board</b></summary>
+  <br />
+  <p><b>Sprint 01:</b> o quadro Kanban no Notion e o card da sprint, concluído, com as histórias 1 a 5.</p>
+  <div align="center">
+    <img src="https://github.com/user-attachments/assets/434e906d-486b-47fd-a07f-77fd76103bec" alt="Board e card da Sprint 01 no Notion" width="100%" />
+  </div>
+  <br />
+  <p><b>Sprint 02:</b> o card da sprint, concluído, com o objetivo e as histórias 6 a 10.</p>
+  <div align="center">
+    <img src="https://github.com/user-attachments/assets/00252a10-849f-4890-82a3-f214e0cd72a0" alt="Card da Sprint 02 no Notion" width="688" />
+  </div>
 </details>
+
 ---
-
-
 
 ## 13. Evidências e Screencasts
 
