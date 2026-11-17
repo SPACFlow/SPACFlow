@@ -18,7 +18,7 @@ function desenhar() {
   const i = calcularIndicadores();
   const cartoes = [
     ['Total de demandas', i.total, 'na base do spaceflow', 'var(--azul)'],
-    ['Em tratamento', i.porStatus['Em tratamento'], 'em andamento', 'var(--verde)'],
+    ['Em andamento', i.porStatus['Em andamento'], 'demandas em execução', 'var(--verde)'],
     ['Com processo SEI', i.comSei, 'referência registrada', 'var(--ciano)'],
     ['Prazos vencidos', i.prazosVencidos, 'requer ação imediata', 'var(--vermelho)'],
   ];
