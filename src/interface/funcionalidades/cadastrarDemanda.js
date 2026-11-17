@@ -11,7 +11,7 @@ export function cadastrarDemanda({ titulo, descricao, solicitante, prazo }) {
     descricao: descricao?.trim() ?? '',
     solicitante: solicitante.trim(),
     prazo: prazo || null,
-    status: 'Novo',
+    status: 'Pendente',
     prioridade: null,
     responsavel: null,
     numeroSei: null,
