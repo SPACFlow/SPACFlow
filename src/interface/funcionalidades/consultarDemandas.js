@@ -23,8 +23,12 @@ function cardHTML(d) {
   const prio = d.prioridade
     ? `<span class="tag p-${d.prioridade}">Prioridade ${d.prioridade}</span>`
     : '<span class="tag p-sem">Sem prioridade</span>';
-  const sit = d.status === 'Concluído' ? '<span class="tag ok">Concluído</span>'
-    : atraso ? `<span class="tag atraso">Atrasado ${atraso}d</span>` : '';
+ const sit = d.status === 'Concluída'
+  ? '<span class="tag ok">Concluída</span>'
+  : d.status === 'Cancelada'
+    ? '<span class="tag cancelada">Cancelada</span>'
+    : atraso
+      ? `<span class="tag atraso">Atrasado ${atraso}d</span>`: '';
   const sei = d.numeroSei ? `<span class="chip-sei">SEI ${esc(d.numeroSei)}</span>` : '';
   return `<article class="card" tabindex="0" data-id="${d.id}">
     <div class="tags">${prio}${sit}</div>
