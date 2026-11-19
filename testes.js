@@ -25,6 +25,11 @@ import {
 } from './src/funcionalidades/indicadoresOrigemCategoria.js';
 import { calcularCargaPorResponsavel, executarCargaPorResponsavel } from './src/funcionalidades/cargaPorResponsavel.js';
 import { formatarDataBR, hojeISO } from './src/utils/formatacao.js';
+import { demandaRepository as repositorioWeb } from './src/interface/repositories/demandaRepository.js';
+import {
+  definirPrazo as definirPrazoWeb, converterPrazo, situacaoDoPrazo,
+} from './src/interface/funcionalidades/definirPrazo.js';
+import { registrarSei as registrarSeiWeb, validarNumeroSei } from './src/interface/funcionalidades/registrarSei.js';
 
 const ORIGEM = 'Ministério Público';
 const CATEGORIA = 'Inspeção de ambiente de trabalho';
@@ -698,5 +703,73 @@ describe('Integração — main.js', () => {
     const final = consultarDemandas({ status: 'Concluída' }).find((x) => x.id === d.id);
     assert.equal(final.prioridade, 'Alta');
     assert.equal(final.responsavel, 'Mariana Santos');
+  });
+});
+
+describe('Interface web — prazo e processo SEI (Issue #49)', () => {
+  const HOJE = '2026-11-19';
+  const demandaWeb = (extra = {}) => repositorioWeb.adicionar({
+    id: repositorioWeb.gerarId(), titulo: 'Demanda da interface', status: 'Pendente', prazo: null, numeroSei: null, ...extra,
+  });
+
+  it('converte o prazo do campo de data ou no formato DD/MM/AAAA', () => {
+    assert.equal(converterPrazo('2026-12-01'), '2026-12-01');
+    assert.equal(converterPrazo(' 01/12/2026 '), '2026-12-01');
+    assert.throws(() => converterPrazo(''), /Informe a data do prazo/);
+    assert.throws(() => converterPrazo('1/12/26'), /Use o formato DD\/MM\/AAAA/);
+    assert.throws(() => converterPrazo('31/02/2027'), /31\/02\/2027 não existe/);
+  });
+
+  it('mostra quanto falta para o prazo ou há quantos dias está atrasada', () => {
+    assert.equal(situacaoDoPrazo('2026-11-17', HOJE), 'Atrasada há 2 dias');
+    assert.equal(situacaoDoPrazo('2026-11-18', HOJE), 'Atrasada há 1 dia');
+    assert.equal(situacaoDoPrazo(HOJE, HOJE), 'Vence hoje');
+    assert.equal(situacaoDoPrazo('2026-11-20', HOJE), 'Vence amanhã');
+    assert.equal(situacaoDoPrazo('2026-11-29', HOJE), 'Vence em 10 dias');
+    assert.equal(situacaoDoPrazo(null, HOJE), 'Sem prazo definido');
+  });
+
+  it('define e depois altera o prazo, guardando o anterior', async () => {
+    const d = demandaWeb();
+    const primeiro = await definirPrazoWeb(d.id, '2026-12-01', HOJE);
+    assert.equal(primeiro.anterior, null);
+    assert.equal(repositorioWeb.buscarPorId(d.id).prazo, '2026-12-01');
+    const segundo = await definirPrazoWeb(d.id, '10/12/2026', HOJE);
+    assert.equal(segundo.anterior, '2026-12-01');
+    assert.equal(segundo.demanda.prazo, '2026-12-10');
+  });
+
+  it('não aceita prazo que já passou, repetido ou em demanda encerrada', async () => {
+    const d = demandaWeb({ prazo: '2026-12-01' });
+    await assert.rejects(definirPrazoWeb(d.id, '2026-11-18', HOJE), /já passou/);
+    await assert.rejects(definirPrazoWeb(d.id, '2026-12-01', HOJE), /já está com prazo em 01\/12\/2026/);
+    await assert.doesNotReject(definirPrazoWeb(d.id, HOJE, HOJE));
+    for (const status of ['Concluída', 'Cancelada']) {
+      const encerrada = demandaWeb({ status });
+      await assert.rejects(definirPrazoWeb(encerrada.id, '2026-12-01', HOJE), /não pode receber prazo/);
+    }
+    await assert.rejects(definirPrazoWeb(99999, '2026-12-01', HOJE), /não encontrada/);
+  });
+
+  it('valida o número SEI com as mesmas regras do terminal', () => {
+    assert.equal(validarNumeroSei('SEI nº 8918.461/2026-70', 2026), '8918.461/2026-70');
+    assert.equal(validarNumeroSei(' 12345.123456/2025-01 ', 2026), '12345.123456/2025-01');
+    assert.throws(() => validarNumeroSei('  ', 2026), /Informe o número do processo SEI/);
+    assert.throws(() => validarNumeroSei('8918461202670', 2026), /Use o formato 8918\.461\/2026-70/);
+    assert.throws(() => validarNumeroSei('8918.461/2027-70', 2026), /não pode ser maior que o ano atual/);
+  });
+
+  it('vincula o SEI e não deixa o mesmo número em duas demandas', async () => {
+    const ano = new Date().getFullYear();
+    const a = demandaWeb();
+    const b = demandaWeb();
+    const numero = `7777.${String(a.id).padStart(3, '0')}/${ano}-01`;
+    const { anterior } = await registrarSeiWeb(a.id, numero);
+    assert.equal(anterior, null);
+    assert.equal(repositorioWeb.buscarPorId(a.id).numeroSei, numero);
+    await assert.rejects(registrarSeiWeb(a.id, numero), /já está vinculada ao SEI/);
+    await assert.rejects(registrarSeiWeb(b.id, numero), new RegExp(`já está registrado na demanda #${a.id}`));
+    const troca = await registrarSeiWeb(a.id, `7777.${String(a.id).padStart(3, '0')}/${ano}-02`);
+    assert.equal(troca.anterior, numero);
   });
 });
