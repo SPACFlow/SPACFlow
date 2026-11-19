@@ -26,6 +26,7 @@
 | **Board da Sprint (Kanban)** | [Abrir o Board](https://app.notion.com/p/SpacFlow-Gest-o-do-Projeto-Acad-mico-064d783fc7fc457a9169604b16bad351) (com login no Notion, para a equipe e o professor convidado) |
 | **Issues (tarefas e bugs)** | [github.com/SPACFlow/SPACFlow/issues](https://github.com/SPACFlow/SPACFlow/issues) |
 | **Pull Requests** | [github.com/SPACFlow/SPACFlow/pulls](https://github.com/SPACFlow/SPACFlow/pulls?q=is%3Apr) |
+| **Como contribuir** | [CONTRIBUTING.md](./CONTRIBUTING.md): como rodar, testar e o caminho de uma mudança (Issue, branch, PR e revisão) |
 | **Histórico de commits** | [github.com/SPACFlow/SPACFlow/commits](https://github.com/SPACFlow/SPACFlow/commits/main) |
 | **Histórias das Sprints 01 e 02** | [Seção 9](#9-histórias-de-usuário) |
 | **Vídeos e testes** | [Seção 13](#13-evidências-e-screencasts) |
@@ -298,6 +299,8 @@ Na Sprint 02 também entraram duas melhorias em histórias da Sprint 01: o hist�
 ## 10. Como Executar e Testar
 
 Requisito: [Node.js](https://nodejs.org/) 20 ou mais recente. O projeto não tem dependências externas, então não é preciso rodar `npm install`.
+
+O passo a passo para contribuir (padrão de branch, commit e Pull Request) está no [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ```bash
 npm start   # abre o menu do SpacFlow no terminal
