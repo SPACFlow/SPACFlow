@@ -429,6 +429,11 @@ O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade).
   <div align="center">
     <img src="https://github.com/user-attachments/assets/00252a10-849f-4890-82a3-f214e0cd72a0" alt="Card da Sprint 02 no Notion" width="688" />
   </div>
+  <br />
+  <p><b>Sprint 03 (19/11/2026):</b> o card da Sprint 03 em andamento; as histórias US10, US11 e US13 (alertas de prazo e pendências, histórias 11 e 13 no código) em revisão; e US15 e US16 (histórias 14 e 15) no backlog.</p>
+  <div align="center">
+    <img src="./assets/board-sprint03.png" alt="Board do SpacFlow no Notion em 19/11/2026: Backlog 6, Em andamento 2, Em revisão 3 e Concluído 22" width="100%" />
+  </div>
 </details>
 
 ---
