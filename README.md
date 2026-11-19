@@ -23,7 +23,7 @@
 
 | Artefato | Onde acompanhar |
 | :--- | :--- |
-| **Board da Sprint (Kanban)** | [Abrir o Board](https://app.notion.com/p/SpacFlow-Gest-o-do-Projeto-Acad-mico-064d783fc7fc457a9169604b16bad351) (com login no Notion, para a equipe e o professor convidado) |
+| **Board da Sprint (Kanban)** | [Abrir o Board](https://app.notion.com/p/d472f8edfc5d82b3b7b0011ca2bb2dd9?v=d082f8edfc5d83cbbbeb8857a70d89c6) e a [página do projeto no Notion](https://app.notion.com/p/SpacFlow-Gest-o-do-Projeto-Acad-mico-e852f8edfc5d833eb4e501ce43da9f32) (com login no Notion, para a equipe e o professor convidados) |
 | **Issues (tarefas e bugs)** | [github.com/SPACFlow/SPACFlow/issues](https://github.com/SPACFlow/SPACFlow/issues) |
 | **Pull Requests** | [github.com/SPACFlow/SPACFlow/pulls](https://github.com/SPACFlow/SPACFlow/pulls?q=is%3Apr) |
 | **Como contribuir** | [CONTRIBUTING.md](./CONTRIBUTING.md): como rodar, testar e o caminho de uma mudança (Issue, branch, PR e revisão) |
@@ -415,7 +415,7 @@ Cada história e cada bug da Sprint 02 tem uma Issue (#15 a #24), e os Pull Requ
 
 ## 12. Quadro Kanban de Execução (Board)
 
-O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade). As imagens abaixo registram o quadro nas Sprints 01 e 02.
+O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade). Em 19/11/2026 a página do Notion passou para um endereço novo, só para pessoas convidadas, porque o endereço antigo exibia o aviso de página sinalizada. As imagens abaixo registram o quadro em cada sprint.
 
 <details>
   <summary><b>🎯 Clique para expandir os prints do board</b></summary>
