@@ -6,6 +6,16 @@ import { executarConsultar } from './funcionalidades/consultarDemandas.js';
 import { executarAtualizarStatus } from './funcionalidades/atualizarStatus.js';
 import { executarDefinirPrioridade } from './funcionalidades/definirPrioridade.js';
 import { executarAtribuirResponsavel } from './funcionalidades/atribuirResponsavel.js';
+import { executarDefinirPrazo } from './funcionalidades/definirPrazo.js';
+import { executarPesquisar } from './funcionalidades/pesquisarDemandas.js';
+import { executarFiltrarStatus } from './funcionalidades/filtrarPorStatus.js';
+import { executarIndicadores } from './funcionalidades/visualizarIndicadores.js';
+import { executarRegistrarSei } from './funcionalidades/registrarSei.js';
+import { executarAlertasDePrazo } from './funcionalidades/alertasDePrazo.js';
+import { executarConcluirDemanda } from './funcionalidades/concluirDemanda.js';
+import { executarRegistrarPendencia } from './funcionalidades/registrarPendencia.js';
+import { executarIndicadoresOrigemCategoria } from './funcionalidades/indicadoresOrigemCategoria.js';
+import { executarCargaPorResponsavel } from './funcionalidades/cargaPorResponsavel.js';
 
 const rl = readline.createInterface({ input, output });
 
@@ -15,26 +25,37 @@ const opcoes = {
   '3': ['Atualizar status', executarAtualizarStatus],
   '4': ['Definir prioridade', executarDefinirPrioridade],
   '5': ['Atribuir responsável', executarAtribuirResponsavel],
+  '6': ['Definir prazo', executarDefinirPrazo],
+  '7': ['Pesquisar demandas', executarPesquisar],
+  '8': ['Filtrar por status', executarFiltrarStatus],
+  '9': ['Visualizar indicadores', executarIndicadores],
+  '10': ['Registrar processo SEI', executarRegistrarSei],
+  '11': ['Alertas de prazo', executarAlertasDePrazo],
+  '12': ['Concluir demanda', executarConcluirDemanda],
+  '13': ['Registrar pendência', executarRegistrarPendencia],
+  '14': ['Indicadores por origem e categoria', executarIndicadoresOrigemCategoria],
+  '15': ['Carga de trabalho por responsável', executarCargaPorResponsavel],
 };
 
 async function main() {
   while (true) {
-    console.log('\n=== SpaceFlow ===');
+    console.log('\n=== SpacFlow ===');
     for (const [n, [nome]] of Object.entries(opcoes)) console.log(`${n}. ${nome}`);
     console.log('0. Sair');
 
-    const escolha = await rl.question('> ');
+    const escolha = (await rl.question('> ')).trim();
     if (escolha === '0') break;
 
     const opcao = opcoes[escolha];
-    if (!opcao) { console.log('Opção inválida.'); continue; }
+    if (!opcao) { console.log(`Opção inválida. Digite um número de 0 a ${Object.keys(opcoes).length}.`); continue; }
 
     try {
       await opcao[1](rl);
     } catch (erro) {
-      console.log(`✖ ${erro.message}`);
+      console.log(`Erro: ${erro?.message ?? erro}`);
     }
   }
+  console.log('Até logo!');
   rl.close();
 }
 
