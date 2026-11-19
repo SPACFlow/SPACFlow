@@ -1,21 +1,7 @@
-// BASE (Dupla A): reúne os filtros do painel. Cada funcionalidade registra o seu filtro aqui.
-const filtros = [];
-
-// desenhar(elemento, aoAlterar): monta o controle e chama aoAlterar(valor) quando a pessoa mexe.
-// aceita(demanda, valor): diz se a demanda passa pelo filtro.
-export function registrarFiltro(desenhar, aceita) {
-  filtros.push({ desenhar, aceita, valor: '' });
+export function htmlFiltros(statuses) {
+  return `<section class="toolbar">
+    <label class="busca"><span>⌕</span><input id="busca" type="search" placeholder="Pesquisar título, solicitante, responsável ou SEI..." aria-label="Pesquisar demandas"></label>
+    <select id="filtroStatus" aria-label="Filtrar por status"><option value="">Todos os status</option>${statuses.map(s => `<option>${s}</option>`).join('')}</select>
+    <select id="filtroPrioridade" aria-label="Filtrar por prioridade"><option value="">Todas as prioridades</option><option>Urgente</option><option>Alta</option><option>Média</option><option>Baixa</option><option value="__sem">Sem prioridade</option></select>
+  </section>`;
 }
-
-export function montarFiltros(container, aoMudar) {
-  container.innerHTML = '';
-  filtros.forEach((filtro) => {
-    const el = document.createElement('div');
-    el.className = 'filtro';
-    container.appendChild(el);
-    filtro.desenhar(el, (valor) => { filtro.valor = valor; aoMudar(); });
-  });
-}
-
-export const aplicarFiltros = (lista) =>
-  lista.filter((d) => filtros.every((f) => !f.valor || f.aceita(d, f.valor)));
