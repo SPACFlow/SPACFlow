@@ -101,3 +101,15 @@ dialog label > * { margin-top: 6px; font-weight: 400; }
 /* História 10: etiqueta do processo SEI no cartão */
 .chip-sei { display: inline-block; margin-bottom: 12px; font-size: 12px; font-weight: 600;
   color: #1d4ed8; background: #eef4ff; border: 1px solid #cfe0ff; padding: 4px 10px; border-radius: 99px; }
+.secao-detalhe { border-top: 1px solid var(--borda); padding-top: 16px; margin-top: 16px; }
+.secao-detalhe h3 { margin: 0 0 4px; font-size: 15px; }
+.secao-situacao { margin: 0 0 12px; color: var(--suave); font-size: 14px; }
+.secao-situacao.alerta { color: #be123c; font-weight: 600; }
+.secao-situacao b { color: var(--texto); }
+.secao-form { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.secao-form label { flex: 1 1 220px; margin-bottom: 0; }
+.secao-form .btn { flex: 0 0 auto; }
+.secao-dica { margin: 8px 0 4px; color: var(--suave); font-size: 12px; }
+.secao-detalhe .erro { margin-top: 8px; }
+.secao-form .btn { transition: filter .15s, box-shadow .15s; }
+.secao-form .btn:hover, .secao-form .btn:focus-visible { filter: brightness(1.08); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .45); }
