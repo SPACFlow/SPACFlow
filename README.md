@@ -502,7 +502,7 @@ No último dia, 8 Pull Requests entraram na `main` aceitos pelo próprio autor, 
 - As 15 histórias estão no menu do terminal, com testes: 115 na `main`, todos passando.
 - A interface web está publicada em [spacflow.github.io/SPACFlow](https://spacflow.github.io/SPACFlow/), com login e 5 cargos.
 - Ficaram de fora: o Pull Request da branch `grupo2` e a API com armazenamento em JSON (`src/api/demandaRepository.js`), que não chegou a ser ligada à interface.
-- Screencasts finais pela URL publicada: [#55](https://github.com/SPACFlow/SPACFlow/issues/55).
+- Screencast final das histórias 11 a 15 pela URL publicada: [assistir no YouTube](https://youtu.be/C2Ne1DC06AE) ([#55](https://github.com/SPACFlow/SPACFlow/issues/55)).
 
 ---
 
@@ -546,6 +546,7 @@ As 21 Issues da milestone [Sprint 03 (Entrega 5)](https://github.com/SPACFlow/SP
 | **Vídeo da Sprint 01 (histórias 1 a 5)** | O menu funcionando de ponta a ponta: cadastrar, consultar, definir prioridade, atribuir responsável e atualizar status | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/jL-Aw6yKGbg) |
 | **Screencast dos testes automatizados (Sprint 01)** | O comando `npm test` rodando os testes das 5 histórias e da integração | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/ypTrZsFt55o) |
 | **Vídeo da Sprint 02 (histórias 6 a 10)** | As novas opções do menu: definir prazo, registrar processo SEI, pesquisar, filtrar por status e ver os indicadores | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/_C27xyH__2E) |
+| **Vídeo da Sprint 03 (histórias 11 a 15)** | O produto publicado: primeiro acesso, nova demanda, alertas de prazo, pendência, conclusão com resultado, origem e categoria, carga por responsável, Integração SEI e os 5 cargos | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/C2Ne1DC06AE) |
 | **Produto publicado (Sprint 03)** | Interface web com login, painel, Integração SEI, Relatórios e Configurações | [spacflow.github.io/SPACFlow](https://spacflow.github.io/SPACFlow/) |
 
 ### Onde cada história aparece nos vídeos
@@ -578,5 +579,23 @@ Clique no tempo para abrir o vídeo direto naquele ponto.
 - [12:14](https://youtu.be/_C27xyH__2E?t=734) História 8 — Filtrar por status
 - [13:07](https://youtu.be/_C27xyH__2E?t=787) História 9 — Visualizar indicadores
 - [13:39](https://youtu.be/_C27xyH__2E?t=819) Encerramento
+
+</details>
+
+<details>
+  <summary><b>Vídeo da Sprint 03 (histórias 11 a 15)</b></summary>
+
+- [0:00](https://youtu.be/C2Ne1DC06AE?t=0) Abertura e endereço do produto
+- [0:15](https://youtu.be/C2Ne1DC06AE?t=15) Primeiro acesso: criação da conta
+- [0:49](https://youtu.be/C2Ne1DC06AE?t=49) Painel de demandas e indicadores
+- [1:23](https://youtu.be/C2Ne1DC06AE?t=83) Cadastro de uma demanda nova
+- [2:25](https://youtu.be/C2Ne1DC06AE?t=145) História 11 — Alertas de prazo
+- [3:24](https://youtu.be/C2Ne1DC06AE?t=204) História 13 — Registrar e resolver uma pendência
+- [4:18](https://youtu.be/C2Ne1DC06AE?t=258) História 12 — Concluir a demanda com o resultado
+- [6:20](https://youtu.be/C2Ne1DC06AE?t=380) História 14 — Origem e categoria das demandas
+- [7:05](https://youtu.be/C2Ne1DC06AE?t=425) História 15 — Carga de trabalho por responsável
+- [7:38](https://youtu.be/C2Ne1DC06AE?t=458) Integração SEI
+- [8:19](https://youtu.be/C2Ne1DC06AE?t=499) Configurações: os 5 cargos do sistema
+- [8:44](https://youtu.be/C2Ne1DC06AE?t=524) Encerramento
 
 </details>
