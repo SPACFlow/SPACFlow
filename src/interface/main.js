@@ -1,5 +1,5 @@
-// Junta todas as funcionalidades da interface. Cada dupla mantém os nomes exportados abaixo.
 import { iniciarDetalhe, abrirDetalhe } from './componentes/detalhe.js';
+import { iniciarNavegacao, mostrarTela } from './componentes/navegacao.js';
 import { iniciarCadastro } from './funcionalidades/cadastrarDemanda.js';
 import { iniciarConsulta } from './funcionalidades/consultarDemandas.js';
 import { iniciarAtualizarStatus } from './funcionalidades/atualizarStatus.js';
@@ -10,20 +10,42 @@ import { iniciarPesquisa } from './funcionalidades/pesquisarDemandas.js';
 import { iniciarFiltroStatus } from './funcionalidades/filtrarPorStatus.js';
 import { iniciarIndicadores } from './funcionalidades/visualizarIndicadores.js';
 import { iniciarRegistrarSei } from './funcionalidades/registrarSei.js';
+import { iniciarRegistrarPendencia } from './funcionalidades/registrarPendencia.js';
+import { iniciarConcluirDemanda } from './funcionalidades/concluirDemanda.js';
+import { iniciarIntegracaoSei } from './funcionalidades/integracaoSei.js';
+import { iniciarRelatorios } from './funcionalidades/relatorios.js';
+import { iniciarConfiguracoes } from './funcionalidades/configuracoes.js';
+import { mostrarLogin, usuarioAtual, desenharUsuarioLogado } from './funcionalidades/login.js';
+import { $ } from './utils/dom.js';
 
-iniciarDetalhe();                 // base: janela de detalhe da demanda
+iniciarDetalhe();
 
-// Seções da janela de detalhe (aparecem nesta ordem)
-iniciarAtualizarStatus();         // história 3
-iniciarDefinirPrioridade();       // história 4
-iniciarAtribuirResponsavel();     // história 5
-iniciarDefinirPrazo();            // história 6
-iniciarRegistrarSei();            // história 10
+iniciarAtualizarStatus();
+iniciarDefinirPrioridade();
+iniciarAtribuirResponsavel();
+iniciarDefinirPrazo();
+iniciarRegistrarSei();
+iniciarRegistrarPendencia();
+iniciarConcluirDemanda();
 
-// Filtros do painel: registrar ANTES de iniciarConsulta, que monta a barra de filtros
-iniciarPesquisa();                // história 7
-iniciarFiltroStatus();            // história 8
+iniciarPesquisa();
+iniciarFiltroStatus();
 
-iniciarIndicadores();             // história 9
-iniciarCadastro();                // história 1
-iniciarConsulta(abrirDetalhe);    // história 2
+iniciarIndicadores();
+iniciarCadastro();
+iniciarConsulta(abrirDetalhe);
+
+iniciarIntegracaoSei();
+iniciarRelatorios();
+iniciarConfiguracoes();
+iniciarNavegacao();
+
+function entrarNoSistema(usuario) {
+  $('#app').hidden = false;
+  desenharUsuarioLogado(usuario, () => mostrarLogin(entrarNoSistema));
+  mostrarTela();
+}
+
+const usuario = usuarioAtual();
+if (usuario) entrarNoSistema(usuario);
+else mostrarLogin(entrarNoSistema);

@@ -8,6 +8,13 @@
 
 > **Plataforma de Governança, Rastreabilidade e Controle SLA de Fiscalizações em Saúde do Trabalhador**
 
+> 🌐 **Produto publicado: [spacflow.github.io/SPACFlow](https://spacflow.github.io/SPACFlow/)**
+> No primeiro acesso, crie a conta da coordenação e, em Configurações, cadastre a equipe por cargo. É uma versão de demonstração: as contas e as demandas ficam guardadas no navegador de quem usa.
+
+<div align="center">
+  <img src="./assets/produto-painel.png" alt="Painel de demandas do SpacFlow publicado, com as colunas Pendente, Em andamento, Concluída e Cancelada" width="90%" />
+</div>
+
 | **Parâmetro** | **Detalhe do Projeto** |
 | :--- | :--- |
 | **Instituição Parceira** | Vigilância em Saúde do Trabalhador (VISAT) — Sec. de Saúde do Recife |
@@ -23,11 +30,13 @@
 
 | Artefato | Onde acompanhar |
 | :--- | :--- |
-| **Board da Sprint (Kanban)** | [Abrir o Board](https://app.notion.com/p/SpacFlow-Gest-o-do-Projeto-Acad-mico-064d783fc7fc457a9169604b16bad351) (com login no Notion, para a equipe e o professor convidado) |
-| **Issues (tarefas e bugs)** | [github.com/SPACFlow/SPACFlow/issues](https://github.com/SPACFlow/SPACFlow/issues) |
+| **Produto publicado** | [spacflow.github.io/SPACFlow](https://spacflow.github.io/SPACFlow/), atualizado a cada merge na `main` pelo [workflow de testes e publicação](./.github/workflows/publicar.yml) |
+| **Board da Sprint (Kanban)** | [Abrir o Board](https://app.notion.com/p/d472f8edfc5d82b3b7b0011ca2bb2dd9?v=d082f8edfc5d83cbbbeb8857a70d89c6) e a [página do projeto no Notion](https://app.notion.com/p/SpacFlow-Gest-o-do-Projeto-Acad-mico-e852f8edfc5d833eb4e501ce43da9f32) (com login no Notion, para a equipe e o professor convidados) |
+| **Issues (tarefas e bugs)** | [github.com/SPACFlow/SPACFlow/issues](https://github.com/SPACFlow/SPACFlow/issues), com o print da Sprint 03 na [seção 12](#12-quadro-kanban-de-execução-board) |
 | **Pull Requests** | [github.com/SPACFlow/SPACFlow/pulls](https://github.com/SPACFlow/SPACFlow/pulls?q=is%3Apr) |
+| **Como contribuir** | [CONTRIBUTING.md](./CONTRIBUTING.md): como rodar, testar e o caminho de uma mudança (Issue, branch, PR e revisão) |
 | **Histórico de commits** | [github.com/SPACFlow/SPACFlow/commits](https://github.com/SPACFlow/SPACFlow/commits/main) |
-| **Histórias das Sprints 01 e 02** | [Seção 9](#9-histórias-de-usuário) |
+| **Histórias das Sprints 01 a 03** | [Seção 9](#9-histórias-de-usuário) |
 | **Vídeos e testes** | [Seção 13](#13-evidências-e-screencasts) |
 
 ---
@@ -203,9 +212,9 @@ O projeto é executado através de uma abordagem incremental dividida em 7 seman
 | **Semana 02**<br>*(Validação)* | Contato com a VISAT, validação de hipóteses e entendimento do processo | Hipóteses validadas e dúvidas respondidas | `Concluído` |
 | **Semana 03**<br>*(Requisitos)* | Levantamento de requisitos, histórias de usuário, fluxos e priorização | Backlog priorizado e especificação inicial | `Concluído` |
 | **Semana 04**<br>*(UX / UI)* | Construção de wireframes, protótipos e fluxo de navegação | Protótipo validado | `Concluído` |
-| **Semana 05**<br>*(Desenvolvimento)* | Desenvolvimento incremental em sprints. Sprint 01 concluída: histórias 1 a 5 (prioridade alta e média). Sprint 02 concluída: histórias 6 a 10, mais o histórico de status e as validações do cadastro. As 10 histórias estão integradas no `main.js` | Incrementos funcionais do sistema; as demais histórias do backlog entram nas próximas sprints | `Em andamento` |
-| **Semana 06**<br>*(Testes)* | Testes automatizados a cada sprint (`npm test`, hoje com 69 testes), correções de bugs registradas como Issues e validações | Versão estável do sistema | `Em andamento` |
-| **Semana 07**<br>*(Entrega Final)* | Consolidação do sistema, documentação e apresentação de resultados | Entrega final do projeto | `Pendente` |
+| **Semana 05**<br>*(Desenvolvimento)* | Desenvolvimento incremental em sprints. Sprint 01 concluída: histórias 1 a 5 (prioridade alta e média). Sprint 02 concluída: histórias 6 a 10, mais o histórico de status e as validações do cadastro. Sprint 03 concluída (05/11 a 25/11): histórias 11 a 15 no menu e a interface web publicada | Incrementos funcionais do sistema | `Concluído` |
+| **Semana 06**<br>*(Testes)* | Testes automatizados a cada sprint (`npm test`, com 115 testes na `main`, rodando no GitHub Actions em todo Pull Request), correções de bugs registradas como Issues e validações | Versão estável do sistema | `Concluído` |
+| **Semana 07**<br>*(Entrega Final)* | Consolidação do sistema, documentação e apresentação de resultados | Entrega final do projeto | `Em andamento` |
 
 > *Nota: O cronograma é flexível e pode sofrer ajustes conforme orientações do orientador e alinhamentos das entregas semanais.*
 
@@ -253,7 +262,7 @@ Para manter a transparência das etapas e evitar a poluição visual na rolagem 
 
 ## 9. Histórias de Usuário
 
-Cada história tem um arquivo próprio em `src/funcionalidades/`, e o menu em `src/main.js` chama todas elas. Cada história da Sprint 02 tem uma Issue no GitHub, fechada pelo Pull Request que a entregou.
+Cada história tem um arquivo próprio em `src/funcionalidades/`, e o menu em `src/main.js` chama todas elas. A partir da Sprint 02, cada história tem uma Issue no GitHub, fechada pelo Pull Request que a entregou.
 
 ### Sprint 01
 
@@ -278,6 +287,18 @@ Cada história tem um arquivo próprio em `src/funcionalidades/`, e o menu em `s
 
 Na Sprint 02 também entraram duas melhorias em histórias da Sprint 01: o histórico das mudanças de status na história 3 ([#13](https://github.com/SPACFlow/SPACFlow/issues/13)) e as validações do cadastro com origem, categoria e prazo na história 1 ([#9](https://github.com/SPACFlow/SPACFlow/issues/9)).
 
+### Sprint 03
+
+As Issues das cinco histórias foram abertas em 05/11, no começo da sprint, na milestone [Sprint 03 (Entrega 5)](https://github.com/SPACFlow/SPACFlow/milestone/1), com prazo em 25/11. Entre parênteses está o card correspondente no board do Notion.
+
+11. **Alertas de prazo ([`alertasDePrazo.js`](src/funcionalidades/alertasDePrazo.js), [#40](https://github.com/SPACFlow/SPACFlow/issues/40), Notion US10 e US11):** Como gestor, quero ver as demandas atrasadas e as que vencem nos próximos dias, para agir antes de perder o prazo de resposta ao órgão.
+12. **Concluir demanda com o resultado ([`concluirDemanda.js`](src/funcionalidades/concluirDemanda.js), [#41](https://github.com/SPACFlow/SPACFlow/issues/41), Notion US20):** Como responsável por uma demanda, quero concluí-la registrando o resultado, para que fique registrado o que foi entregue ao órgão.
+13. **Registrar pendência ([`registrarPendencia.js`](src/funcionalidades/registrarPendencia.js), [#42](https://github.com/SPACFlow/SPACFlow/issues/42), Notion US13):** Como responsável por uma demanda, quero registrar uma pendência ou um impedimento, para a equipe saber por que a demanda está parada.
+14. **Indicadores por origem e categoria ([`indicadoresOrigemCategoria.js`](src/funcionalidades/indicadoresOrigemCategoria.js), [#43](https://github.com/SPACFlow/SPACFlow/issues/43), Notion US15):** Como gestor, quero ver quantas demandas vieram de cada origem e de cada categoria, para entender de onde vem a carga de trabalho da VISAT.
+15. **Carga de trabalho por responsável ([`cargaPorResponsavel.js`](src/funcionalidades/cargaPorResponsavel.js), [#44](https://github.com/SPACFlow/SPACFlow/issues/44), Notion US16):** Como gestor, quero ver quantas demandas em aberto cada responsável tem e quantas estão atrasadas, para distribuir melhor o trabalho da equipe.
+
+A Sprint 03 também entregou a **interface web** ([#47](https://github.com/SPACFlow/SPACFlow/issues/47), [#49](https://github.com/SPACFlow/SPACFlow/issues/49) e [#62](https://github.com/SPACFlow/SPACFlow/issues/62)), publicada em [spacflow.github.io/SPACFlow](https://spacflow.github.io/SPACFlow/) e também disponível localmente com `npm run web`. Ela tem login com os 5 cargos do protótipo (Coordenador(a) VISAT, Técnico(a), Administrativo, Jurídico e Visualizador), o painel de demandas, as telas de Integração SEI, Relatórios e Configurações, e as histórias 5, 6, 10, 12 e 13 na janela de detalhe, com as mesmas regras do terminal. Cada história tem o seu arquivo em `src/interface/funcionalidades/`.
+
 ### Resumo por história
 
 | # | História | Opção no menu | Dupla | Regras principais |
@@ -292,6 +313,11 @@ Na Sprint 02 também entraram duas melhorias em histórias da Sprint 01: o hist�
 | 8 | Filtrar por status | 8 | Dupla B | Aceita o status sem acento e com qualquer maiúscula; status inexistente mostra os válidos; avisa quando nenhuma demanda tem o status |
 | 9 | Visualizar indicadores | 9 | Dupla A | Total de demandas, prazos vencidos, demandas sem responsável e com SEI, e contagem por status e por prioridade |
 | 10 | Registrar processo SEI | 10 | Dupla C | Formato 8918.461/2026-70; não aceita ano futuro nem o mesmo SEI em outra demanda |
+| 11 | Alertas de prazo | 11 | Dupla A | Separa as atrasadas das que vencem nos próximos 5 dias, com os dias de atraso ou os que faltam; ignora demanda concluída, cancelada ou sem prazo |
+| 12 | Concluir demanda | 12 | Dupla C | Só o responsável conclui; resultado obrigatório, com até 500 caracteres; guarda a data de conclusão e entra no histórico |
+| 13 | Registrar pendência | 13 | Dupla A | Descrição obrigatória (até 200 caracteres) e quem registra; cada pendência é numerada e marcada como resolvida uma vez; demanda encerrada não recebe pendência nova |
+| 14 | Indicadores por origem e categoria | 14 | Dupla C | Conta por origem e por categoria, com todas as opções do cadastro, mesmo as que têm zero; separa em aberto e encerradas; sem origem ou categoria aparece como "Não informada" |
+| 15 | Carga por responsável | 15 | Dupla C | Para cada responsável: em aberto, atrasadas e de prioridade Alta ou Urgente; junta o mesmo nome escrito com acento ou maiúscula diferente; sem responsável fica numa linha separada; da maior carga para a menor |
 
 ---
 
@@ -299,12 +325,17 @@ Na Sprint 02 também entraram duas melhorias em histórias da Sprint 01: o hist�
 
 Requisito: [Node.js](https://nodejs.org/) 20 ou mais recente. O projeto não tem dependências externas, então não é preciso rodar `npm install`.
 
+O passo a passo para contribuir (padrão de branch, commit e Pull Request) está no [CONTRIBUTING.md](./CONTRIBUTING.md).
+
 ```bash
-npm start   # abre o menu do SpacFlow no terminal
-npm test    # roda os testes automatizados (testes.js)
+npm start     # abre o menu do SpacFlow no terminal, com as 15 opções
+npm run web   # abre a interface web em http://localhost:3000
+npm test      # roda os testes automatizados (testes.js)
 ```
 
-Os testes usam apenas os módulos nativos `node:test` e `node:assert`. Hoje são 69 testes, todos passando. Eles cobrem as 10 histórias, com casos de sucesso e de erro e os menus de cada opção com entradas simuladas, e a integração do `main.js`, que confere se as 10 funcionalidades existem com o nome certo.
+Os testes usam apenas os módulos nativos `node:test` e `node:assert`. Em 25/11 a `main` tem 115 testes, todos passando. Eles cobrem as 15 histórias, com casos de sucesso e de erro e os menus de cada opção com entradas simuladas; as regras da interface web (prazo, SEI, relatórios, conclusão, pendências, login e cargos); e a integração do `main.js`, que confere as 15 funcionalidades e abre o menu de verdade.
+
+O [workflow do GitHub Actions](./.github/workflows/publicar.yml) roda o `npm test` em todo Pull Request e, a cada merge na `main`, publica a interface no GitHub Pages só se os testes passarem.
 
 ---
 
@@ -408,11 +439,76 @@ As duplas foram reorganizadas. A base da sprint (funções de apoio, campos novo
 
 Cada história e cada bug da Sprint 02 tem uma Issue (#15 a #24), e os Pull Requests fecham as Issues com `Closes #`.
 
+### Sprint 03
+
+*Situação final em 25/11/2026.*
+
+#### Como o trabalho foi dividido
+
+As duplas A, B e C continuaram as mesmas da Sprint 02. Desta vez as Issues foram abertas no começo da sprint, em 05/11: a base (#39) e as histórias 11 a 15 (#40 a #44). As histórias não foram distribuídas: cada dupla escolhe a sua no grupo e avisa, e só então a Issue recebe os nomes. João continua responsável pelas Issues e pelos bugs da `main`.
+
+Em 19/11 o grupo combinou a divisão da interface web, com cada dupla nos seus arquivos:
+
+| Dupla | Integrantes | Parte na interface web |
+| :--- | :--- | :--- |
+| **Dupla A** | Matheus e Antonio (Thony) | Indicadores, armazenamento em JSON, API entre o servidor e a interface |
+| **Dupla B** | Arthur e Sérgio | Pesquisa (título, descrição, solicitante, responsável e SEI) e filtro por status |
+| **Dupla C** | João e Vitor (Vitinho) | Prazo e processo SEI na janela de detalhe |
+
+#### O que cada dupla implementou
+
+**Dupla A — Matheus e Thony**
+- Base da interface web (Matheus, `1ca0ddb`, 05/11, e correções em `8bc4692` e `518c847`, 07/11): servidor do `npm run web`, painel de demandas e telas das histórias 1, 2 e 9.
+- Histórias 11 e 13 (Matheus, `c70fb12`, 06/11): `alertasDePrazo.js` e `registrarPendencia.js`.
+- Status da interface iguais aos do terminal e primeira versão do armazenamento em JSON (Matheus, `1ecff99` a `8ec30a9`, 17 e 18/11): `src/api/demandaRepository.js` e `database/demandas.json`.
+
+**Dupla B — Arthur e Sérgio**
+- Interface das histórias 3, 4, 7 e 8 (Arthur, `8eb1007` em 06/11 e `a1ff3a9` em 19/11, na branch `grupo2`): atualizar status, definir prioridade, pesquisar e filtrar na interface web. A branch não teve Pull Request até o fim da sprint.
+
+**Dupla C — João e Vitinho**
+- Base da sprint (João, `4999062` e `c79a67b`, [PR #45](https://github.com/SPACFlow/SPACFlow/pull/45)): opções 11 a 15 no menu, campos novos da demanda (`pendencias`, `resultado`, `concluidaEm`) e teste de integração com as 15 funcionalidades.
+- História 12 (João, `bf72866` e `3e1872a`, [PR #46](https://github.com/SPACFlow/SPACFlow/pull/46)): código e testes em commits separados. Vitinho revisou e aceitou o PR.
+- Testes das histórias 11 e 13 (João, [PR #48](https://github.com/SPACFlow/SPACFlow/pull/48)): 10 testes, com os alertas calculados para uma data fixa e os menus com entradas simuladas.
+- Interface das histórias 5, 6 e 10 ([PR #50](https://github.com/SPACFlow/SPACFlow/pull/50)): Vitinho fez a primeira versão (`157d524`, 07/11). João acrescentou as regras do terminal para o prazo e o SEI, o visual das seções e 6 testes.
+- Histórias 14 e 15 (João, [PR #58](https://github.com/SPACFlow/SPACFlow/pull/58) e [PR #59](https://github.com/SPACFlow/SPACFlow/pull/59)): código e testes em commits separados, 6 testes em cada.
+- Correção dos status antigos na interface (João, [PR #60](https://github.com/SPACFlow/SPACFlow/pull/60), bug #56).
+- Telas finais da interface (João, [PR #63](https://github.com/SPACFlow/SPACFlow/pull/63), Issue #62): login com os 5 cargos do protótipo, Integração SEI, Relatórios, Configurações e, na janela de detalhe, concluir com o resultado e pendências, com 10 testes.
+- Publicação (João, [PR #61](https://github.com/SPACFlow/SPACFlow/pull/61)): workflow que roda os testes em todo PR e publica a interface no GitHub Pages.
+- Processo e documentação (João): modelos de Issue e de Pull Request ([PR #37](https://github.com/SPACFlow/SPACFlow/pull/37), aceito pelo Vitinho), correções do README ([PR #36](https://github.com/SPACFlow/SPACFlow/pull/36), aceito pelo Vitinho), `CONTRIBUTING.md`, página nova do board no Notion, print do board e esta seção ([PR #57](https://github.com/SPACFlow/SPACFlow/pull/57)).
+
+#### Interação via Pull Requests
+
+| Etapa | Branch | O que aconteceu |
+| :--- | :--- | :--- |
+| [PR #36](https://github.com/SPACFlow/SPACFlow/pull/36) | `readme-board-html` → `main` | Prints do board, seção 10 repetida e link do Notion no README; Vitinho aceitou em 07/11 |
+| [PR #37](https://github.com/SPACFlow/SPACFlow/pull/37) | `modelos-issue-pr` → `main` | Modelos de Issue e de Pull Request; Vitinho aceitou em 07/11 |
+| [PR #45](https://github.com/SPACFlow/SPACFlow/pull/45) | `base-sprint03` → `main` | Base da Sprint 03 (Issue #39); João aceitou em 05/11 |
+| [PR #46](https://github.com/SPACFlow/SPACFlow/pull/46) | `historia-12-concluir-demanda` → `main` | História 12 (Issue #41); Vitinho aceitou em 07/11 |
+| Commits da interface e das histórias 11 e 13 | direto na `main` | Matheus enviou a base da interface (05 e 07/11), as histórias 11 e 13 (06/11) e o armazenamento em JSON (17 e 18/11) |
+| [PR #48](https://github.com/SPACFlow/SPACFlow/pull/48) | `testes-historias-11-13` → `main` | Testes das histórias 11 e 13 (Issues #40 e #42); fechado sem merge em 24/11, reaberto e aceito por João em 25/11 |
+| [PR #50](https://github.com/SPACFlow/SPACFlow/pull/50) | `interface-prazo-sei` → `main` | Prazo e SEI na interface (Issue #49), com o commit do Vitinho; fechado sem merge em 24/11, reaberto e aceito por João em 25/11 |
+| [PR #57](https://github.com/SPACFlow/SPACFlow/pull/57) | `contributing` → `main` | `CONTRIBUTING.md`, link novo do board, print da Sprint 03 e esta seção (Issues #52 e #53); fechado sem merge em 24/11, reaberto e aceito por João em 25/11 |
+| [PR #58](https://github.com/SPACFlow/SPACFlow/pull/58) e [PR #59](https://github.com/SPACFlow/SPACFlow/pull/59) | `historia-14-indicadores-origem` e `historia-15-carga-responsavel` → `main` | Histórias 14 e 15 (Issues #43 e #44); aceitos por João em 25/11 |
+| [PR #60](https://github.com/SPACFlow/SPACFlow/pull/60) | `corrige-status-interface` → `main` | Bug dos status antigos na interface (Issue #56); aceito por João em 25/11 |
+| [PR #61](https://github.com/SPACFlow/SPACFlow/pull/61) | `publicar-interface` → `main` | Workflow de testes e publicação no GitHub Pages; aceito por João em 25/11 |
+| [PR #63](https://github.com/SPACFlow/SPACFlow/pull/63) | `interface-telas-finais` → `main` | Login, cargos, Integração SEI, Relatórios e Configurações (Issue #62); aceito por João em 25/11 |
+
+As Issues da sprint ficam na milestone [Sprint 03 (Entrega 5)](https://github.com/SPACFlow/SPACFlow/milestone/1): base e histórias (#39 a #44), interface web (#47, #49 e #62) e os pontos do feedback de 18/11 (#51 a #56), entre eles o bug dos status antigos na interface (#56).
+
+No último dia, 8 Pull Requests entraram na `main` aceitos pelo próprio autor, sem revisão de outra dupla, porque ninguém revisou a tempo. A revisão por outra dupla foi a prática que o grupo menos conseguiu manter.
+
+#### Situação no fim da sprint
+
+- As 15 histórias estão no menu do terminal, com testes: 115 na `main`, todos passando.
+- A interface web está publicada em [spacflow.github.io/SPACFlow](https://spacflow.github.io/SPACFlow/), com login e 5 cargos.
+- Ficaram de fora: o Pull Request da branch `grupo2` e a API com armazenamento em JSON (`src/api/demandaRepository.js`), que não chegou a ser ligada à interface.
+- Screencasts finais pela URL publicada: [#55](https://github.com/SPACFlow/SPACFlow/issues/55).
+
 ---
 
 ## 12. Quadro Kanban de Execução (Board)
 
-O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade). As imagens abaixo registram o quadro nas Sprints 01 e 02.
+O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade). Em 19/11/2026 a página do Notion passou para um endereço novo, só para pessoas convidadas, porque o endereço antigo exibia o aviso de página sinalizada. As imagens abaixo registram o quadro em cada sprint.
 
 <details>
   <summary><b>🎯 Clique para expandir os prints do board</b></summary>
@@ -426,7 +522,20 @@ O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade).
   <div align="center">
     <img src="https://github.com/user-attachments/assets/00252a10-849f-4890-82a3-f214e0cd72a0" alt="Card da Sprint 02 no Notion" width="688" />
   </div>
+  <br />
+  <p><b>Sprint 03 (19/11/2026):</b> o card da Sprint 03 em andamento; as histórias US10, US11 e US13 (alertas de prazo e pendências, histórias 11 e 13 no código) em revisão; e US15 e US16 (histórias 14 e 15) no backlog.</p>
+  <div align="center">
+    <img src="./assets/board-sprint03.png" alt="Board do SpacFlow no Notion em 19/11/2026: Backlog 6, Em andamento 2, Em revisão 3 e Concluído 22" width="100%" />
+  </div>
 </details>
+
+### Issue tracker da Sprint 03
+
+As 21 Issues da milestone [Sprint 03 (Entrega 5)](https://github.com/SPACFlow/SPACFlow/milestone/1), abertas durante a sprint e fechadas pelos Pull Requests com `Closes #`. O print é de 25/11, antes do merge do PR que traz esta seção.
+
+<div align="center">
+  <img src="./assets/issue-tracker-sprint03.png" alt="Lista das 21 Issues da Sprint 03 no GitHub em 25/11/2026" width="85%" />
+</div>
 
 ---
 
@@ -437,6 +546,7 @@ O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade).
 | **Vídeo da Sprint 01 (histórias 1 a 5)** | O menu funcionando de ponta a ponta: cadastrar, consultar, definir prioridade, atribuir responsável e atualizar status | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/jL-Aw6yKGbg) |
 | **Screencast dos testes automatizados (Sprint 01)** | O comando `npm test` rodando os testes das 5 histórias e da integração | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/ypTrZsFt55o) |
 | **Vídeo da Sprint 02 (histórias 6 a 10)** | As novas opções do menu: definir prazo, registrar processo SEI, pesquisar, filtrar por status e ver os indicadores | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/_C27xyH__2E) |
+| **Produto publicado (Sprint 03)** | Interface web com login, painel, Integração SEI, Relatórios e Configurações | [spacflow.github.io/SPACFlow](https://spacflow.github.io/SPACFlow/) |
 
 ### Onde cada história aparece nos vídeos
 

@@ -25,6 +25,19 @@ import {
 } from './src/funcionalidades/indicadoresOrigemCategoria.js';
 import { calcularCargaPorResponsavel, executarCargaPorResponsavel } from './src/funcionalidades/cargaPorResponsavel.js';
 import { formatarDataBR, hojeISO } from './src/utils/formatacao.js';
+import { demandaRepository as repositorioWeb } from './src/interface/repositories/demandaRepository.js';
+import {
+  definirPrazo as definirPrazoWeb, converterPrazo, situacaoDoPrazo,
+} from './src/interface/funcionalidades/definirPrazo.js';
+import { registrarSei as registrarSeiWeb, validarNumeroSei } from './src/interface/funcionalidades/registrarSei.js';
+import { alertasDePrazo as alertasWeb, indicadoresOrigemCategoria as origemWeb, cargaPorResponsavel as cargaWeb } from './src/interface/funcionalidades/relatorios.js';
+import { situacaoSei } from './src/interface/funcionalidades/integracaoSei.js';
+import { concluirDemanda as concluirWeb } from './src/interface/funcionalidades/concluirDemanda.js';
+import { registrarPendencia as pendenciaWeb, resolverPendencia as resolverWeb } from './src/interface/funcionalidades/registrarPendencia.js';
+import {
+  criarConta, entrar, sair, usuarioAtual, cadastrarUsuario, alterarCargo, removerUsuario,
+} from './src/interface/funcionalidades/login.js';
+import { pode } from './src/interface/models/usuario.js';
 
 const ORIGEM = 'Ministério Público';
 const CATEGORIA = 'Inspeção de ambiente de trabalho';
@@ -571,7 +584,63 @@ describe('História 10 — Registrar processo SEI', () => {
 });
 
 describe('História 11 — Alertas de prazo', () => {
-  it.todo('testes da história 11');
+  const lista = [
+    { id: 1, titulo: 'Atrasada há 3 dias', status: 'Pendente', responsavel: 'Ana', prazo: '2026-11-07' },
+    { id: 2, titulo: 'Vence hoje', status: 'Em andamento', responsavel: null, prazo: '2026-11-10' },
+    { id: 3, titulo: 'Vence em 5 dias', status: 'Pendente', responsavel: 'Carlos', prazo: '2026-11-15' },
+    { id: 4, titulo: 'Vence em 6 dias', status: 'Pendente', responsavel: 'Carlos', prazo: '2026-11-16' },
+    { id: 5, titulo: 'Atrasada há 1 dia', status: 'Pendente', responsavel: 'Ana', prazo: '2026-11-09' },
+    { id: 6, titulo: 'Concluída atrasada', status: 'Concluída', responsavel: 'Ana', prazo: '2026-11-01' },
+    { id: 7, titulo: 'Cancelada vencendo', status: 'Cancelada', responsavel: 'Ana', prazo: '2026-11-11' },
+    { id: 8, titulo: 'Sem prazo', status: 'Pendente', responsavel: 'Ana', prazo: null },
+  ];
+  const HOJE = '2026-11-10';
+  const comLista = (t, demandas = lista) => t.mock.method(demandaRepository, 'listar', () => demandas);
+  const ids = (alertas) => alertas.map(({ demanda }) => demanda.id);
+
+  it('separa as atrasadas das que vencem nos próximos 5 dias, contando hoje', (t) => {
+    comLista(t);
+    const { atrasadas, vencendo } = alertasDePrazo(HOJE);
+    assert.deepEqual(ids(atrasadas), [1, 5]);
+    assert.deepEqual(ids(vencendo), [2, 3]);
+  });
+
+  it('calcula os dias de atraso e os dias que faltam', (t) => {
+    comLista(t);
+    const { atrasadas, vencendo } = alertasDePrazo(HOJE);
+    assert.deepEqual(atrasadas.map(({ dias }) => dias), [-3, -1]);
+    assert.deepEqual(vencendo.map(({ dias }) => dias), [0, 5]);
+  });
+
+  it('não mostra demanda concluída, cancelada ou sem prazo', (t) => {
+    comLista(t);
+    const { atrasadas, vencendo } = alertasDePrazo(HOJE);
+    const todos = [...ids(atrasadas), ...ids(vencendo)];
+    for (const id of [4, 6, 7, 8]) assert.ok(!todos.includes(id), `a demanda #${id} não deveria aparecer`);
+  });
+
+  it('menu: mostra as atrasadas e as que vencem, com os dias', async (t) => {
+    const hoje = hojeISO();
+    const somar = (dias) => new Date(Date.parse(hoje) + dias * 86400000).toISOString().slice(0, 10);
+    comLista(t, [
+      { id: 1, titulo: 'Inspeção atrasada', status: 'Pendente', responsavel: 'Ana', prazo: somar(-2) },
+      { id: 2, titulo: 'Parecer para amanhã', status: 'Pendente', responsavel: null, prazo: somar(1) },
+    ]);
+    const saida = capturarSaida(t);
+    await executarAlertasDePrazo();
+    const texto = saida.join('\n');
+    assert.match(texto, /Atrasadas \(1\):/);
+    assert.match(texto, /#1 Inspeção atrasada · prazo .* · atrasada há 2 dias · Ana/);
+    assert.match(texto, /Vencem nos próximos 5 dias \(1\):/);
+    assert.match(texto, /#2 Parecer para amanhã · prazo .* · vence amanhã · sem responsável/);
+  });
+
+  it('menu: avisa quando não há alertas', async (t) => {
+    comLista(t, []);
+    const saida = capturarSaida(t);
+    await executarAlertasDePrazo();
+    assert.match(saida.join('\n'), /Nenhuma demanda atrasada ou vencendo nos próximos 5 dias/);
+  });
 });
 
 describe('História 12 — Concluir demanda com o resultado', () => {
@@ -640,15 +709,190 @@ describe('História 12 — Concluir demanda com o resultado', () => {
 });
 
 describe('História 13 — Registrar pendência', () => {
-  it.todo('testes da história 13');
+  it('registra a pendência com número, data e quem registrou', () => {
+    const d = novaDemanda('Inspeção com pendência');
+    const { pendencia } = registrarPendencia({ id: d.id, descricao: '  Aguardando documento do MPT  ', autor: ' Mariana ' });
+    assert.equal(pendencia.numero, 1);
+    assert.equal(pendencia.descricao, 'Aguardando documento do MPT');
+    assert.equal(pendencia.por, 'Mariana');
+    assert.ok(pendencia.em);
+    assert.equal(pendencia.resolvidaEm, null);
+    assert.equal(registrarPendencia({ id: d.id, descricao: 'Aguardando visita', autor: 'Carlos' }).pendencia.numero, 2);
+    assert.equal(demandaRepository.buscarPorId(d.id).pendencias.length, 2);
+  });
+
+  it('a descrição é obrigatória, com até 200 caracteres, e precisa de quem registra', () => {
+    const d = novaDemanda();
+    assert.throws(() => registrarPendencia({ id: d.id, descricao: '  ', autor: 'Ana' }), /Descreva a pendência/);
+    assert.throws(() => registrarPendencia({ id: d.id, descricao: 'a'.repeat(201), autor: 'Ana' }), /no máximo 200 caracteres/);
+    assert.throws(() => registrarPendencia({ id: d.id, descricao: 'Aguardando', autor: '' }), /quem está registrando/);
+    assert.doesNotThrow(() => registrarPendencia({ id: d.id, descricao: 'a'.repeat(200), autor: 'Ana' }));
+  });
+
+  it('demanda concluída ou cancelada não recebe pendência nova', () => {
+    const d = novaDemanda();
+    encerrar(d.id);
+    assert.throws(() => registrarPendencia({ id: d.id, descricao: 'Aguardando', autor: 'Ana' }), /não recebe pendência nova/);
+    assert.throws(() => registrarPendencia({ id: 99999, descricao: 'Aguardando', autor: 'Ana' }), /não encontrada/);
+  });
+
+  it('marca a pendência como resolvida só uma vez', () => {
+    const d = novaDemanda();
+    registrarPendencia({ id: d.id, descricao: 'Aguardando documento', autor: 'Ana' });
+    const { pendencia } = resolverPendencia({ id: d.id, numero: '1' });
+    assert.ok(pendencia.resolvidaEm);
+    assert.throws(() => resolverPendencia({ id: d.id, numero: 1 }), /já está resolvida/);
+    assert.throws(() => resolverPendencia({ id: d.id, numero: 7 }), /não tem a pendência 7/);
+  });
+
+  it('menu: registra e depois resolve, mostrando a lista', async (t) => {
+    const saida = capturarSaida(t);
+    const d = novaDemanda('Inspeção no menu');
+    await executarRegistrarPendencia(terminalFalso(String(d.id), '1', 'Aguardando laudo', 'Carlos'));
+    await executarRegistrarPendencia(terminalFalso(String(d.id), '2', '1'));
+    const texto = saida.join('\n');
+    assert.match(texto, new RegExp(`✔ Pendência 1 registrada na demanda #${d.id}`));
+    assert.match(texto, /1\. Aguardando laudo · Carlos, .* · aberta/);
+    assert.match(texto, new RegExp(`✔ Pendência 1 da demanda #${d.id} marcada como resolvida`));
+    assert.match(texto, /1\. Aguardando laudo · Carlos, .* · resolvida em/);
+  });
 });
 
 describe('História 14 — Indicadores por origem e categoria', () => {
-  it.todo('testes da história 14');
+  const lista = [
+    { id: 1, status: 'Pendente', origem: 'Ministério Público', categoria: 'Acidente de trabalho' },
+    { id: 2, status: 'Em andamento', origem: 'Ministério Público', categoria: 'Parecer técnico' },
+    { id: 3, status: 'Concluída', origem: 'Ministério Público', categoria: 'Acidente de trabalho' },
+    { id: 4, status: 'Cancelada', origem: 'Ouvidoria', categoria: 'Outros' },
+    { id: 5, status: 'Pendente', origem: null, categoria: null },
+  ];
+  const comLista = (t, demandas = lista) => t.mock.method(demandaRepository, 'listar', () => demandas);
+  const linha = (linhas, nome) => linhas.find((l) => l.nome === nome);
+
+  it('conta por origem e por categoria, separando as em aberto das encerradas', (t) => {
+    comLista(t);
+    const { total, porOrigem, porCategoria } = calcularIndicadoresOrigemCategoria();
+    assert.equal(total, 5);
+    assert.deepEqual(linha(porOrigem, 'Ministério Público'), { nome: 'Ministério Público', abertas: 2, encerradas: 1, total: 3 });
+    assert.deepEqual(linha(porOrigem, 'Ouvidoria'), { nome: 'Ouvidoria', abertas: 0, encerradas: 1, total: 1 });
+    assert.deepEqual(linha(porCategoria, 'Acidente de trabalho'), { nome: 'Acidente de trabalho', abertas: 1, encerradas: 1, total: 2 });
+  });
+
+  it('mostra todas as origens e categorias do cadastro, mesmo com zero', (t) => {
+    comLista(t);
+    const { porOrigem, porCategoria } = calcularIndicadoresOrigemCategoria();
+    assert.deepEqual(porOrigem.slice(0, 5).map((l) => l.nome), ['Ministério Público', 'Prefeitura', 'Ouvidoria', 'Secretaria de Saúde', 'Outro órgão']);
+    assert.equal(linha(porOrigem, 'Prefeitura').total, 0);
+    assert.equal(linha(porCategoria, 'Inspeção de ambiente de trabalho').total, 0);
+  });
+
+  it('demanda sem origem ou sem categoria aparece como "Não informada"', (t) => {
+    const listar = comLista(t);
+    const { porOrigem, porCategoria } = calcularIndicadoresOrigemCategoria();
+    assert.deepEqual(porOrigem.at(-1), { nome: 'Não informada', abertas: 1, encerradas: 0, total: 1 });
+    assert.equal(porCategoria.at(-1).nome, 'Não informada');
+    listar.mock.mockImplementation(() => lista.slice(0, 4));
+    assert.ok(!calcularIndicadoresOrigemCategoria().porOrigem.some((l) => l.nome === 'Não informada'));
+  });
+
+  it('sem demandas cadastradas, mostra tudo zerado', (t) => {
+    comLista(t, []);
+    const { total, porOrigem, porCategoria } = calcularIndicadoresOrigemCategoria();
+    assert.equal(total, 0);
+    assert.equal(porOrigem.length, 5);
+    assert.equal(porCategoria.length, 5);
+    assert.ok([...porOrigem, ...porCategoria].every((l) => l.total === 0));
+  });
+
+  it('menu: mostra o total e cada origem e categoria com os números', async (t) => {
+    comLista(t);
+    const saida = capturarSaida(t);
+    await executarIndicadoresOrigemCategoria();
+    const texto = saida.join('\n');
+    assert.match(texto, /Total de demandas: 5/);
+    assert.match(texto, /Ministério Público: 3 demandas \(2 em aberto, 1 encerrada\)/);
+    assert.match(texto, /Prefeitura: nenhuma demanda/);
+    assert.match(texto, /Por categoria:[\s\S]*Acidente de trabalho: 2 demandas \(1 em aberto, 1 encerrada\)/);
+    assert.match(texto, /Não informada: 1 demanda \(1 em aberto, 0 encerradas\)/);
+  });
+
+  it('menu: avisa quando não há demandas', async (t) => {
+    comLista(t, []);
+    const saida = capturarSaida(t);
+    await executarIndicadoresOrigemCategoria();
+    assert.match(saida.join('\n'), /Nenhuma demanda cadastrada ainda/);
+  });
 });
 
 describe('História 15 — Carga de trabalho por responsável', () => {
-  it.todo('testes da história 15');
+  const HOJE = '2026-11-25';
+  const lista = [
+    { id: 1, status: 'Pendente', responsavel: 'Mariana Santos', prazo: '2026-11-20', prioridade: 'Alta' },
+    { id: 2, status: 'Em andamento', responsavel: 'mariana santos', prazo: '2026-12-10', prioridade: 'Urgente' },
+    { id: 3, status: 'Pendente', responsavel: ' Mariána  Santos ', prazo: null, prioridade: 'Baixa' },
+    { id: 4, status: 'Pendente', responsavel: 'Carlos', prazo: '2026-11-24', prioridade: null },
+    { id: 5, status: 'Concluída', responsavel: 'Carlos', prazo: '2026-11-01', prioridade: 'Alta' },
+    { id: 6, status: 'Cancelada', responsavel: 'Ana', prazo: '2026-11-01', prioridade: 'Alta' },
+    { id: 7, status: 'Pendente', responsavel: null, prazo: '2026-11-01', prioridade: 'Alta' },
+    { id: 8, status: 'Em andamento', responsavel: '  ', prazo: null, prioridade: null },
+  ];
+  const comLista = (t, demandas = lista) => t.mock.method(demandaRepository, 'listar', () => demandas);
+
+  it('mostra, para cada responsável, as em aberto, as atrasadas e as de prioridade Alta ou Urgente', (t) => {
+    comLista(t);
+    const { responsaveis } = calcularCargaPorResponsavel(HOJE);
+    assert.deepEqual(responsaveis, [
+      { nome: 'Mariana Santos', abertas: 3, atrasadas: 1, prioridadeAlta: 2 },
+      { nome: 'Carlos', abertas: 1, atrasadas: 1, prioridadeAlta: 0 },
+    ]);
+  });
+
+  it('junta o mesmo nome com acento, maiúscula ou espaço diferente', (t) => {
+    comLista(t);
+    const nomes = calcularCargaPorResponsavel(HOJE).responsaveis.map((r) => r.nome);
+    assert.equal(nomes.filter((n) => /mari/i.test(n)).length, 1);
+  });
+
+  it('demandas em aberto sem responsável ficam numa linha separada', (t) => {
+    comLista(t);
+    const { semResponsavel } = calcularCargaPorResponsavel(HOJE);
+    assert.deepEqual(semResponsavel, { nome: 'Sem responsável', abertas: 2, atrasadas: 1, prioridadeAlta: 1 });
+  });
+
+  it('ordena da maior carga para a menor e não conta concluídas nem canceladas', (t) => {
+    comLista(t, [
+      { id: 1, status: 'Pendente', responsavel: 'Bruno', prazo: null },
+      { id: 2, status: 'Pendente', responsavel: 'Ana', prazo: null },
+      { id: 3, status: 'Pendente', responsavel: 'Ana', prazo: null },
+      { id: 4, status: 'Concluída', responsavel: 'Bruno', prazo: null },
+      { id: 5, status: 'Concluída', responsavel: 'Bruno', prazo: null },
+      { id: 6, status: 'Cancelada', responsavel: 'Célia', prazo: null },
+    ]);
+    const { responsaveis } = calcularCargaPorResponsavel(HOJE);
+    assert.deepEqual(responsaveis.map((r) => [r.nome, r.abertas]), [['Ana', 2], ['Bruno', 1]]);
+  });
+
+  it('menu: mostra uma linha por responsável e a dos sem responsável', async (t) => {
+    const hoje = hojeISO();
+    const ontem = new Date(Date.parse(hoje) - 86400000).toISOString().slice(0, 10);
+    comLista(t, [
+      { id: 1, status: 'Pendente', responsavel: 'Ana', prazo: ontem, prioridade: 'Alta' },
+      { id: 2, status: 'Pendente', responsavel: 'Ana', prazo: null, prioridade: null },
+      { id: 3, status: 'Pendente', responsavel: null, prazo: null, prioridade: null },
+    ]);
+    const saida = capturarSaida(t);
+    await executarCargaPorResponsavel();
+    const texto = saida.join('\n');
+    assert.match(texto, /Ana: 2 demandas em aberto · 1 atrasada · 1 com prioridade Alta ou Urgente/);
+    assert.match(texto, /Sem responsável: 1 demanda em aberto · 0 atrasadas · 0 com prioridade Alta ou Urgente/);
+  });
+
+  it('menu: avisa quando não há demandas em aberto', async (t) => {
+    comLista(t, [{ id: 1, status: 'Concluída', responsavel: 'Ana', prazo: null }]);
+    const saida = capturarSaida(t);
+    await executarCargaPorResponsavel();
+    assert.match(saida.join('\n'), /Nenhuma demanda em aberto/);
+  });
 });
 
 describe('Integração — main.js', () => {
@@ -698,5 +942,183 @@ describe('Integração — main.js', () => {
     const final = consultarDemandas({ status: 'Concluída' }).find((x) => x.id === d.id);
     assert.equal(final.prioridade, 'Alta');
     assert.equal(final.responsavel, 'Mariana Santos');
+  });
+});
+
+describe('Interface web — prazo e processo SEI (Issue #49)', () => {
+  const HOJE = '2026-11-19';
+  const demandaWeb = (extra = {}) => repositorioWeb.adicionar({
+    id: repositorioWeb.gerarId(), titulo: 'Demanda da interface', status: 'Pendente', prazo: null, numeroSei: null, ...extra,
+  });
+
+  it('converte o prazo do campo de data ou no formato DD/MM/AAAA', () => {
+    assert.equal(converterPrazo('2026-12-01'), '2026-12-01');
+    assert.equal(converterPrazo(' 01/12/2026 '), '2026-12-01');
+    assert.throws(() => converterPrazo(''), /Informe a data do prazo/);
+    assert.throws(() => converterPrazo('1/12/26'), /Use o formato DD\/MM\/AAAA/);
+    assert.throws(() => converterPrazo('31/02/2027'), /31\/02\/2027 não existe/);
+  });
+
+  it('mostra quanto falta para o prazo ou há quantos dias está atrasada', () => {
+    assert.equal(situacaoDoPrazo('2026-11-17', HOJE), 'Atrasada há 2 dias');
+    assert.equal(situacaoDoPrazo('2026-11-18', HOJE), 'Atrasada há 1 dia');
+    assert.equal(situacaoDoPrazo(HOJE, HOJE), 'Vence hoje');
+    assert.equal(situacaoDoPrazo('2026-11-20', HOJE), 'Vence amanhã');
+    assert.equal(situacaoDoPrazo('2026-11-29', HOJE), 'Vence em 10 dias');
+    assert.equal(situacaoDoPrazo(null, HOJE), 'Sem prazo definido');
+  });
+
+  it('define e depois altera o prazo, guardando o anterior', async () => {
+    const d = demandaWeb();
+    const primeiro = await definirPrazoWeb(d.id, '2026-12-01', HOJE);
+    assert.equal(primeiro.anterior, null);
+    assert.equal(repositorioWeb.buscarPorId(d.id).prazo, '2026-12-01');
+    const segundo = await definirPrazoWeb(d.id, '10/12/2026', HOJE);
+    assert.equal(segundo.anterior, '2026-12-01');
+    assert.equal(segundo.demanda.prazo, '2026-12-10');
+  });
+
+  it('não aceita prazo que já passou, repetido ou em demanda encerrada', async () => {
+    const d = demandaWeb({ prazo: '2026-12-01' });
+    await assert.rejects(definirPrazoWeb(d.id, '2026-11-18', HOJE), /já passou/);
+    await assert.rejects(definirPrazoWeb(d.id, '2026-12-01', HOJE), /já está com prazo em 01\/12\/2026/);
+    await assert.doesNotReject(definirPrazoWeb(d.id, HOJE, HOJE));
+    for (const status of ['Concluída', 'Cancelada']) {
+      const encerrada = demandaWeb({ status });
+      await assert.rejects(definirPrazoWeb(encerrada.id, '2026-12-01', HOJE), /não pode receber prazo/);
+    }
+    await assert.rejects(definirPrazoWeb(99999, '2026-12-01', HOJE), /não encontrada/);
+  });
+
+  it('valida o número SEI com as mesmas regras do terminal', () => {
+    assert.equal(validarNumeroSei('SEI nº 8918.461/2026-70', 2026), '8918.461/2026-70');
+    assert.equal(validarNumeroSei(' 12345.123456/2025-01 ', 2026), '12345.123456/2025-01');
+    assert.throws(() => validarNumeroSei('  ', 2026), /Informe o número do processo SEI/);
+    assert.throws(() => validarNumeroSei('8918461202670', 2026), /Use o formato 8918\.461\/2026-70/);
+    assert.throws(() => validarNumeroSei('8918.461/2027-70', 2026), /não pode ser maior que o ano atual/);
+  });
+
+  it('vincula o SEI e não deixa o mesmo número em duas demandas', async () => {
+    const ano = new Date().getFullYear();
+    const a = demandaWeb();
+    const b = demandaWeb();
+    const numero = `7777.${String(a.id).padStart(3, '0')}/${ano}-01`;
+    const { anterior } = await registrarSeiWeb(a.id, numero);
+    assert.equal(anterior, null);
+    assert.equal(repositorioWeb.buscarPorId(a.id).numeroSei, numero);
+    await assert.rejects(registrarSeiWeb(a.id, numero), /já está vinculada ao SEI/);
+    await assert.rejects(registrarSeiWeb(b.id, numero), new RegExp(`já está registrado na demanda #${a.id}`));
+    const troca = await registrarSeiWeb(a.id, `7777.${String(a.id).padStart(3, '0')}/${ano}-02`);
+    assert.equal(troca.anterior, numero);
+  });
+});
+
+describe('Interface web — relatórios e integração SEI', () => {
+  const HOJE = '2026-11-25';
+  const lista = [
+    { id: 1, titulo: 'A', status: 'Pendente', prazo: '2026-11-20', responsavel: 'Ana', prioridade: 'Alta', origem: 'Ouvidoria', categoria: 'Outros', numeroSei: '1111.111/2026-11' },
+    { id: 2, titulo: 'B', status: 'Em andamento', prazo: '2026-11-27', responsavel: 'ana', prioridade: 'Baixa', origem: 'Ouvidoria', categoria: 'Parecer técnico', numeroSei: null },
+    { id: 3, titulo: 'C', status: 'Concluída', prazo: '2026-11-01', responsavel: 'Bruno', prioridade: 'Urgente', origem: 'Prefeitura', categoria: 'Outros', numeroSei: null },
+    { id: 4, titulo: 'D', status: 'Pendente', prazo: '2026-12-30', responsavel: null, prioridade: null, origem: null, categoria: null, numeroSei: null },
+  ];
+
+  it('alertas de prazo seguem a história 11', () => {
+    const { atrasadas, vencendo } = alertasWeb(lista, HOJE);
+    assert.deepEqual(atrasadas.map(({ demanda, dias }) => [demanda.id, dias]), [[1, -5]]);
+    assert.deepEqual(vencendo.map(({ demanda, dias }) => [demanda.id, dias]), [[2, 2]]);
+  });
+
+  it('origem e categoria seguem a história 14', () => {
+    const { porOrigem, porCategoria } = origemWeb(lista);
+    assert.deepEqual(porOrigem.find((l) => l.nome === 'Ouvidoria'), { nome: 'Ouvidoria', abertas: 2, encerradas: 0, total: 2 });
+    assert.deepEqual(porOrigem.at(-1), { nome: 'Não informada', abertas: 1, encerradas: 0, total: 1 });
+    assert.equal(porCategoria.find((l) => l.nome === 'Outros').encerradas, 1);
+  });
+
+  it('carga por responsável segue a história 15', () => {
+    const { responsaveis, semResponsavel } = cargaWeb(lista, HOJE);
+    assert.deepEqual(responsaveis, [{ nome: 'Ana', abertas: 2, atrasadas: 1, prioridadeAlta: 1 }]);
+    assert.equal(semResponsavel.abertas, 1);
+  });
+
+  it('a tela do SEI separa as vinculadas das em aberto sem processo e procura pelo número', () => {
+    const situacao = situacaoSei(lista);
+    assert.deepEqual(situacao.vinculadas.map((d) => d.id), [1]);
+    assert.deepEqual(situacao.pendentes.map((d) => d.id), [2, 4]);
+    assert.deepEqual(situacaoSei(lista, '1111.111').vinculadas.map((d) => d.id), [1]);
+    assert.deepEqual(situacaoSei(lista, 'zzz').pendentes, []);
+  });
+});
+
+describe('Interface web — concluir demanda e pendências', () => {
+  const demandaWeb = (extra = {}) => repositorioWeb.adicionar({
+    id: repositorioWeb.gerarId(), titulo: 'Demanda web', status: 'Em andamento', responsavel: 'Mariana Santos', pendencias: [], historicoStatus: [], ...extra,
+  });
+
+  it('só o responsável conclui, com resultado de até 500 caracteres', async () => {
+    const d = demandaWeb();
+    await assert.rejects(concluirWeb({ id: d.id, responsavel: 'Carlos', resultado: 'Ok' }), /Só Mariana Santos/);
+    await assert.rejects(concluirWeb({ id: d.id, responsavel: 'mariana santos', resultado: '  ' }), /Descreva o resultado/);
+    await assert.rejects(concluirWeb({ id: d.id, responsavel: 'mariana santos', resultado: 'a'.repeat(501) }), /no máximo 500/);
+    const concluida = await concluirWeb({ id: d.id, responsavel: 'Mariána Santos', resultado: 'Parecer enviado.' });
+    assert.equal(concluida.status, 'Concluída');
+    assert.ok(concluida.concluidaEm);
+    assert.equal(concluida.historicoStatus.at(-1).para, 'Concluída');
+    await assert.rejects(concluirWeb({ id: d.id, responsavel: 'Mariana Santos', resultado: 'De novo' }), /já está concluída/);
+  });
+
+  it('registra pendências numeradas e resolve cada uma só uma vez', async () => {
+    const d = demandaWeb();
+    const primeira = await pendenciaWeb({ id: d.id, descricao: ' Aguardando laudo ', autor: 'Ana' });
+    assert.equal(primeira.numero, 1);
+    assert.equal(primeira.descricao, 'Aguardando laudo');
+    assert.equal((await pendenciaWeb({ id: d.id, descricao: 'Aguardando visita', autor: 'Ana' })).numero, 2);
+    await assert.rejects(pendenciaWeb({ id: d.id, descricao: 'a'.repeat(201), autor: 'Ana' }), /no máximo 200/);
+    await resolverWeb({ id: d.id, numero: '1' });
+    await assert.rejects(resolverWeb({ id: d.id, numero: 1 }), /já está resolvida/);
+    const encerrada = demandaWeb({ status: 'Cancelada' });
+    await assert.rejects(pendenciaWeb({ id: encerrada.id, descricao: 'X', autor: 'Ana' }), /não recebe pendência nova/);
+  });
+});
+
+describe('Interface web — login e cargos', () => {
+  it('a primeira conta vira coordenação, e as seguintes começam como visualizador', async () => {
+    const coordenacao = await criarConta({ nome: 'Coordenação Teste', email: 'Coord@Teste.test', senha: 'senha-teste-1', confirmacao: 'senha-teste-1' });
+    assert.equal(coordenacao.cargo, 'coordenador');
+    assert.equal(coordenacao.email, 'coord@teste.test');
+    assert.equal(usuarioAtual().id, coordenacao.id);
+    sair();
+    assert.equal(usuarioAtual(), null);
+    const outra = await criarConta({ nome: 'Pessoa Nova', email: 'nova@teste.test', senha: 'senha-teste-2', confirmacao: 'senha-teste-2' });
+    assert.equal(outra.cargo, 'visualizador');
+    sair();
+  });
+
+  it('confere senha, e-mail repetido e tamanho mínimo da senha', async () => {
+    await assert.rejects(entrar({ email: 'coord@teste.test', senha: 'errada-123' }), /E-mail ou senha incorretos/);
+    assert.equal((await entrar({ email: ' COORD@teste.test ', senha: 'senha-teste-1' })).cargo, 'coordenador');
+    await assert.rejects(criarConta({ nome: 'X', email: 'nova@teste.test', senha: 'senha-teste-3', confirmacao: 'senha-teste-3' }), /Já existe um usuário/);
+    await assert.rejects(criarConta({ nome: 'Y', email: 'y@teste.test', senha: 'curta', confirmacao: 'curta' }), /pelo menos 8/);
+    await assert.rejects(criarConta({ nome: 'Z', email: 'z@teste.test', senha: 'senha-teste-4', confirmacao: 'outra-senha' }), /confirmação/);
+  });
+
+  it('só a coordenação cadastra usuários e o sistema mantém uma coordenação', async () => {
+    const coordenacao = await entrar({ email: 'coord@teste.test', senha: 'senha-teste-1' });
+    const tecnico = await cadastrarUsuario({ nome: 'Técnico Teste', email: 'tec@teste.test', cargo: 'tecnico', senha: 'senha-teste-5' });
+    assert.equal(tecnico.cargo, 'tecnico');
+    await assert.rejects(cadastrarUsuario({ nome: 'W', email: 'w@teste.test', cargo: 'tecnico', senha: 'senha-teste-6' }, tecnico), /Só a coordenação/);
+    assert.throws(() => alterarCargo(coordenacao.id, 'tecnico'), /pelo menos uma pessoa na coordenação/);
+    assert.throws(() => removerUsuario(coordenacao.id), /sua própria conta/);
+    sair();
+  });
+
+  it('cada cargo tem as permissões do protótipo', () => {
+    assert.ok(pode({ cargo: 'coordenador' }, 'usuarios'));
+    assert.ok(pode({ cargo: 'tecnico' }, 'concluir'));
+    assert.ok(!pode({ cargo: 'tecnico' }, 'prazo'));
+    assert.ok(pode({ cargo: 'administrativo' }, 'sei'));
+    assert.ok(!pode({ cargo: 'juridico' }, 'criar'));
+    assert.ok(!pode({ cargo: 'visualizador' }, 'pendencia'));
+    assert.ok(pode({ cargo: 'visualizador' }, 'relatorios'));
   });
 });
