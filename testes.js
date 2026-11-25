@@ -571,7 +571,63 @@ describe('História 10 — Registrar processo SEI', () => {
 });
 
 describe('História 11 — Alertas de prazo', () => {
-  it.todo('testes da história 11');
+  const lista = [
+    { id: 1, titulo: 'Atrasada há 3 dias', status: 'Pendente', responsavel: 'Ana', prazo: '2026-11-07' },
+    { id: 2, titulo: 'Vence hoje', status: 'Em andamento', responsavel: null, prazo: '2026-11-10' },
+    { id: 3, titulo: 'Vence em 5 dias', status: 'Pendente', responsavel: 'Carlos', prazo: '2026-11-15' },
+    { id: 4, titulo: 'Vence em 6 dias', status: 'Pendente', responsavel: 'Carlos', prazo: '2026-11-16' },
+    { id: 5, titulo: 'Atrasada há 1 dia', status: 'Pendente', responsavel: 'Ana', prazo: '2026-11-09' },
+    { id: 6, titulo: 'Concluída atrasada', status: 'Concluída', responsavel: 'Ana', prazo: '2026-11-01' },
+    { id: 7, titulo: 'Cancelada vencendo', status: 'Cancelada', responsavel: 'Ana', prazo: '2026-11-11' },
+    { id: 8, titulo: 'Sem prazo', status: 'Pendente', responsavel: 'Ana', prazo: null },
+  ];
+  const HOJE = '2026-11-10';
+  const comLista = (t, demandas = lista) => t.mock.method(demandaRepository, 'listar', () => demandas);
+  const ids = (alertas) => alertas.map(({ demanda }) => demanda.id);
+
+  it('separa as atrasadas das que vencem nos próximos 5 dias, contando hoje', (t) => {
+    comLista(t);
+    const { atrasadas, vencendo } = alertasDePrazo(HOJE);
+    assert.deepEqual(ids(atrasadas), [1, 5]);
+    assert.deepEqual(ids(vencendo), [2, 3]);
+  });
+
+  it('calcula os dias de atraso e os dias que faltam', (t) => {
+    comLista(t);
+    const { atrasadas, vencendo } = alertasDePrazo(HOJE);
+    assert.deepEqual(atrasadas.map(({ dias }) => dias), [-3, -1]);
+    assert.deepEqual(vencendo.map(({ dias }) => dias), [0, 5]);
+  });
+
+  it('não mostra demanda concluída, cancelada ou sem prazo', (t) => {
+    comLista(t);
+    const { atrasadas, vencendo } = alertasDePrazo(HOJE);
+    const todos = [...ids(atrasadas), ...ids(vencendo)];
+    for (const id of [4, 6, 7, 8]) assert.ok(!todos.includes(id), `a demanda #${id} não deveria aparecer`);
+  });
+
+  it('menu: mostra as atrasadas e as que vencem, com os dias', async (t) => {
+    const hoje = hojeISO();
+    const somar = (dias) => new Date(Date.parse(hoje) + dias * 86400000).toISOString().slice(0, 10);
+    comLista(t, [
+      { id: 1, titulo: 'Inspeção atrasada', status: 'Pendente', responsavel: 'Ana', prazo: somar(-2) },
+      { id: 2, titulo: 'Parecer para amanhã', status: 'Pendente', responsavel: null, prazo: somar(1) },
+    ]);
+    const saida = capturarSaida(t);
+    await executarAlertasDePrazo();
+    const texto = saida.join('\n');
+    assert.match(texto, /Atrasadas \(1\):/);
+    assert.match(texto, /#1 Inspeção atrasada · prazo .* · atrasada há 2 dias · Ana/);
+    assert.match(texto, /Vencem nos próximos 5 dias \(1\):/);
+    assert.match(texto, /#2 Parecer para amanhã · prazo .* · vence amanhã · sem responsável/);
+  });
+
+  it('menu: avisa quando não há alertas', async (t) => {
+    comLista(t, []);
+    const saida = capturarSaida(t);
+    await executarAlertasDePrazo();
+    assert.match(saida.join('\n'), /Nenhuma demanda atrasada ou vencendo nos próximos 5 dias/);
+  });
 });
 
 describe('História 12 — Concluir demanda com o resultado', () => {
@@ -640,7 +696,53 @@ describe('História 12 — Concluir demanda com o resultado', () => {
 });
 
 describe('História 13 — Registrar pendência', () => {
-  it.todo('testes da história 13');
+  it('registra a pendência com número, data e quem registrou', () => {
+    const d = novaDemanda('Inspeção com pendência');
+    const { pendencia } = registrarPendencia({ id: d.id, descricao: '  Aguardando documento do MPT  ', autor: ' Mariana ' });
+    assert.equal(pendencia.numero, 1);
+    assert.equal(pendencia.descricao, 'Aguardando documento do MPT');
+    assert.equal(pendencia.por, 'Mariana');
+    assert.ok(pendencia.em);
+    assert.equal(pendencia.resolvidaEm, null);
+    assert.equal(registrarPendencia({ id: d.id, descricao: 'Aguardando visita', autor: 'Carlos' }).pendencia.numero, 2);
+    assert.equal(demandaRepository.buscarPorId(d.id).pendencias.length, 2);
+  });
+
+  it('a descrição é obrigatória, com até 200 caracteres, e precisa de quem registra', () => {
+    const d = novaDemanda();
+    assert.throws(() => registrarPendencia({ id: d.id, descricao: '  ', autor: 'Ana' }), /Descreva a pendência/);
+    assert.throws(() => registrarPendencia({ id: d.id, descricao: 'a'.repeat(201), autor: 'Ana' }), /no máximo 200 caracteres/);
+    assert.throws(() => registrarPendencia({ id: d.id, descricao: 'Aguardando', autor: '' }), /quem está registrando/);
+    assert.doesNotThrow(() => registrarPendencia({ id: d.id, descricao: 'a'.repeat(200), autor: 'Ana' }));
+  });
+
+  it('demanda concluída ou cancelada não recebe pendência nova', () => {
+    const d = novaDemanda();
+    encerrar(d.id);
+    assert.throws(() => registrarPendencia({ id: d.id, descricao: 'Aguardando', autor: 'Ana' }), /não recebe pendência nova/);
+    assert.throws(() => registrarPendencia({ id: 99999, descricao: 'Aguardando', autor: 'Ana' }), /não encontrada/);
+  });
+
+  it('marca a pendência como resolvida só uma vez', () => {
+    const d = novaDemanda();
+    registrarPendencia({ id: d.id, descricao: 'Aguardando documento', autor: 'Ana' });
+    const { pendencia } = resolverPendencia({ id: d.id, numero: '1' });
+    assert.ok(pendencia.resolvidaEm);
+    assert.throws(() => resolverPendencia({ id: d.id, numero: 1 }), /já está resolvida/);
+    assert.throws(() => resolverPendencia({ id: d.id, numero: 7 }), /não tem a pendência 7/);
+  });
+
+  it('menu: registra e depois resolve, mostrando a lista', async (t) => {
+    const saida = capturarSaida(t);
+    const d = novaDemanda('Inspeção no menu');
+    await executarRegistrarPendencia(terminalFalso(String(d.id), '1', 'Aguardando laudo', 'Carlos'));
+    await executarRegistrarPendencia(terminalFalso(String(d.id), '2', '1'));
+    const texto = saida.join('\n');
+    assert.match(texto, new RegExp(`✔ Pendência 1 registrada na demanda #${d.id}`));
+    assert.match(texto, /1\. Aguardando laudo · Carlos, .* · aberta/);
+    assert.match(texto, new RegExp(`✔ Pendência 1 da demanda #${d.id} marcada como resolvida`));
+    assert.match(texto, /1\. Aguardando laudo · Carlos, .* · resolvida em/);
+  });
 });
 
 describe('História 14 — Indicadores por origem e categoria', () => {
