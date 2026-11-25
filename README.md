@@ -527,6 +527,11 @@ O board atualizado fica no link da seção [Rastreabilidade](#-rastreabilidade).
   <div align="center">
     <img src="./assets/board-sprint03.png" alt="Board do SpacFlow no Notion em 19/11/2026: Backlog 6, Em andamento 2, Em revisão 3 e Concluído 22" width="100%" />
   </div>
+  <br />
+  <p><b>Fim da Sprint 03 (25/11/2026):</b> nenhum card em andamento ou em revisão. O card da Sprint 03, as histórias 11 a 15 e o BK29 (evidências e prints) estão em Concluído. No backlog ficaram US07, US12, US19 e BK28, que não entraram nesta entrega.</p>
+  <div align="center">
+    <img src="./assets/board-sprint03-final.png" alt="Board do SpacFlow no Notion em 25/11/2026: Backlog 4, Em andamento 0, Em revisão 0 e Concluído 29" width="100%" />
+  </div>
 </details>
 
 ### Issue tracker da Sprint 03
