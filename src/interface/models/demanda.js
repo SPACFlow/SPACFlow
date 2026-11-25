@@ -24,3 +24,15 @@ export const RESPONSAVEIS = [
   'Carlos Menezes',
   'Marina Duarte'
 ];
+
+export const ORIGENS = ['Ministério Público', 'Prefeitura', 'Ouvidoria', 'Secretaria de Saúde', 'Outro órgão'];
+
+export const CATEGORIAS = [
+  'Acidente de trabalho',
+  'Doença relacionada ao trabalho',
+  'Inspeção de ambiente de trabalho',
+  'Parecer técnico',
+  'Outros'
+];
+
+export const STATUS_FINAIS = ['Concluída', 'Cancelada'];

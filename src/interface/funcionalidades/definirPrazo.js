@@ -1,6 +1,8 @@
 import { registrarSecao, abrirDetalhe } from '../componentes/detalhe.js';
 import { demandaRepository } from '../repositories/demandaRepository.js';
 import { $, esc, dataBR, avisar } from '../utils/dom.js';
+import { pode } from '../models/usuario.js';
+import { usuarioAtual } from './login.js';
 
 const ENCERRADAS = ['Concluída', 'Cancelada'];
 const DIA = 86400000;
@@ -71,7 +73,7 @@ function desenhar(el, d) {
   el.innerHTML = `
     <h3>Prazo</h3>
     <p class="secao-situacao${atrasada ? ' alerta' : ''}">${esc(d.prazo ? `${dataBR(d.prazo)} · ${situacao}` : situacao)}</p>
-    ${encerrada ? '<p class="secao-dica">Demanda encerrada não recebe prazo novo.</p>' : `
+    ${encerrada ? '<p class="secao-dica">Demanda encerrada não recebe prazo novo.</p>' : !pode(usuarioAtual(), 'prazo') ? '<p class="secao-dica">Só a coordenação define ou altera o prazo.</p>' : `
     <form class="secao-form" novalidate>
       <label>${d.prazo ? 'Novo prazo' : 'Definir prazo'}
         <input type="date" name="prazo" min="${hojeLocal()}" value="${esc(d.prazo ?? '')}" required>

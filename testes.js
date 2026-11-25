@@ -30,6 +30,14 @@ import {
   definirPrazo as definirPrazoWeb, converterPrazo, situacaoDoPrazo,
 } from './src/interface/funcionalidades/definirPrazo.js';
 import { registrarSei as registrarSeiWeb, validarNumeroSei } from './src/interface/funcionalidades/registrarSei.js';
+import { alertasDePrazo as alertasWeb, indicadoresOrigemCategoria as origemWeb, cargaPorResponsavel as cargaWeb } from './src/interface/funcionalidades/relatorios.js';
+import { situacaoSei } from './src/interface/funcionalidades/integracaoSei.js';
+import { concluirDemanda as concluirWeb } from './src/interface/funcionalidades/concluirDemanda.js';
+import { registrarPendencia as pendenciaWeb, resolverPendencia as resolverWeb } from './src/interface/funcionalidades/registrarPendencia.js';
+import {
+  criarConta, entrar, sair, usuarioAtual, cadastrarUsuario, alterarCargo, removerUsuario,
+} from './src/interface/funcionalidades/login.js';
+import { pode } from './src/interface/models/usuario.js';
 
 const ORIGEM = 'Ministério Público';
 const CATEGORIA = 'Inspeção de ambiente de trabalho';
@@ -1002,5 +1010,115 @@ describe('Interface web — prazo e processo SEI (Issue #49)', () => {
     await assert.rejects(registrarSeiWeb(b.id, numero), new RegExp(`já está registrado na demanda #${a.id}`));
     const troca = await registrarSeiWeb(a.id, `7777.${String(a.id).padStart(3, '0')}/${ano}-02`);
     assert.equal(troca.anterior, numero);
+  });
+});
+
+describe('Interface web — relatórios e integração SEI', () => {
+  const HOJE = '2026-11-25';
+  const lista = [
+    { id: 1, titulo: 'A', status: 'Pendente', prazo: '2026-11-20', responsavel: 'Ana', prioridade: 'Alta', origem: 'Ouvidoria', categoria: 'Outros', numeroSei: '1111.111/2026-11' },
+    { id: 2, titulo: 'B', status: 'Em andamento', prazo: '2026-11-27', responsavel: 'ana', prioridade: 'Baixa', origem: 'Ouvidoria', categoria: 'Parecer técnico', numeroSei: null },
+    { id: 3, titulo: 'C', status: 'Concluída', prazo: '2026-11-01', responsavel: 'Bruno', prioridade: 'Urgente', origem: 'Prefeitura', categoria: 'Outros', numeroSei: null },
+    { id: 4, titulo: 'D', status: 'Pendente', prazo: '2026-12-30', responsavel: null, prioridade: null, origem: null, categoria: null, numeroSei: null },
+  ];
+
+  it('alertas de prazo seguem a história 11', () => {
+    const { atrasadas, vencendo } = alertasWeb(lista, HOJE);
+    assert.deepEqual(atrasadas.map(({ demanda, dias }) => [demanda.id, dias]), [[1, -5]]);
+    assert.deepEqual(vencendo.map(({ demanda, dias }) => [demanda.id, dias]), [[2, 2]]);
+  });
+
+  it('origem e categoria seguem a história 14', () => {
+    const { porOrigem, porCategoria } = origemWeb(lista);
+    assert.deepEqual(porOrigem.find((l) => l.nome === 'Ouvidoria'), { nome: 'Ouvidoria', abertas: 2, encerradas: 0, total: 2 });
+    assert.deepEqual(porOrigem.at(-1), { nome: 'Não informada', abertas: 1, encerradas: 0, total: 1 });
+    assert.equal(porCategoria.find((l) => l.nome === 'Outros').encerradas, 1);
+  });
+
+  it('carga por responsável segue a história 15', () => {
+    const { responsaveis, semResponsavel } = cargaWeb(lista, HOJE);
+    assert.deepEqual(responsaveis, [{ nome: 'Ana', abertas: 2, atrasadas: 1, prioridadeAlta: 1 }]);
+    assert.equal(semResponsavel.abertas, 1);
+  });
+
+  it('a tela do SEI separa as vinculadas das em aberto sem processo e procura pelo número', () => {
+    const situacao = situacaoSei(lista);
+    assert.deepEqual(situacao.vinculadas.map((d) => d.id), [1]);
+    assert.deepEqual(situacao.pendentes.map((d) => d.id), [2, 4]);
+    assert.deepEqual(situacaoSei(lista, '1111.111').vinculadas.map((d) => d.id), [1]);
+    assert.deepEqual(situacaoSei(lista, 'zzz').pendentes, []);
+  });
+});
+
+describe('Interface web — concluir demanda e pendências', () => {
+  const demandaWeb = (extra = {}) => repositorioWeb.adicionar({
+    id: repositorioWeb.gerarId(), titulo: 'Demanda web', status: 'Em andamento', responsavel: 'Mariana Santos', pendencias: [], historicoStatus: [], ...extra,
+  });
+
+  it('só o responsável conclui, com resultado de até 500 caracteres', async () => {
+    const d = demandaWeb();
+    await assert.rejects(concluirWeb({ id: d.id, responsavel: 'Carlos', resultado: 'Ok' }), /Só Mariana Santos/);
+    await assert.rejects(concluirWeb({ id: d.id, responsavel: 'mariana santos', resultado: '  ' }), /Descreva o resultado/);
+    await assert.rejects(concluirWeb({ id: d.id, responsavel: 'mariana santos', resultado: 'a'.repeat(501) }), /no máximo 500/);
+    const concluida = await concluirWeb({ id: d.id, responsavel: 'Mariána Santos', resultado: 'Parecer enviado.' });
+    assert.equal(concluida.status, 'Concluída');
+    assert.ok(concluida.concluidaEm);
+    assert.equal(concluida.historicoStatus.at(-1).para, 'Concluída');
+    await assert.rejects(concluirWeb({ id: d.id, responsavel: 'Mariana Santos', resultado: 'De novo' }), /já está concluída/);
+  });
+
+  it('registra pendências numeradas e resolve cada uma só uma vez', async () => {
+    const d = demandaWeb();
+    const primeira = await pendenciaWeb({ id: d.id, descricao: ' Aguardando laudo ', autor: 'Ana' });
+    assert.equal(primeira.numero, 1);
+    assert.equal(primeira.descricao, 'Aguardando laudo');
+    assert.equal((await pendenciaWeb({ id: d.id, descricao: 'Aguardando visita', autor: 'Ana' })).numero, 2);
+    await assert.rejects(pendenciaWeb({ id: d.id, descricao: 'a'.repeat(201), autor: 'Ana' }), /no máximo 200/);
+    await resolverWeb({ id: d.id, numero: '1' });
+    await assert.rejects(resolverWeb({ id: d.id, numero: 1 }), /já está resolvida/);
+    const encerrada = demandaWeb({ status: 'Cancelada' });
+    await assert.rejects(pendenciaWeb({ id: encerrada.id, descricao: 'X', autor: 'Ana' }), /não recebe pendência nova/);
+  });
+});
+
+describe('Interface web — login e cargos', () => {
+  it('a primeira conta vira coordenação, e as seguintes começam como visualizador', async () => {
+    const coordenacao = await criarConta({ nome: 'Coordenação Teste', email: 'Coord@Teste.test', senha: 'senha-teste-1', confirmacao: 'senha-teste-1' });
+    assert.equal(coordenacao.cargo, 'coordenador');
+    assert.equal(coordenacao.email, 'coord@teste.test');
+    assert.equal(usuarioAtual().id, coordenacao.id);
+    sair();
+    assert.equal(usuarioAtual(), null);
+    const outra = await criarConta({ nome: 'Pessoa Nova', email: 'nova@teste.test', senha: 'senha-teste-2', confirmacao: 'senha-teste-2' });
+    assert.equal(outra.cargo, 'visualizador');
+    sair();
+  });
+
+  it('confere senha, e-mail repetido e tamanho mínimo da senha', async () => {
+    await assert.rejects(entrar({ email: 'coord@teste.test', senha: 'errada-123' }), /E-mail ou senha incorretos/);
+    assert.equal((await entrar({ email: ' COORD@teste.test ', senha: 'senha-teste-1' })).cargo, 'coordenador');
+    await assert.rejects(criarConta({ nome: 'X', email: 'nova@teste.test', senha: 'senha-teste-3', confirmacao: 'senha-teste-3' }), /Já existe um usuário/);
+    await assert.rejects(criarConta({ nome: 'Y', email: 'y@teste.test', senha: 'curta', confirmacao: 'curta' }), /pelo menos 8/);
+    await assert.rejects(criarConta({ nome: 'Z', email: 'z@teste.test', senha: 'senha-teste-4', confirmacao: 'outra-senha' }), /confirmação/);
+  });
+
+  it('só a coordenação cadastra usuários e o sistema mantém uma coordenação', async () => {
+    const coordenacao = await entrar({ email: 'coord@teste.test', senha: 'senha-teste-1' });
+    const tecnico = await cadastrarUsuario({ nome: 'Técnico Teste', email: 'tec@teste.test', cargo: 'tecnico', senha: 'senha-teste-5' });
+    assert.equal(tecnico.cargo, 'tecnico');
+    await assert.rejects(cadastrarUsuario({ nome: 'W', email: 'w@teste.test', cargo: 'tecnico', senha: 'senha-teste-6' }, tecnico), /Só a coordenação/);
+    assert.throws(() => alterarCargo(coordenacao.id, 'tecnico'), /pelo menos uma pessoa na coordenação/);
+    assert.throws(() => removerUsuario(coordenacao.id), /sua própria conta/);
+    sair();
+  });
+
+  it('cada cargo tem as permissões do protótipo', () => {
+    assert.ok(pode({ cargo: 'coordenador' }, 'usuarios'));
+    assert.ok(pode({ cargo: 'tecnico' }, 'concluir'));
+    assert.ok(!pode({ cargo: 'tecnico' }, 'prazo'));
+    assert.ok(pode({ cargo: 'administrativo' }, 'sei'));
+    assert.ok(!pode({ cargo: 'juridico' }, 'criar'));
+    assert.ok(!pode({ cargo: 'visualizador' }, 'pendencia'));
+    assert.ok(pode({ cargo: 'visualizador' }, 'relatorios'));
   });
 });
