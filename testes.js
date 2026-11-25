@@ -1122,3 +1122,18 @@ describe('Interface web — login e cargos', () => {
     assert.ok(pode({ cargo: 'visualizador' }, 'relatorios'));
   });
 });
+
+describe('Interface web — integração do main.js', () => {
+  it('toda função que o main.js da interface importa existe no seu arquivo', async () => {
+    const pasta = new URL('./src/interface/', import.meta.url);
+    const codigo = await readFile(new URL('main.js', pasta), 'utf8');
+    const importacoes = [...codigo.matchAll(/import\s*\{([^}]+)\}\s*from\s*'([^']+)'/g)];
+    assert.ok(importacoes.length > 10, 'o main.js da interface deveria importar as funcionalidades');
+    for (const [, nomes, caminho] of importacoes) {
+      const modulo = await import(new URL(caminho, pasta));
+      for (const nome of nomes.split(',').map((n) => n.trim()).filter(Boolean)) {
+        assert.equal(typeof modulo[nome], 'function', `${caminho} não exporta ${nome}`);
+      }
+    }
+  });
+});
