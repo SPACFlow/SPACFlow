@@ -3,40 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SpaceFlow · Painel de Demandas</title>
+  <meta name="theme-color" content="#1d4ed8">
+  <title>SpacFlow · Gestão de demandas da VISAT</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <aside class="sidebar">
-    <div class="marca">
-      <div class="logo">SPAC</div>
-      <div><strong>epacflow</strong><small>VISAT</small></div>
-    </div>
-    <nav>
-      <a class="ativo" href="#">Painel de Demandas</a>
-      <a class="desativado" title="Em breve">Integração SEI</a>
-      <a class="desativado" title="Em breve">Relatórios</a>
-      <a class="desativado" title="Em breve">Configurações</a>
-    </nav>
-    <a class="desativado sair">Sair</a>
-  </aside>
+  <section class="tela-login" id="telaLogin" hidden></section>
 
-  <main>
-    <header class="topo">
-      <div>
-        <h1>Painel de Demandas</h1>
-        <p>Olá, MATHEUS — acompanhamento centralizado das demandas da VISAT.</p>
+  <div class="app" id="app" hidden>
+    <aside class="sidebar">
+      <div class="marca">
+        <div class="logo">SPAC</div>
+        <div><strong>SpacFlow</strong><small>VISAT</small></div>
       </div>
-      <button class="btn primario" id="btnNova">+ Nova demanda</button>
-    </header>
+      <nav id="menu" aria-label="Telas do sistema">
+        <a class="nav-item" href="#painel" data-tela="painel">Painel de Demandas</a>
+        <a class="nav-item" href="#sei" data-tela="sei">Integração SEI</a>
+        <a class="nav-item" href="#relatorios" data-tela="relatorios">Relatórios</a>
+        <a class="nav-item" href="#configuracoes" data-tela="configuracoes">Configurações</a>
+      </nav>
+      <div class="usuario-logado" id="usuarioLogado"></div>
+    </aside>
 
-    <!-- Cada módulo de js/funcionalidades preenche o seu espaço -->
-    <section class="indicadores" id="indicadores"></section>
-    <section class="filtros" id="filtros"></section>
-    <section class="quadro" id="quadro"></section>
-  </main>
+    <main>
+      <header class="topo">
+        <div>
+          <h1 id="tituloTela">Painel de Demandas</h1>
+          <p id="subtituloTela">Acompanhamento centralizado das demandas da VISAT.</p>
+        </div>
+        <button class="btn primario" id="btnNova">+ Nova demanda</button>
+      </header>
 
-  <div class="aviso" id="aviso" role="status"></div>
+      <div data-tela="painel">
+        <section class="indicadores" id="indicadores"></section>
+        <section class="filtros" id="filtros"></section>
+        <section class="quadro" id="quadro"></section>
+      </div>
+      <div data-tela="sei" id="telaSei" hidden></div>
+      <div data-tela="relatorios" id="telaRelatorios" hidden></div>
+      <div data-tela="configuracoes" id="telaConfiguracoes" hidden></div>
+    </main>
+  </div>
+
+  <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
   <script type="module" src="main.js"></script>
 </body>
 </html>
