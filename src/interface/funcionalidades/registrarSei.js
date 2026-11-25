@@ -1,6 +1,8 @@
 import { registrarSecao, abrirDetalhe } from '../componentes/detalhe.js';
 import { demandaRepository } from '../repositories/demandaRepository.js';
 import { $, esc, avisar } from '../utils/dom.js';
+import { pode } from '../models/usuario.js';
+import { usuarioAtual } from './login.js';
 
 const FORMATO_SEI = /^\d{4,5}\.\d{3,6}\/(\d{4})-\d{2}$/;
 export const EXEMPLO_SEI = '8918.461/2026-70';
@@ -50,6 +52,7 @@ function desenhar(el, d) {
   el.innerHTML = `
     <h3>Processo SEI</h3>
     <p class="secao-situacao">${d.numeroSei ? `Vinculada ao SEI <b>${esc(d.numeroSei)}</b>` : 'Nenhum processo SEI vinculado'}</p>
+    ${!pode(usuarioAtual(), 'sei') ? '<p class="secao-dica">Só a coordenação e o administrativo vinculam o processo SEI.</p>' : `
     <form class="secao-form" novalidate>
       <label>${d.numeroSei ? 'Novo número SEI' : 'Número do processo SEI'}
         <input name="numeroSei" value="${esc(d.numeroSei ?? '')}" placeholder="${EXEMPLO_SEI}" autocomplete="off" spellcheck="false" required>
@@ -57,9 +60,10 @@ function desenhar(el, d) {
       <button type="submit" class="btn primario">${d.numeroSei ? 'Alterar SEI' : 'Vincular SEI'}</button>
     </form>
     <p class="secao-dica">Formato: ${EXEMPLO_SEI}. Um mesmo SEI não pode ficar em duas demandas.</p>
-    <p class="erro" role="alert"></p>`;
+    <p class="erro" role="alert"></p>`}`;
 
   const form = el.querySelector('form');
+  if (!form) return;
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const erro = el.querySelector('.erro');
