@@ -817,7 +817,74 @@ describe('História 14 — Indicadores por origem e categoria', () => {
 });
 
 describe('História 15 — Carga de trabalho por responsável', () => {
-  it.todo('testes da história 15');
+  const HOJE = '2026-11-25';
+  const lista = [
+    { id: 1, status: 'Pendente', responsavel: 'Mariana Santos', prazo: '2026-11-20', prioridade: 'Alta' },
+    { id: 2, status: 'Em andamento', responsavel: 'mariana santos', prazo: '2026-12-10', prioridade: 'Urgente' },
+    { id: 3, status: 'Pendente', responsavel: ' Mariána  Santos ', prazo: null, prioridade: 'Baixa' },
+    { id: 4, status: 'Pendente', responsavel: 'Carlos', prazo: '2026-11-24', prioridade: null },
+    { id: 5, status: 'Concluída', responsavel: 'Carlos', prazo: '2026-11-01', prioridade: 'Alta' },
+    { id: 6, status: 'Cancelada', responsavel: 'Ana', prazo: '2026-11-01', prioridade: 'Alta' },
+    { id: 7, status: 'Pendente', responsavel: null, prazo: '2026-11-01', prioridade: 'Alta' },
+    { id: 8, status: 'Em andamento', responsavel: '  ', prazo: null, prioridade: null },
+  ];
+  const comLista = (t, demandas = lista) => t.mock.method(demandaRepository, 'listar', () => demandas);
+
+  it('mostra, para cada responsável, as em aberto, as atrasadas e as de prioridade Alta ou Urgente', (t) => {
+    comLista(t);
+    const { responsaveis } = calcularCargaPorResponsavel(HOJE);
+    assert.deepEqual(responsaveis, [
+      { nome: 'Mariana Santos', abertas: 3, atrasadas: 1, prioridadeAlta: 2 },
+      { nome: 'Carlos', abertas: 1, atrasadas: 1, prioridadeAlta: 0 },
+    ]);
+  });
+
+  it('junta o mesmo nome com acento, maiúscula ou espaço diferente', (t) => {
+    comLista(t);
+    const nomes = calcularCargaPorResponsavel(HOJE).responsaveis.map((r) => r.nome);
+    assert.equal(nomes.filter((n) => /mari/i.test(n)).length, 1);
+  });
+
+  it('demandas em aberto sem responsável ficam numa linha separada', (t) => {
+    comLista(t);
+    const { semResponsavel } = calcularCargaPorResponsavel(HOJE);
+    assert.deepEqual(semResponsavel, { nome: 'Sem responsável', abertas: 2, atrasadas: 1, prioridadeAlta: 1 });
+  });
+
+  it('ordena da maior carga para a menor e não conta concluídas nem canceladas', (t) => {
+    comLista(t, [
+      { id: 1, status: 'Pendente', responsavel: 'Bruno', prazo: null },
+      { id: 2, status: 'Pendente', responsavel: 'Ana', prazo: null },
+      { id: 3, status: 'Pendente', responsavel: 'Ana', prazo: null },
+      { id: 4, status: 'Concluída', responsavel: 'Bruno', prazo: null },
+      { id: 5, status: 'Concluída', responsavel: 'Bruno', prazo: null },
+      { id: 6, status: 'Cancelada', responsavel: 'Célia', prazo: null },
+    ]);
+    const { responsaveis } = calcularCargaPorResponsavel(HOJE);
+    assert.deepEqual(responsaveis.map((r) => [r.nome, r.abertas]), [['Ana', 2], ['Bruno', 1]]);
+  });
+
+  it('menu: mostra uma linha por responsável e a dos sem responsável', async (t) => {
+    const hoje = hojeISO();
+    const ontem = new Date(Date.parse(hoje) - 86400000).toISOString().slice(0, 10);
+    comLista(t, [
+      { id: 1, status: 'Pendente', responsavel: 'Ana', prazo: ontem, prioridade: 'Alta' },
+      { id: 2, status: 'Pendente', responsavel: 'Ana', prazo: null, prioridade: null },
+      { id: 3, status: 'Pendente', responsavel: null, prazo: null, prioridade: null },
+    ]);
+    const saida = capturarSaida(t);
+    await executarCargaPorResponsavel();
+    const texto = saida.join('\n');
+    assert.match(texto, /Ana: 2 demandas em aberto · 1 atrasada · 1 com prioridade Alta ou Urgente/);
+    assert.match(texto, /Sem responsável: 1 demanda em aberto · 0 atrasadas · 0 com prioridade Alta ou Urgente/);
+  });
+
+  it('menu: avisa quando não há demandas em aberto', async (t) => {
+    comLista(t, [{ id: 1, status: 'Concluída', responsavel: 'Ana', prazo: null }]);
+    const saida = capturarSaida(t);
+    await executarCargaPorResponsavel();
+    assert.match(saida.join('\n'), /Nenhuma demanda em aberto/);
+  });
 });
 
 describe('Integração — main.js', () => {
