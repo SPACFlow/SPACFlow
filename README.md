@@ -213,7 +213,7 @@ O projeto é executado através de uma abordagem incremental dividida em 7 seman
 | **Semana 03**<br>*(Requisitos)* | Levantamento de requisitos, histórias de usuário, fluxos e priorização | Backlog priorizado e especificação inicial | `Concluído` |
 | **Semana 04**<br>*(UX / UI)* | Construção de wireframes, protótipos e fluxo de navegação | Protótipo validado | `Concluído` |
 | **Semana 05**<br>*(Desenvolvimento)* | Desenvolvimento incremental em sprints. Sprint 01 concluída: histórias 1 a 5 (prioridade alta e média). Sprint 02 concluída: histórias 6 a 10, mais o histórico de status e as validações do cadastro. Sprint 03 concluída (05/11 a 25/11): histórias 11 a 15 no menu e a interface web publicada | Incrementos funcionais do sistema | `Concluído` |
-| **Semana 06**<br>*(Testes)* | Testes automatizados a cada sprint (`npm test`, com 115 testes na `main`, rodando no GitHub Actions em todo Pull Request), correções de bugs registradas como Issues e validações | Versão estável do sistema | `Concluído` |
+| **Semana 06**<br>*(Testes)* | Testes automatizados a cada sprint (`npm test`, com 116 testes na `main`, rodando no GitHub Actions em todo Pull Request), correções de bugs registradas como Issues e validações | Versão estável do sistema | `Concluído` |
 | **Semana 07**<br>*(Entrega Final)* | Consolidação do sistema, documentação e apresentação de resultados | Entrega final do projeto | `Em andamento` |
 
 > *Nota: O cronograma é flexível e pode sofrer ajustes conforme orientações do orientador e alinhamentos das entregas semanais.*
@@ -333,7 +333,7 @@ npm run web   # abre a interface web em http://localhost:3000
 npm test      # roda os testes automatizados (testes.js)
 ```
 
-Os testes usam apenas os módulos nativos `node:test` e `node:assert`. Em 25/11 a `main` tem 115 testes, todos passando. Eles cobrem as 15 histórias, com casos de sucesso e de erro e os menus de cada opção com entradas simuladas; as regras da interface web (prazo, SEI, relatórios, conclusão, pendências, login e cargos); e a integração do `main.js`, que confere as 15 funcionalidades e abre o menu de verdade.
+Os testes usam apenas os módulos nativos `node:test` e `node:assert`. Em 25/11 a `main` tem 116 testes, todos passando. Eles cobrem as 15 histórias, com casos de sucesso e de erro e os menus de cada opção com entradas simuladas; as regras da interface web (prazo, SEI, relatórios, conclusão, pendências, login e cargos); e a integração do `main.js`, que confere as 15 funcionalidades e abre o menu de verdade.
 
 O [workflow do GitHub Actions](./.github/workflows/publicar.yml) roda o `npm test` em todo Pull Request e, a cada merge na `main`, publica a interface no GitHub Pages só se os testes passarem.
 
@@ -499,10 +499,10 @@ No último dia, 8 Pull Requests entraram na `main` aceitos pelo próprio autor, 
 
 #### Situação no fim da sprint
 
-- As 15 histórias estão no menu do terminal, com testes: 115 na `main`, todos passando.
+- As 15 histórias estão no menu do terminal, com testes: 116 na `main`, todos passando.
 - A interface web está publicada em [spacflow.github.io/SPACFlow](https://spacflow.github.io/SPACFlow/), com login e 5 cargos.
 - Ficaram de fora: o Pull Request da branch `grupo2` e a API com armazenamento em JSON (`src/api/demandaRepository.js`), que não chegou a ser ligada à interface.
-- Screencast final das histórias 11 a 15 pela URL publicada: [assistir no YouTube](https://youtu.be/C2Ne1DC06AE) ([#55](https://github.com/SPACFlow/SPACFlow/issues/55)).
+- Screencast final das histórias 11 a 15 pela URL publicada: [assistir no YouTube](https://youtu.be/C2Ne1DC06AE) e screencast dos testes automatizados: [assistir no YouTube](https://www.youtube.com/watch?v=ohqfOgKR_I4) ([#55](https://github.com/SPACFlow/SPACFlow/issues/55)).
 
 ---
 
@@ -552,6 +552,7 @@ As 21 Issues da milestone [Sprint 03 (Entrega 5)](https://github.com/SPACFlow/SP
 | **Screencast dos testes automatizados (Sprint 01)** | O comando `npm test` rodando os testes das 5 histórias e da integração | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/ypTrZsFt55o) |
 | **Vídeo da Sprint 02 (histórias 6 a 10)** | As novas opções do menu: definir prazo, registrar processo SEI, pesquisar, filtrar por status e ver os indicadores | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/_C27xyH__2E) |
 | **Vídeo da Sprint 03 (histórias 11 a 15)** | O produto publicado: primeiro acesso, nova demanda, alertas de prazo, pendência, conclusão com resultado, origem e categoria, carga por responsável, Integração SEI e os 5 cargos | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/C2Ne1DC06AE) |
+| **Screencast dos testes automatizados (Sprint 03)** | O comando `npm test` rodando os 116 testes, em 21 grupos: as 15 histórias e a interface web, todos passando | [![Assistir no YouTube](https://img.shields.io/badge/Assistir-YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=ohqfOgKR_I4) |
 | **Produto publicado (Sprint 03)** | Interface web com login, painel, Integração SEI, Relatórios e Configurações | [spacflow.github.io/SPACFlow](https://spacflow.github.io/SPACFlow/) |
 
 ### Onde cada história aparece nos vídeos
@@ -602,5 +603,18 @@ Clique no tempo para abrir o vídeo direto naquele ponto.
 - [7:38](https://youtu.be/C2Ne1DC06AE?t=458) Integração SEI
 - [8:19](https://youtu.be/C2Ne1DC06AE?t=499) Configurações: os 5 cargos do sistema
 - [8:44](https://youtu.be/C2Ne1DC06AE?t=524) Encerramento
+
+</details>
+
+<details>
+  <summary><b>Screencast dos testes automatizados (Sprint 03)</b></summary>
+
+- [0:00](https://www.youtube.com/watch?v=ohqfOgKR_I4&t=0s) Abertura
+- [0:15](https://www.youtube.com/watch?v=ohqfOgKR_I4&t=15s) Versão do Node
+- [0:20](https://www.youtube.com/watch?v=ohqfOgKR_I4&t=20s) `npm test`
+- [0:23](https://www.youtube.com/watch?v=ohqfOgKR_I4&t=23s) Testes das histórias 1 a 15
+- [0:47](https://www.youtube.com/watch?v=ohqfOgKR_I4&t=47s) Testes da interface web
+- [1:09](https://www.youtube.com/watch?v=ohqfOgKR_I4&t=69s) Resultado: 116 testes passando
+- [1:15](https://www.youtube.com/watch?v=ohqfOgKR_I4&t=75s) Encerramento
 
 </details>
