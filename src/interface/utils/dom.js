@@ -6,7 +6,7 @@ export const esc = (t) => String(t ?? '').replace(/[&<>"']/g,
 export const dataBR = (iso) => (iso ? iso.split('-').reverse().join('/') : 'Sem prazo');
 
 export function diasAtraso(d) {
-  if (!d.prazo || d.status === 'Concluído') return 0;
+  if (!d.prazo || ['Concluída', 'Cancelada'].includes(d.status)) return 0;
   const hoje = new Date().setHours(0, 0, 0, 0);
   return Math.max(0, Math.round((hoje - new Date(d.prazo + 'T00:00:00')) / 86400000));
 }
