@@ -644,7 +644,69 @@ describe('História 13 — Registrar pendência', () => {
 });
 
 describe('História 14 — Indicadores por origem e categoria', () => {
-  it.todo('testes da história 14');
+  const lista = [
+    { id: 1, status: 'Pendente', origem: 'Ministério Público', categoria: 'Acidente de trabalho' },
+    { id: 2, status: 'Em andamento', origem: 'Ministério Público', categoria: 'Parecer técnico' },
+    { id: 3, status: 'Concluída', origem: 'Ministério Público', categoria: 'Acidente de trabalho' },
+    { id: 4, status: 'Cancelada', origem: 'Ouvidoria', categoria: 'Outros' },
+    { id: 5, status: 'Pendente', origem: null, categoria: null },
+  ];
+  const comLista = (t, demandas = lista) => t.mock.method(demandaRepository, 'listar', () => demandas);
+  const linha = (linhas, nome) => linhas.find((l) => l.nome === nome);
+
+  it('conta por origem e por categoria, separando as em aberto das encerradas', (t) => {
+    comLista(t);
+    const { total, porOrigem, porCategoria } = calcularIndicadoresOrigemCategoria();
+    assert.equal(total, 5);
+    assert.deepEqual(linha(porOrigem, 'Ministério Público'), { nome: 'Ministério Público', abertas: 2, encerradas: 1, total: 3 });
+    assert.deepEqual(linha(porOrigem, 'Ouvidoria'), { nome: 'Ouvidoria', abertas: 0, encerradas: 1, total: 1 });
+    assert.deepEqual(linha(porCategoria, 'Acidente de trabalho'), { nome: 'Acidente de trabalho', abertas: 1, encerradas: 1, total: 2 });
+  });
+
+  it('mostra todas as origens e categorias do cadastro, mesmo com zero', (t) => {
+    comLista(t);
+    const { porOrigem, porCategoria } = calcularIndicadoresOrigemCategoria();
+    assert.deepEqual(porOrigem.slice(0, 5).map((l) => l.nome), ['Ministério Público', 'Prefeitura', 'Ouvidoria', 'Secretaria de Saúde', 'Outro órgão']);
+    assert.equal(linha(porOrigem, 'Prefeitura').total, 0);
+    assert.equal(linha(porCategoria, 'Inspeção de ambiente de trabalho').total, 0);
+  });
+
+  it('demanda sem origem ou sem categoria aparece como "Não informada"', (t) => {
+    const listar = comLista(t);
+    const { porOrigem, porCategoria } = calcularIndicadoresOrigemCategoria();
+    assert.deepEqual(porOrigem.at(-1), { nome: 'Não informada', abertas: 1, encerradas: 0, total: 1 });
+    assert.equal(porCategoria.at(-1).nome, 'Não informada');
+    listar.mock.mockImplementation(() => lista.slice(0, 4));
+    assert.ok(!calcularIndicadoresOrigemCategoria().porOrigem.some((l) => l.nome === 'Não informada'));
+  });
+
+  it('sem demandas cadastradas, mostra tudo zerado', (t) => {
+    comLista(t, []);
+    const { total, porOrigem, porCategoria } = calcularIndicadoresOrigemCategoria();
+    assert.equal(total, 0);
+    assert.equal(porOrigem.length, 5);
+    assert.equal(porCategoria.length, 5);
+    assert.ok([...porOrigem, ...porCategoria].every((l) => l.total === 0));
+  });
+
+  it('menu: mostra o total e cada origem e categoria com os números', async (t) => {
+    comLista(t);
+    const saida = capturarSaida(t);
+    await executarIndicadoresOrigemCategoria();
+    const texto = saida.join('\n');
+    assert.match(texto, /Total de demandas: 5/);
+    assert.match(texto, /Ministério Público: 3 demandas \(2 em aberto, 1 encerrada\)/);
+    assert.match(texto, /Prefeitura: nenhuma demanda/);
+    assert.match(texto, /Por categoria:[\s\S]*Acidente de trabalho: 2 demandas \(1 em aberto, 1 encerrada\)/);
+    assert.match(texto, /Não informada: 1 demanda \(1 em aberto, 0 encerradas\)/);
+  });
+
+  it('menu: avisa quando não há demandas', async (t) => {
+    comLista(t, []);
+    const saida = capturarSaida(t);
+    await executarIndicadoresOrigemCategoria();
+    assert.match(saida.join('\n'), /Nenhuma demanda cadastrada ainda/);
+  });
 });
 
 describe('História 15 — Carga de trabalho por responsável', () => {
