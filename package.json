@@ -5,6 +5,8 @@
   "scripts": {
     "web": "node src/web.js",
     "start": "node src/main.js",
-    "test": "node --test testes.js"
+    "test": "node --test testes.js",
+    "test:web": "node --test testes-web.js",
+    "test:api": "node --test testes-api.js"
   }
 }
