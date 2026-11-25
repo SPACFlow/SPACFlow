@@ -3,11 +3,11 @@ const diasDepois = (n) => { const d = new Date(); d.setDate(d.getDate() + n); re
 
 let proximoId = 1;
 const demandas = [
-  { titulo: 'Notificação de acidente de trabalho — servidor SES', descricao: 'Demanda recebida da Secretaria de Estado da Saúde.', solicitante: 'Secretaria de Estado da Saúde', prazo: diasDepois(-17), status: 'Novo', prioridade: 'Alta', responsavel: null },
-  { titulo: 'Solicitação de inspeção sanitária em almoxarifado central', descricao: 'Inspeção das condições de ergonomia e ventilação do local.', solicitante: 'MPT', prazo: diasDepois(-30), status: 'Em análise', prioridade: 'Alta', responsavel: 'Carlos Menezes' },
-  { titulo: 'Investigação de acidente de trabalho grave em hospital regional', descricao: 'Processo solicitando investigação do acidente.', solicitante: 'Hospital Regional', prazo: diasDepois(-61), status: 'Em tratamento', prioridade: 'Alta', responsavel: 'Ana Beatriz Rocha' },
-  { titulo: 'Análise de ruído ocupacional em setor de manutenção', descricao: 'Medição de níveis de pressão sonora e recomendações de EPI.', solicitante: 'Setor de Manutenção', prazo: diasDepois(-5), status: 'Concluído', prioridade: 'Média', responsavel: 'Carlos Menezes' },
-  { titulo: 'Pedido de informação sobre afastamentos por LER/DORT', descricao: 'Levantamento de afastamentos do último semestre.', solicitante: 'Sindicato dos Servidores', prazo: diasDepois(12), status: 'Novo', prioridade: 'Baixa', responsavel: null },
+  { titulo: 'Notificação de acidente de trabalho — servidor SES', descricao: 'Demanda recebida da Secretaria de Estado da Saúde.', solicitante: 'Secretaria de Estado da Saúde', prazo: diasDepois(-17), status: 'Pendente', prioridade: 'Alta', responsavel: null },
+  { titulo: 'Solicitação de inspeção sanitária em almoxarifado central', descricao: 'Inspeção das condições de ergonomia e ventilação do local.', solicitante: 'MPT', prazo: diasDepois(-30), status: 'Em andamento', prioridade: 'Alta', responsavel: 'Carlos Menezes' },
+  { titulo: 'Investigação de acidente de trabalho grave em hospital regional', descricao: 'Processo solicitando investigação do acidente.', solicitante: 'Hospital Regional', prazo: diasDepois(-61), status: 'Em andamento', prioridade: 'Alta', responsavel: 'Ana Beatriz Rocha' },
+  { titulo: 'Análise de ruído ocupacional em setor de manutenção', descricao: 'Medição de níveis de pressão sonora e recomendações de EPI.', solicitante: 'Setor de Manutenção', prazo: diasDepois(-5), status: 'Concluída', prioridade: 'Média', responsavel: 'Carlos Menezes' },
+  { titulo: 'Pedido de informação sobre afastamentos por LER/DORT', descricao: 'Levantamento de afastamentos do último semestre.', solicitante: 'Sindicato dos Servidores', prazo: diasDepois(12), status: 'Pendente', prioridade: 'Baixa', responsavel: null },
 ].map((d) => ({ id: proximoId++, criadaEm: new Date().toISOString(), ...d }));
 
 const ouvintes = [];
